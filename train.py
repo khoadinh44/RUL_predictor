@@ -5,6 +5,7 @@ from utils.load_data import train_data, train_label, test_data, test_label
 from utils.tools import recall_m, precision_m, f1_m, to_onehot
 import argparse
 import numpy as np
+import os
 
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
