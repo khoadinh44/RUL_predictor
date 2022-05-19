@@ -3,6 +3,7 @@ from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
 from utils.load_data import train_data, train_label, test_data, test_label
 from utils.tools import recall_m, precision_m, f1_m
+import argparse
 
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
