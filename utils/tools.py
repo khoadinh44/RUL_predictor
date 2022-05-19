@@ -29,3 +29,9 @@ def accuracy_m(y_true, y_pred):
       total += 1
   accuracy = (correct/total)
   return accuracy
+
+def to_onehot(label):
+  new_label = np.zeros((len(label), np.max(label)+1))
+  for idx, i in enumerate(label):
+    new_label[idx][i] = 1.
+  return new_label
