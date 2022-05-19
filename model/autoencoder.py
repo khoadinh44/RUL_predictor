@@ -1,3 +1,5 @@
+from tensorflow.keras.layers import Input, Dropout, Dense, LSTM, TimeDistributed, RepeatVector
+
 def autoencoder_model(X):
     inputs = Input(shape=(X.shape[1], X.shape[2]))
     L1 = LSTM(1024, activation='relu', return_sequences=True, 
