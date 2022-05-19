@@ -4,6 +4,7 @@ from model.dnn import dnn_model
 from utils.load_data import train_data, train_label, test_data, test_label
 from utils.tools import recall_m, precision_m, f1_m
 import argparse
+import numpy as np
 
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
@@ -18,7 +19,7 @@ def parse_opt(known=False):
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
 
-def main(opt):
+def main(opt, train_data, train_label, test_data, test_label):
   if opt.model == 'dnn':
     train_data = np.squeeze(train_data)
     test_data = np.squeeze(test_data)
@@ -34,16 +35,16 @@ def main(opt):
   if opt.model == 'autoencoder':
     network = autoencoder_model(train_data)
   
-  model.compile(optimizer="Adam", loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
-  model.summary()
-  history = model.fit(train_data, train_label,
+  network.compile(optimizer="Adam", loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
+  network.summary()
+  history = network.fit(train_data, train_label,
                       epochs     = opt.epochs,
                       batch_size = opt.batch_size,
-                      validation_data=(test_data, test_label),)
-  _, test_acc,  test_f1_m,  test_precision_m,  test_recall_m  = model.evaluate(test_data, test_label, verbose=0)
+                      validation_data = (test_data, test_label))
+  _, test_acc,  test_f1_m,  test_precision_m,  test_recall_m  = network.evaluate(test_data, test_label, verbose=0)
   print(f'\n Score in test set: \n Accuracy: {test_acc}, F1: {test_f1_m}, Precision: {test_precision_m}, recall: {test_recall_m}' )
-  model.save(os.path.join(opt.save_dir, opt.model))
+  network.save(os.path.join(opt.save_dir, opt.model))
 
 if __name__ == '__main__':
   opt = parse_opt()
-  main(opt)
+  main(opt, train_data, train_label, test_data, test_label)
