@@ -1,4 +1,11 @@
-from tensorflow.keras.layers import Input, Dropout, Dense, LSTM, TimeDistributed, RepeatVector
+from functools import partial
+import keras
+import tensorflow as tf
+from tensorflow_addons.layers import MultiHeadAttention
+from tensorflow.keras.layers import Conv1D, Activation, Dense, concatenate, BatchNormalization, GlobalAveragePooling1D, Input, MaxPooling1D, Lambda
+import keras.backend as K
+from keras import layers, regularizers
+from keras.models import Model
 
 def TransformerLayer(x=None, c=48, num_heads=4*3):
     # Transformer layer https://arxiv.org/abs/2010.11929 (LayerNorm layers removed for better performance)
@@ -52,7 +59,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block):
     x = Activation('relu')(x)
     return x
   
-def cnn_model(opt):
+def cnn_1d_model(opt):
     '''
     The model was rebuilt based on the construction of resnet 34 and inherited from this source code:
     https://github.com/philipperemy/very-deep-convnets-raw-waveforms/blob/master/model_resnet.py
@@ -79,3 +86,19 @@ def cnn_model(opt):
 
     m = Model(inputs, x, name='resnet34')
     return m
+
+def cnn_2d_model(opt, input_shape=[128, 128, 1]):
+  DefaultConv2D = partial(keras.layers.Conv2D, kernel_size=3, activation='relu', padding="SAME")
+  model = keras.models.Sequential([
+            DefaultConv2D(filters=256, kernel_size=7, input_shape=input_shape), #
+            tf.keras.layers.ReLU(), #
+            keras.layers.MaxPooling2D(pool_size=3), #
+            keras.layers.Dropout(0.5), #
+            DefaultConv2D(filters=256), #
+            tf.keras.layers.ReLU(), #
+            keras.layers.MaxPooling2D(pool_size=2),#
+            keras.layers.Flatten(),
+            keras.layers.Dense(units=512, activation='relu'),
+            keras.layers.Dropout(0.5),
+            keras.layers.Dense(units=opt.num_classes, activation='softmax'),])
+  return model
