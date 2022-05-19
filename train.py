@@ -2,7 +2,7 @@ from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
 from utils.load_data import train_data, train_label, test_data, test_label
-from utils.tools import recall_m, precision_m, f1_m
+from utils.tools import recall_m, precision_m, f1_m, to_onehot
 import argparse
 import numpy as np
 
@@ -20,17 +20,20 @@ def parse_opt(known=False):
     return opt
 
 def main(opt, train_data, train_label, test_data, test_label):
+  train_label = to_onehot(train_label)
+  test_label  = to_onehot(test_label)
+
   if opt.model == 'dnn':
     train_data = np.squeeze(train_data)
-    test_data = np.squeeze(test_data)
+    test_data  = np.squeeze(test_data)
     network = dnn_model(opt)
   if opt.model == 'cnn_1d':
     train_data = np.squeeze(train_data)
-    test_data = np.squeeze(test_data)
+    test_data  = np.squeeze(test_data)
     network = cnn_1d_model(opt)
   if opt.model == 'cnn_2d':
     train_data = np.squeeze(train_data)
-    test_data = np.squeeze(test_data)
+    test_data  = np.squeeze(test_data)
     network = cnn_1d_model(opt, [128, 128, 1])
   if opt.model == 'autoencoder':
     network = autoencoder_model(train_data)
