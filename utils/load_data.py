@@ -37,7 +37,12 @@ Conditions_1_train = np.concatenate((Bearing1_1_data, Bearing1_2_data))
 Conditions_2_train = np.concatenate((Bearing2_1_data, Bearing2_2_data))
 Conditions_3_train = np.concatenate((Bearing3_1_data, Bearing3_2_data))
 train_data = np.concatenate((Conditions_1_train, Conditions_2_train, Conditions_3_train))
-print(f'\n Shape of train data: {train_data.shape}')
+
+Conditions_1_train_label = np.array([0]*len(Conditions_1_train))
+Conditions_2_train_label = np.array([1]*len(Conditions_2_train))
+Conditions_3_train_label = np.array([2]*len(Conditions_3_train))
+train_label = np.concatenate((Conditions_1_train_label, Conditions_2_train_label, Conditions_3_train_label))
+print(f'\n Shape of train data and label: {train_data.shape}, {train_label.shape}')
 
 
 # Test data---------------------------------------------------------------------------
@@ -69,4 +74,9 @@ Conditions_1_test = np.concatenate((Bearing1_3_data, Bearing1_4_data, Bearing1_5
 Conditions_2_test = np.concatenate((Bearing2_3_data, Bearing2_4_data, Bearing2_5_data, Bearing2_6_data, Bearing2_7_data))
 Conditions_3_test = Bearing3_3_data
 test_data = np.concatenate((Conditions_1_test, Conditions_2_test, Conditions_3_test))
-print(f'\n Shape of test data: {test_data.shape}')
+
+Conditions_1_test_label = np.array([0]*len(Conditions_1_test))
+Conditions_2_test_label = np.array([1]*len(Conditions_2_test))
+Conditions_3_test_label = np.array([2]*len(Conditions_3_test))
+test_label = np.concatenate((Conditions_1_test_label, Conditions_2_test_label, Conditions_3_test_label))
+print(f'\n Shape of test data and label: {test_data.shape}, {test_label.shape}')
