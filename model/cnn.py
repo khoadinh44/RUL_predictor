@@ -82,7 +82,10 @@ def cnn_1d_model(opt):
     x = GlobalAveragePooling1D()(x)
     
     x = TransformerLayer(x, c=48)
-    x = Dense(opt.num_classes, activation='softmax')(x)
+    if opt.rul_train:
+      x = Activation("linear")(x)
+    if opt.condition_train:
+      x = Dense(opt.num_classes, activation='softmax')(x)
 
     m = Model(inputs, x, name='resnet34')
     return m
@@ -99,6 +102,9 @@ def cnn_2d_model(opt, input_shape=[128, 128, 2]):
             keras.layers.MaxPooling2D(pool_size=2),#
             keras.layers.Flatten(),
             keras.layers.Dense(units=512, activation='relu'),
-            keras.layers.Dropout(0.5),
-            keras.layers.Dense(units=opt.num_classes, activation='softmax'),])
+            keras.layers.Dropout(0.5),])
+  if opt.rul_train:
+    model.add(Activation("linear"))
+  if opt.condition_train:
+    model.add(keras.layers.Dense(units=opt.num_classes, activation='softmax'))
   return model
