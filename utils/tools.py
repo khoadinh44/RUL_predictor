@@ -82,8 +82,9 @@ def df_row_ind_to_data_range(ind):
     DATA_POINTS_PER_FILE=2560
     return (DATA_POINTS_PER_FILE*ind, DATA_POINTS_PER_FILE*(ind+1))
 
-def extract_feature_image(ind, feature_name='horiz accel'):
+def extract_feature_image(df, ind, feature_name='horiz accel'):
     DATA_POINTS_PER_FILE=2560
+    WIN_SIZE = 20
     data_range = df_row_ind_to_data_range(ind)
     data = df[feature_name].values[data_range[0]: data_range[1]]
     # use window to process(= prepare, develop) 1D signal
@@ -105,8 +106,8 @@ def convert_to_image(pkz_dir):
     
     data = {'x': [], 'y': []}
     for i in range(0, no_of_files):
-        coef_h = extract_feature_image(i, feature_name='horiz accel')
-        coef_v = extract_feature_image(i, feature_name='vert accel')
+        coef_h = extract_feature_image(df, i, feature_name='horiz accel')
+        coef_v = extract_feature_image(df, i, feature_name='vert accel')
         x_ = np.array([coef_h, coef_v])
         y_ = i/(no_of_files-1)
         data['x'].append(x_)
