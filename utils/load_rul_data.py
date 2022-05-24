@@ -48,7 +48,6 @@ else:
 
   train_data_rul = np.concatenate((Bearing3_2_data['x'], Bearing3_1_data['x'], Bearing2_2_data['x'], Bearing2_1_data['x'], Bearing1_2_data['x'], Bearing1_1_data['x']))
   train_label_rul = np.concatenate((Bearing3_2_data['y'], Bearing3_1_data['y'], Bearing2_2_data['y'], Bearing2_1_data['y'], Bearing1_2_data['y'], Bearing1_1_data['y']))
-  print(f'Train shape: {train_data_rul.shape}   {train_label_rul.shape}\n')
 
   # Test data---------------------------------------------------------------------------
   Bearing1_3_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing1_3'
@@ -78,5 +77,5 @@ else:
   test_data_rul = np.concatenate((Bearing1_3_data['x'], Bearing1_4_data['x'], Bearing1_5_data['x'], Bearing1_6_data['x'], Bearing1_7_data['x'], Bearing2_3_data['x'], Bearing2_4_data['x'], Bearing2_5_data['x'], Bearing2_6_data['x'], Bearing2_7_data['x'], Bearing3_3_data['x']))
   test_label_rul = np.concatenate((Bearing1_3_data['y'], Bearing1_4_data['y'], Bearing1_5_data['y'], Bearing1_6_data['y'], Bearing1_7_data['y'], Bearing2_3_data['y'], Bearing2_4_data['y'], Bearing2_5_data['y'], Bearing2_6_data['y'], Bearing2_7_data['y'], Bearing3_3_data['y']))
 
-  
+print(f'Train shape: {train_data_rul.shape}   {train_label_rul.shape}\n')  
 print(f'Test shape: {test_data_rul.shape}   {test_label_rul.shape}\n')
