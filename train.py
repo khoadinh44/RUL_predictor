@@ -29,7 +29,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.condition_train:
       train_label = to_onehot(train_label)
       test_label  = to_onehot(test_label)
-  if opt.rul_train:
+  if opt.rul_train and opt.model=='cnn_2d':
       train_data = train_data.reshape(train_data.shape[0], 128, 128, 2)
       test_data = test_data.reshape(test_data.shape[0], 128, 128, 2)
 
@@ -51,14 +51,14 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.condition_train:
     network.compile(optimizer="Adam", loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
-    network.compile(optimizer="rmsprop", loss='mean_squared_error', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error]) # loss='mse'
+    network.compile(optimizer="Adam", loss='mean_squared_error', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error]) # loss='mse'
   network.summary()
   history = network.fit(train_data, train_label,
                       epochs     = opt.epochs,
                       batch_size = opt.batch_size,
                       # validation_data = (test_data, test_label)
                       )
-  
+  # optimizer='rmsprop'
   if opt.train_condition:
       _, test_acc,  test_f1_m,  test_precision_m,  test_recall_m  = network.evaluate(test_data, test_label, verbose=0)
       print(f'----------Score in test set: \n Accuracy: {test_acc}, F1: {test_f1_m}, Precision: {test_precision_m}, recall: {test_recall_m}' )
