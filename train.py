@@ -59,10 +59,10 @@ def main(opt, train_data, train_label, test_data, test_label):
                       # validation_data = (test_data, test_label)
                       )
   # optimizer='rmsprop'
-  if opt.train_condition:
+  if opt.condition_train:
       _, test_acc,  test_f1_m,  test_precision_m,  test_recall_m  = network.evaluate(test_data, test_label, verbose=0)
       print(f'----------Score in test set: \n Accuracy: {test_acc}, F1: {test_f1_m}, Precision: {test_precision_m}, recall: {test_recall_m}' )
-  if opt.train_rul:
+  if opt.rul_train:
       _, test_mae, test_r2, test_mse = network.evaluate(test_data, test_label, verbose=0)
       print(f'----------Score in test set: \n mae: {test_mae}, r2: {test_r2}, mse: {test_mse}' )
   network.save(os.path.join(opt.save_dir, opt.model))
