@@ -1,6 +1,7 @@
 import numpy as np
 from keras import backend as K
 
+#----------------------#### General ####------------------------------------------------
 def recall_m(y_true, y_pred):
     true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
     possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
@@ -36,6 +37,7 @@ def to_onehot(label):
     new_label[idx][i] = 1.
   return new_label
 
+#----------------------save_data.py------------------------------------------------
 def read_data_as_df(base_dir):
   '''
   saves each file in the base_dir as a df and concatenate all dfs into one
@@ -60,3 +62,24 @@ def process(base_dir, out_file):
   print('{0} saved'.format(out_file))
   print(f'Shape: {df.shape}\n')
 
+#----------------------Load_data.py------------------------------------------------
+def load_df(pkz_file):
+    with open(pkz_file, 'rb') as f:
+        df=pkl.load(f)
+    return df
+
+def df_row_ind_to_data_range(ind):
+    return (DATA_POINTS_PER_FILE*ind, DATA_POINTS_PER_FILE*(ind+1))
+
+def extract_feature_image(ind, feature_name='horiz accel'):
+    data_range = df_row_ind_to_data_range(ind)
+    data = df[feature_name].values[data_range[0]: data_range[1]]
+    # use window to process(= prepare, develop) 1D signal
+    data = np.array([np.mean(data[i: i+WIN_SIZE]) for i in range(0, DATA_POINTS_PER_FILE, WIN_SIZE)])
+    # perform CWT on 1D data(= 1D array)
+    coef, _ = pywt.cwt(data, np.linspace(1,128,128), WAVELET_TYPE)
+    # transform to power and apply logarithm?!
+    coef = np.log2(coef**2 + 0.001)
+    # normalize coef
+    coef = (coef - coef.min())/(coef.max() - coef.min()) 
+    return coef
