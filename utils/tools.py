@@ -37,6 +37,13 @@ def to_onehot(label):
     new_label[idx][i] = 1.
   return new_label
 
+def r2_keras(y_true, y_pred):
+    """Coefficient of Determination 
+    """
+    SS_res =  K.sum(K.square( y_true - y_pred ))
+    SS_tot = K.sum(K.square( y_true - K.mean(y_true) ) )
+    return ( 1 - SS_res/(SS_tot + K.epsilon()) )
+
 #----------------------save_data.py------------------------------------------------
 def read_data_as_df(base_dir):
   '''
