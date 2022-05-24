@@ -31,7 +31,7 @@ else:
   Bearing2_2_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/Bearing2_2'
   Bearing3_1_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/Bearing3_1'
   Bearing3_2_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/Bearing3_2'
-  print('\n Training data'+'-'*100)
+  print('\n Training condition data'+'-'*100)
   Bearing3_2_data = load_RUL_data(Bearing3_2_path)
   Bearing3_1_data = load_RUL_data(Bearing3_1_path)
   Bearing2_2_data = load_RUL_data(Bearing2_2_path)
@@ -63,7 +63,7 @@ else:
   Bearing2_6_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing2_6'
   Bearing2_7_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing2_7'
   Bearing3_3_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing3_3'
-  print('\n Test data'+'-'*100)
+  print('\n Test condition data'+'-'*100)
   Bearing1_3_data = load_RUL_data(Bearing1_3_path)
   Bearing1_4_data = load_RUL_data(Bearing1_4_path)
   Bearing1_5_data = load_RUL_data(Bearing1_5_path)
