@@ -51,12 +51,13 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.condition_train:
     network.compile(optimizer="Adam", loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
-    network.compile(optimizer="Adam", loss='mean_squared_error', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error]) # loss='mse'
+    network.compile(optimizer="rmsprop", loss='mean_squared_error', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error]) # loss='mse'
   network.summary()
   history = network.fit(train_data, train_label,
                       epochs     = opt.epochs,
                       batch_size = opt.batch_size,
-                      validation_data = (test_data, test_label))
+                      # validation_data = (test_data, test_label)
+                      )
   
   if opt.train_condition:
       _, test_acc,  test_f1_m,  test_precision_m,  test_recall_m  = network.evaluate(test_data, test_label, verbose=0)
