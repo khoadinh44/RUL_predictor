@@ -22,7 +22,7 @@ def dnn_model(opt):
                                      bias_regularizer=regularizers.l2(1e-4),
                                      activity_regularizer=regularizers.l2(1e-5))(x)
   if opt.rul_train:
-    output = Dense(opt.num_classes, activation='linear')(x)
+    output = Dense(opt.num_classes, activation='sigmoid')(x)
   if opt.condition_train:
     output = Dense(opt.num_classes, activation='softmax')(x)
   model = keras.models.Model(inputs=[input_], outputs=[output])
