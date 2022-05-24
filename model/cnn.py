@@ -87,7 +87,7 @@ def cnn_1d_model(opt):
     m = Model(inputs, x, name='resnet34')
     return m
 
-def cnn_2d_model(opt, input_shape=[128, 128, 1]):
+def cnn_2d_model(opt, input_shape=[128, 128, 2]):
   DefaultConv2D = partial(keras.layers.Conv2D, kernel_size=3, activation='relu', padding="SAME")
   model = keras.models.Sequential([
             DefaultConv2D(filters=256, kernel_size=7, input_shape=input_shape), #
