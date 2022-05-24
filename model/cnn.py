@@ -2,10 +2,12 @@ from functools import partial
 import keras
 import tensorflow as tf
 from tensorflow_addons.layers import MultiHeadAttention
-from tensorflow.keras.layers import Conv1D, Activation, Dense, concatenate, BatchNormalization, GlobalAveragePooling1D, Input, MaxPooling1D, Lambda
+from tensorflow.keras.layers import Conv1D, Activation, Dense, concatenate, BatchNormalization, GlobalAveragePooling1D, Input, MaxPooling1D, Lambda, GlobalAveragePooling2D
 import keras.backend as K
 from keras import layers, regularizers
 from keras.models import Model
+from tensorflow.keras.applications import DenseNet121
+
 
 def TransformerLayer(x=None, c=48, num_heads=4*3):
     # Transformer layer https://arxiv.org/abs/2010.11929 (LayerNorm layers removed for better performance)
@@ -91,20 +93,15 @@ def cnn_1d_model(opt):
     return m
 
 def cnn_2d_model(opt, input_shape=[128, 128, 2]):
-  DefaultConv2D = partial(keras.layers.Conv2D, kernel_size=3, activation='relu', padding="SAME")
-  model = keras.models.Sequential([
-            DefaultConv2D(filters=256, kernel_size=7, input_shape=input_shape), #
-            tf.keras.layers.ReLU(), #
-            keras.layers.MaxPooling2D(pool_size=3), #
-            keras.layers.Dropout(0.5), #
-            DefaultConv2D(filters=256), #
-            tf.keras.layers.ReLU(), #
-            keras.layers.MaxPooling2D(pool_size=2),#
-            keras.layers.Flatten(),
-            keras.layers.Dense(units=512, activation='relu'),
-            keras.layers.Dropout(0.5),])
+  input_tensor = Input(shape=input_shape)
+  # https://keras.io/api/applications/
+  base_model = DenseNet121(weights=None, input_tensor=input_tensor, include_top=False)
+
+  # add a global spatial average pooling layer
+  x = base_model.output
+  x = GlobalAveragePooling2D()(x)
   if opt.rul_train:
-    model.add(keras.layers.Dense(units=opt.num_classes, activation='sigmoid'))
+    x = keras.layers.Dense(units=opt.num_classes, activation='sigmoid')(x)
   if opt.condition_train:
-    model.add(keras.layers.Dense(units=opt.num_classes, activation='softmax'))
+    x = keras.layers.Dense(units=opt.num_classes, activation='softmax')(x)
   return model
