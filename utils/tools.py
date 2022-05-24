@@ -83,3 +83,26 @@ def extract_feature_image(ind, feature_name='horiz accel'):
     # normalize coef
     coef = (coef - coef.min())/(coef.max() - coef.min()) 
     return coef
+
+def convert_to_image(pkz_dir):
+    df = load_df(pkz_dir)
+    no_of_rows = df.shape[0]
+    no_of_files = int(no_of_rows / DATA_POINTS_PER_FILE)
+    print(f'pkz file length: {no_of_rows}, total subsequence data: {no_of_files}')
+    
+    data = {'x': [], 'y': []}
+    for i in range(0, no_of_files):
+        coef_h = extract_feature_image(i, feature_name='horiz accel')
+        coef_v = extract_feature_image(i, feature_name='vert accel')
+        x_ = np.array([coef_h, coef_v])
+        y_ = i/(no_of_files-1)
+        data['x'].append(x_)
+        data['y'].append(y_)
+    data['x']=np.array(data['x'])
+    data['y']=np.array(data['y'])
+
+    assert data['x'].shape==(no_of_files, 2, 128, 128)
+    x_shape = data['x'].shape
+    y_shape = data['y'].shape
+    print(f'Train data shape: {x_shape}   Train label shape: {y_shape}\n')
+    return data
