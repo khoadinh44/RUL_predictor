@@ -104,7 +104,7 @@ def cnn_2d_model(opt, input_shape=[128, 128, 2]):
             keras.layers.Dense(units=512, activation='relu'),
             keras.layers.Dropout(0.5),])
   if opt.rul_train:
-    model.add(Activation("linear"))
+    model.add(keras.layers.Dense(units=opt.num_classes, activation='linear'))
   if opt.condition_train:
     model.add(keras.layers.Dense(units=opt.num_classes, activation='softmax'))
   return model
