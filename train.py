@@ -42,7 +42,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.model == 'cnn_2d':
     train_data = np.squeeze(train_data)
     test_data  = np.squeeze(test_data)
-    network = cnn_2d_model(opt, [128, 128, 1])
+    network = cnn_2d_model(opt, [128, 128, 2])
   if opt.model == 'autoencoder':
     network = autoencoder_model(train_data)
   
