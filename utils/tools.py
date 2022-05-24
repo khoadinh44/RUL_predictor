@@ -35,3 +35,28 @@ def to_onehot(label):
   for idx, i in enumerate(label):
     new_label[idx][i] = 1.
   return new_label
+
+def read_data_as_df(base_dir):
+  '''
+  saves each file in the base_dir as a df and concatenate all dfs into one
+  '''
+  if base_dir[-1]!='/':
+    base_dir += '/'
+
+  dfs=[]
+  for f in sorted(os.listdir(base_dir)):
+    df=pd.read_csv(base_dir+f, header=None, names=['hour', 'minute', 'second', 'microsecond', 'horiz accel', 'vert accel'])
+    dfs.append(df)
+  return pd.concat(dfs)
+
+def process(base_dir, out_file):
+  '''
+  dumps combined dataframes into pkz (pickle) files for faster retreival
+  '''
+  df=read_data_as_df(base_dir)
+  # assert df.shape[0]==len(os.listdir(base_dir))*DATA_POINTS_PER_FILE
+  with open(out_file, 'wb') as pfile:
+    pkl.dump(df, pfile)
+  print('{0} saved'.format(out_file))
+  print(f'Shape: {df.shape}\n')
+
