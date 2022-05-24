@@ -3,6 +3,8 @@ import os
 from keras import backend as K
 import pandas as pd
 import pickle as pkl
+import pywt
+
 
 #----------------------#### General ####------------------------------------------------
 def recall_m(y_true, y_pred):
@@ -85,6 +87,7 @@ def df_row_ind_to_data_range(ind):
 def extract_feature_image(df, ind, feature_name='horiz accel'):
     DATA_POINTS_PER_FILE=2560
     WIN_SIZE = 20
+    WAVELET_TYPE = 'morl'
     data_range = df_row_ind_to_data_range(ind)
     data = df[feature_name].values[data_range[0]: data_range[1]]
     # use window to process(= prepare, develop) 1D signal
