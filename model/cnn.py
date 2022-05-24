@@ -93,9 +93,9 @@ def cnn_1d_model(opt):
     return m
 
 def cnn_2d_model(opt, input_shape=[128, 128, 2]):
-  input_tensor = Input(shape=input_shape)
+  inputs = Input(shape=input_shape)
   # https://keras.io/api/applications/
-  base_model = DenseNet121(weights=None, input_tensor=input_tensor, include_top=False)
+  base_model = DenseNet121(weights=None, input_tensor=inputs, include_top=False)
 
   # add a global spatial average pooling layer
   x = base_model.output
@@ -104,4 +104,5 @@ def cnn_2d_model(opt, input_shape=[128, 128, 2]):
     x = keras.layers.Dense(units=opt.num_classes, activation='sigmoid')(x)
   if opt.condition_train:
     x = keras.layers.Dense(units=opt.num_classes, activation='softmax')(x)
-  return x
+  m = Model(inputs, x)
+  return m
