@@ -27,6 +27,9 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.condition_train:
       train_label = to_onehot(train_label)
       test_label  = to_onehot(test_label)
+  if opt.rul_train:
+      train_data = train_data.reshape(len(train_data), 128, 128, 2)
+      test_data = train_data.reshape(len(test_data), 128, 128, 2)
 
   if opt.model == 'dnn':
     train_data = np.squeeze(train_data)
