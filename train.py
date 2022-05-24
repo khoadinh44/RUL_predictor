@@ -2,6 +2,7 @@ from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
 from utils.load_condition_data import train_data, train_label, test_data, test_label
+from utils.load_rul_data import train_data_rul, train_label_rul, test_data_rul, test_label_rul
 from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
 from utils.save_data import start_save_data
 import argparse
@@ -65,4 +66,7 @@ def main(opt, train_data, train_label, test_data, test_label):
 if __name__ == '__main__':
   opt = parse_opt()
   start_save_data()
-  main(opt, train_data, train_label, test_data, test_label)
+  if opt.condition_train:
+    main(opt, train_data, train_label, test_data, test_label)
+  if opt.rul_train:
+    main(opt, train_data_rul, train_label_rul, test_data_rul, test_label_rul)
