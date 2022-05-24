@@ -104,4 +104,4 @@ def cnn_2d_model(opt, input_shape=[128, 128, 2]):
     x = keras.layers.Dense(units=opt.num_classes, activation='sigmoid')(x)
   if opt.condition_train:
     x = keras.layers.Dense(units=opt.num_classes, activation='softmax')(x)
-  return model
+  return x
