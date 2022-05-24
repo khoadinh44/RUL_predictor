@@ -24,13 +24,14 @@ def parse_opt(known=False):
     return opt
 
 def main(opt, train_data, train_label, test_data, test_label):
-  print(train_data.shape)
+  print(f'Shape of train set: {train_data.shape}  {train_label.shape}')
+  print(f'Shape of test set: {test_data.shape}  {test_label.shape}')
   if opt.condition_train:
       train_label = to_onehot(train_label)
       test_label  = to_onehot(test_label)
   if opt.rul_train:
       train_data = train_data.reshape(train_data.shape[0], 128, 128, 2)
-      test_data = train_data.reshape(test_data.shape[0], 128, 128, 2)
+      test_data = test_data.reshape(test_data.shape[0], 128, 128, 2)
 
   if opt.model == 'dnn':
     train_data = np.squeeze(train_data)
