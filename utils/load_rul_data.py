@@ -4,7 +4,7 @@ import pywt
 import pandas as pd
 import pickle as pkl
 from matplotlib import pyplot as plt
-from utils.tools import load_df, df_row_ind_to_data_range, extract_feature_image, convert_to_image
+from utils.tools import load_df, save_df, df_row_ind_to_data_range, extract_feature_image, convert_to_image
 
 DATA_POINTS_PER_FILE = 2560
 TIME_PER_REC = 0.1
@@ -66,4 +66,15 @@ Bearing3_3_data = convert_to_image(Bearing3_3_path)
 
 test_data_rul = np.concatenate((Bearing1_3_data['x'], Bearing1_4_data['x'], Bearing1_5_data['x'], Bearing1_6_data['x'], Bearing1_7_data['x'], Bearing2_3_data['x'], Bearing2_4_data['x'], Bearing2_5_data['x'], Bearing2_6_data['x'], Bearing2_7_data['x'], Bearing3_3_data['x']))
 test_label_rul = np.concatenate((Bearing1_3_data['y'], Bearing1_4_data['y'], Bearing1_5_data['y'], Bearing1_6_data['y'], Bearing1_7_data['y'], Bearing2_3_data['y'], Bearing2_4_data['y'], Bearing2_5_data['y'], Bearing2_6_data['y'], Bearing2_7_data['y'], Bearing3_3_data['y']))
+if os.path.exists('/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_data_rul.pkz'):
+  train_data_rul = load_df('/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/train_data_rul.pkz')
+  train_label_rul = load_df('/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/train_label_rul.pkz')
+  test_data_rul = load_df('/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_data_rul.pkz')
+  test_label_rul = load_df('/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_label_rul.pkz')
+else:
+  save_df(train_data_rul, '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/train_data_rul.pkz')
+  save_df(train_label_rul, '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/train_label_rul.pkz')
+  save_df(test_data_rul, '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_data_rul.pkz')
+  save_df(test_label_rul, '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_label_rul.pkz')
+  
 print(f'Test shape: {test_data_rul.shape}   {test_label_rul.shape}\n')
