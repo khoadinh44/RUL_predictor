@@ -11,7 +11,7 @@ def start_save_data():
 
   train_main_dir = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/'
   test_main_dir = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/'
-  if os.path.exists(train_main_dir + train_names[0] + '.pkz'):
+  if os.path.exists(train_main_dir + train_names[0] + '.pkz')==False:
     for train_name in train_names:
       base_dir = train_main_dir + train_name + '/'
       out_file = train_main_dir + train_name + '.pkz'
@@ -20,5 +20,3 @@ def start_save_data():
       base_dir = test_main_dir + test_name + '/'
       out_file = test_main_dir + test_name + '.pkz'
       process(base_dir, out_file)
-    
-  
