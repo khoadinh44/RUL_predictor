@@ -21,7 +21,9 @@ def dnn_model(opt):
                                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                                      bias_regularizer=regularizers.l2(1e-4),
                                      activity_regularizer=regularizers.l2(1e-5))(x)
-  # concat = keras.layers.concatenate([input_, hidden2])
-  output = keras.layers.Dense(opt.num_classes, activation=tf.keras.layers.Softmax())(x)
+  if opt.rul_train:
+    output = Activation("linear")(x)
+  if opt.condition_train:
+    output = Dense(opt.num_classes, activation='softmax')(x)
   model = keras.models.Model(inputs=[input_], outputs=[output])
   return model
