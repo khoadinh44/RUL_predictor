@@ -3,6 +3,7 @@ from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
 from utils.load_condition_data import train_data, train_label, test_data, test_label
 from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
+from utils.save_data import start_save_data
 import argparse
 import numpy as np
 import os
@@ -18,7 +19,7 @@ def parse_opt(known=False):
     parser.add_argument('--epochs', default=100, type=int)
     parser.add_argument('--batch_size', default=32, type=int)
     parser.add_argument('--condition_train', default=False, type=bool)
-    parser.add_arguemnt('--rul_train', default=True, type=bool)
+    parser.add_argument('--rul_train', default=True, type=bool)
     
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
@@ -63,4 +64,5 @@ def main(opt, train_data, train_label, test_data, test_label):
 
 if __name__ == '__main__':
   opt = parse_opt()
+  start_save_data()
   main(opt, train_data, train_label, test_data, test_label)
