@@ -85,7 +85,7 @@ def extract_feature_image(ind, feature_name='horiz accel'):
     return coef
 
 def convert_to_image(pkz_dir):
-    df = load_df(pkz_dir)
+    df = load_df(pkz_dir+'.pkz')
     no_of_rows = df.shape[0]
     no_of_files = int(no_of_rows / DATA_POINTS_PER_FILE)
     print(f'pkz file length: {no_of_rows}, total subsequence data: {no_of_files}')
