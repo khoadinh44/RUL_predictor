@@ -1,4 +1,5 @@
 import tensorflow as tf
+# https://github.com/calmisential/TensorFlow2.0_ResNet/blob/master/models/residual_block.py
 
 
 class BasicBlock(tf.keras.layers.Layer):
