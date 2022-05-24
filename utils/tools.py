@@ -80,6 +80,11 @@ def load_df(pkz_file):
         df=pkl.load(f)
     return df
 
+def save_df(df, out_file):
+  with open(out_file, 'wb') as pfile:
+    pkl.dump(df, pfile)
+    print('{0} saved'.format(out_file))
+
 def df_row_ind_to_data_range(ind):
     DATA_POINTS_PER_FILE=2560
     return (DATA_POINTS_PER_FILE*ind, DATA_POINTS_PER_FILE*(ind+1))
