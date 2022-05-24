@@ -82,6 +82,7 @@ def df_row_ind_to_data_range(ind):
     return (DATA_POINTS_PER_FILE*ind, DATA_POINTS_PER_FILE*(ind+1))
 
 def extract_feature_image(ind, feature_name='horiz accel'):
+    DATA_POINTS_PER_FILE=2560
     data_range = df_row_ind_to_data_range(ind)
     data = df[feature_name].values[data_range[0]: data_range[1]]
     # use window to process(= prepare, develop) 1D signal
