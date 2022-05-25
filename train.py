@@ -55,7 +55,7 @@ def main(opt, train_data, train_label, test_data, test_label):
     network = autoencoder_model(train_data)
   if opt.model == 'lstm':
     network = lstm_model(opt)
-  
+
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
