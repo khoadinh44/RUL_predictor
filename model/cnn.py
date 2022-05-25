@@ -77,15 +77,31 @@ def cnn_1d_model(opt):
     x = Activation('relu')(x)
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
+
     for i in range(3):
         x = identity_block(x, kernel_size=3, filters=48, stage=1, block=i)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
+
+    for i in range(4):
+        x = identity_block(x, kernel_size=3, filters=96, stage=2, block=i)
+
+    x = MaxPooling1D(pool_size=4, strides=None)(x)
+
+    for i in range(6):
+        x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i)
+
+    x = MaxPooling1D(pool_size=4, strides=None)(x)
+
+    for i in range(3):
+        x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i)
+
     x = GlobalAveragePooling1D()(x)
     
     x = TransformerLayer(x, c=48)
+
     if opt.rul_train:
-      x = Activation("linear")(x)
+      x = Activation("sigmoid")(x)
     if opt.condition_train:
       x = Dense(opt.num_classes, activation='softmax')(x)
 
