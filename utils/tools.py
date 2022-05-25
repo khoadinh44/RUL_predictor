@@ -114,9 +114,10 @@ def convert_to_image(pkz_dir):
     
     data = {'x': [], 'y': []}
     for i in range(0, no_of_files):
-        coef_h = extract_feature_image(df, i, feature_name='horiz accel')
-        coef_v = extract_feature_image(df, i, feature_name='vert accel')
-        x_ = np.array([coef_h, coef_v])
+        coef_h = np.expand_dims(extract_feature_image(df, i, feature_name='horiz accel'), axis=-1)
+        coef_v = np.expand_dims(extract_feature_image(df, i, feature_name='vert accel'), axis=-1)
+        x_ = np.concatenate((coef_h, coef_v))
+#         x_ = np.array([coef_h, coef_v])
         y_ = i/(no_of_files-1)
         data['x'].append(x_)
         data['y'].append(y_)
