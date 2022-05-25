@@ -1,6 +1,7 @@
 from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
+from model.resnet import resnet_18
 from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
 from utils.save_data import start_save_data
 import argparse
@@ -29,9 +30,9 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.condition_train:
       train_label = to_onehot(train_label)
       test_label  = to_onehot(test_label)
-  if opt.rul_train and opt.model=='cnn_2d':
-      train_data = train_data.reshape(train_data.shape[0], 128, 128, 2)
-      test_data = test_data.reshape(test_data.shape[0], 128, 128, 2)
+#   if opt.rul_train and opt.model=='cnn_2d':
+#       train_data = train_data.reshape(train_data.shape[0], 128, 128, 2)
+#       test_data = test_data.reshape(test_data.shape[0], 128, 128, 2)
 
   if opt.model == 'dnn':
     train_data = np.squeeze(train_data)
@@ -44,7 +45,10 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.model == 'cnn_2d':
     train_data = np.squeeze(train_data)
     test_data  = np.squeeze(test_data)
-    network = cnn_2d_model(opt, [128, 128, 2])
+#     network = cnn_2d_model(opt, [128, 128, 2])
+    inputs = Input(shape=(128, 128, 2))
+    output = resnet_18(opt)(inputs)
+    network = Model(inputs, output, name='resnet18')
   if opt.model == 'autoencoder':
     network = autoencoder_model(train_data)
   
