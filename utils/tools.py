@@ -118,7 +118,8 @@ def convert_to_image(pkz_dir):
         coef_v = np.expand_dims(extract_feature_image(df, i, feature_name='vert accel'), axis=-1)
         x_ = np.concatenate((coef_h, coef_v), axis=-1).tolist()
 #         x_ = np.array([coef_h, coef_v])
-        y_ = i/(no_of_files-1)
+        all_nums = (no_of_files-1)
+        y_ = (all_nums-i)/all_nums
         data['x'].append(x_)
         data['y'].append(y_)
     data['x']=np.array(data['x'])
