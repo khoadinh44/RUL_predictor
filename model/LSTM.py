@@ -1,6 +1,6 @@
 from tensorflow.keras.layers import Conv1D, Activation, Dense, concatenate, BatchNormalization, GlobalAveragePooling1D, Input, MaxPooling1D, Lambda, GlobalAveragePooling2D, ReLU, MaxPooling2D, Flatten, Dropout, LSTM
-from keras.models import Model
 import tensorflow as tf
+from keras.models import Model
 
 def lstm_model(opt):
   inputs = Input(shape=[opt.input_shape, 2])
