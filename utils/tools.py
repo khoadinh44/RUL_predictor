@@ -59,8 +59,9 @@ def read_data_as_df(base_dir):
 
   dfs=[]
   for f in sorted(os.listdir(base_dir)):
-    df=pd.read_csv(base_dir+f, header=None, names=['hour', 'minute', 'second', 'microsecond', 'horiz accel', 'vert accel'])
-    dfs.append(df)
+    if f[:3] == 'acc':
+      df=pd.read_csv(base_dir+f, header=None, names=['hour', 'minute', 'second', 'microsecond', 'horiz accel', 'vert accel'])
+      dfs.append(df)
   return pd.concat(dfs)
 
 def process(base_dir, out_file):
@@ -95,7 +96,7 @@ def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
     WAVELET_TYPE = 'morl'
     data_range = df_row_ind_to_data_range(ind)
     data = df[feature_name].values[data_range[0]: data_range[1]]
-    
+    print(np.max(data), np.min(data))
     if opt.model in ['cnn_2d', 'resnet_cnn_2d']:
         data = np.array([np.mean(data[i: i+WIN_SIZE]) for i in range(0, DATA_POINTS_PER_FILE, WIN_SIZE)])
         coef, _ = pywt.cwt(data, np.linspace(1,128,128), WAVELET_TYPE)
