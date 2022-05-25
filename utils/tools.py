@@ -119,7 +119,7 @@ def convert_to_image(pkz_dir):
         x_ = np.concatenate((coef_h, coef_v), axis=-1).tolist()
 #         x_ = np.array([coef_h, coef_v])
         all_nums = (no_of_files-1)
-        y_ = (all_nums-i)/all_nums
+        y_ = float(all_nums-i)/float(all_nums)
         data['x'].append(x_)
         data['y'].append(y_)
     data['x']=np.array(data['x'])
