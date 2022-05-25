@@ -1,7 +1,7 @@
 from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
-from model.resnet import resnet_18
+from model.resnet import resnet_18, resnet_101
 from model.LSTM import lstm_model
 from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
 from utils.save_data import start_save_data
@@ -36,19 +36,18 @@ def main(opt, train_data, train_label, test_data, test_label):
       test_label  = to_onehot(test_label)
 
   if opt.model == 'dnn':
-    train_data = np.squeeze(train_data)
-    test_data  = np.squeeze(test_data)
+    train_data = train_data.reshape(len(train_data), int(opt.input_shape*2), 1)
+    test_data  = test_data.reshape(len(test_data), int(opt.input_shape*2), 1)
     network = dnn_model(opt)
   if opt.model == 'cnn_1d':
-    train_data = np.squeeze(train_data)
-    test_data  = np.squeeze(test_data)
+    train_data = train_data.reshape(len(train_data), int(opt.input_shape*2))
+    test_data  = test_data.reshape(len(test_data), int(opt.input_shape*2))
     network = cnn_2d_model(opt)
   if opt.model == 'resnet_cnn_2d':
-    train_data = np.squeeze(train_data)
-    test_data  = np.squeeze(test_data)
-    inputs = Input(shape=(128, 128, 2))
-    output = resnet_18(opt)(inputs, training=True)
-    network = Model(inputs, output, name='resnet18')
+    # horirontal------------
+    inputs = Input(shape=[128, 128, 2])
+    output = resnet_101(opt)(inputs, training=True)
+    network = Model(inputs, output)
   if opt.model == 'cnn_2d':
     network = cnn_2d_model(opt, [128, 128, 2])
   if opt.model == 'autoencoder':
@@ -57,7 +56,7 @@ def main(opt, train_data, train_label, test_data, test_label):
     network = lstm_model(opt)
 
   if opt.condition_train:
-    network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
+    network.compile(optimizer=AngularGrad(1e-4), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
     network.compile(optimizer=AngularGrad(), loss='mean_squared_error', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error]) # loss='mse' tf.keras.optimizers.RMSprop 'binary_crossentropy'
   network.summary()
