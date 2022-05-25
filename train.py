@@ -2,6 +2,7 @@ from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
 from model.resnet import resnet_18
+from model.LSTM import lstm_model
 from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
 from utils.save_data import start_save_data
 from tensorflow.keras.layers import Input
@@ -52,6 +53,8 @@ def main(opt, train_data, train_label, test_data, test_label):
     network = cnn_2d_model(opt, [128, 128, 2])
   if opt.model == 'autoencoder':
     network = autoencoder_model(train_data)
+  if opt.model == 'lstm':
+    network = lstm_model(opt)
   
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
