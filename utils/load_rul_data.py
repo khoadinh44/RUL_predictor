@@ -26,11 +26,6 @@ if os.path.exists('/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/da
   test_data_rul = load_df('/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_data_rul.pkz')
   test_label_rul = load_df('/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_label_rul.pkz')
 else:
-  save_df(train_data_rul, '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/train_data_rul.pkz')
-  save_df(train_label_rul, '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/train_label_rul.pkz')
-  save_df(test_data_rul, '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_data_rul.pkz')
-  save_df(test_label_rul, '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_label_rul.pkz')
-
   # Train data-------------------------------------------------------------------------
   Bearing1_1_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/Bearing1_1'
   Bearing1_2_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/Bearing1_2'
@@ -76,6 +71,11 @@ else:
 
   test_data_rul = np.concatenate((Bearing1_3_data['x'], Bearing1_4_data['x'], Bearing1_5_data['x'], Bearing1_6_data['x'], Bearing1_7_data['x'], Bearing2_3_data['x'], Bearing2_4_data['x'], Bearing2_5_data['x'], Bearing2_6_data['x'], Bearing2_7_data['x'], Bearing3_3_data['x']))
   test_label_rul = np.concatenate((Bearing1_3_data['y'], Bearing1_4_data['y'], Bearing1_5_data['y'], Bearing1_6_data['y'], Bearing1_7_data['y'], Bearing2_3_data['y'], Bearing2_4_data['y'], Bearing2_5_data['y'], Bearing2_6_data['y'], Bearing2_7_data['y'], Bearing3_3_data['y']))
-
+  
+  save_df(train_data_rul, '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/train_data_rul.pkz')
+  save_df(train_label_rul, '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/train_label_rul.pkz')
+  save_df(test_data_rul, '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_data_rul.pkz')
+  save_df(test_label_rul, '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_label_rul.pkz')
+  
 print(f'Train shape: {train_data_rul.shape}   {train_label_rul.shape}\n')  
 print(f'Test shape: {test_data_rul.shape}   {test_label_rul.shape}\n')
