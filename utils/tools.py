@@ -89,7 +89,7 @@ def df_row_ind_to_data_range(ind):
     DATA_POINTS_PER_FILE=2560
     return (DATA_POINTS_PER_FILE*ind, DATA_POINTS_PER_FILE*(ind+1))
 
-def extract_feature_image(df, ind, feature_name='horiz accel', opt):
+def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
     DATA_POINTS_PER_FILE=2560
     WIN_SIZE = 20
     WAVELET_TYPE = 'morl'
@@ -117,8 +117,8 @@ def convert_to_image(pkz_dir, opt):
     
     data = {'x': [], 'y': []}
     for i in range(0, no_of_files):
-        coef_h = np.expand_dims(extract_feature_image(df, i, feature_name='horiz accel', opt), axis=-1)
-        coef_v = np.expand_dims(extract_feature_image(df, i, feature_name='vert accel', opt), axis=-1)
+        coef_h = np.expand_dims(extract_feature_image(df, i, opt, feature_name='horiz accel'), axis=-1)
+        coef_v = np.expand_dims(extract_feature_image(df, i, opt, feature_name='vert accel'), axis=-1)
         x_ = np.concatenate((coef_h, coef_v), axis=-1).tolist()
 #         x_ = np.array([coef_h, coef_v])
         all_nums = (no_of_files-1)
