@@ -89,7 +89,7 @@ def df_row_ind_to_data_range(ind):
     DATA_POINTS_PER_FILE=2560
     return (DATA_POINTS_PER_FILE*ind, DATA_POINTS_PER_FILE*(ind+1))
 
-def extract_feature_image(df, ind, feature_name='horiz accel'):
+def extract_feature_image(df, ind, feature_name='horiz accel', opt):
     DATA_POINTS_PER_FILE=2560
     WIN_SIZE = 20
     WAVELET_TYPE = 'morl'
@@ -98,14 +98,17 @@ def extract_feature_image(df, ind, feature_name='horiz accel'):
     # use window to process(= prepare, develop) 1D signal
     data = np.array([np.mean(data[i: i+WIN_SIZE]) for i in range(0, DATA_POINTS_PER_FILE, WIN_SIZE)])
     # perform CWT on 1D data(= 1D array)
-    coef, _ = pywt.cwt(data, np.linspace(1,128,128), WAVELET_TYPE)
-    # transform to power and apply logarithm?!
-    coef = np.log2(coef**2 + 0.001)
+    if opt.model in ['cnn_2d', 'resnet_cnn_2d']:
+        coef, _ = pywt.cwt(data, np.linspace(1,128,128), WAVELET_TYPE)
+        # transform to power and apply logarithm?!
+        coef = np.log2(coef**2 + 0.001)
+    else:
+        coef = data
     # normalize coef
     coef = (coef - coef.min())/(coef.max() - coef.min()) 
     return coef
 
-def convert_to_image(pkz_dir):
+def convert_to_image(pkz_dir, opt):
     df = load_df(pkz_dir+'.pkz')
     no_of_rows = df.shape[0]
     DATA_POINTS_PER_FILE=2560
@@ -114,8 +117,8 @@ def convert_to_image(pkz_dir):
     
     data = {'x': [], 'y': []}
     for i in range(0, no_of_files):
-        coef_h = np.expand_dims(extract_feature_image(df, i, feature_name='horiz accel'), axis=-1)
-        coef_v = np.expand_dims(extract_feature_image(df, i, feature_name='vert accel'), axis=-1)
+        coef_h = np.expand_dims(extract_feature_image(df, i, feature_name='horiz accel', opt), axis=-1)
+        coef_v = np.expand_dims(extract_feature_image(df, i, feature_name='vert accel', opt), axis=-1)
         x_ = np.concatenate((coef_h, coef_v), axis=-1).tolist()
 #         x_ = np.array([coef_h, coef_v])
         all_nums = (no_of_files-1)
