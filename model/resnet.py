@@ -70,7 +70,7 @@ class ResNetTypeII(tf.keras.Model):
                                             stride=2)
 
         self.avgpool = tf.keras.layers.GlobalAveragePooling2D()
-        self.fc = tf.keras.layers.Dense(units=opt.num_classes, activation=tf.keras.activations.softmax)
+        self.fc = tf.keras.layers.Dense(units=opt.num_classes, activation=tf.keras.activations.sigmoid)
 
     def call(self, inputs, training=None, mask=None):
         x = self.conv1(inputs)
