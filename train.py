@@ -40,7 +40,7 @@ def main(opt, train_data, train_label, test_data, test_label):
     test_data  = test_data.reshape(len(test_data), int(opt.input_shape*2))
     network = dnn_model(opt)
   if opt.model == 'cnn_1d':
-    network = cnn_2d_model(opt)
+    network = cnn_1d_model(opt)
   if opt.model == 'resnet_cnn_2d':
     # horirontal------------
     inputs = Input(shape=[128, 128, 2])
@@ -52,7 +52,9 @@ def main(opt, train_data, train_label, test_data, test_label):
     network = autoencoder_model(train_data)
   if opt.model == 'lstm':
     network = lstm_model(opt)
-
+  
+  if os.path.exists(os.path.join(opt.save_dir, opt.model)):
+    network.load_weights(os.path.join(opt.save_dir, opt.model))
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(1e-4), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
