@@ -24,7 +24,7 @@ def TransformerLayer(x=None, c=48, num_heads=4*3):
                   bias_regularizer=regularizers.l2(1e-4),
                   activity_regularizer=regularizers.l2(1e-5))(x)
     ma  = MultiHeadAttention(head_size=c, num_heads=num_heads)([q, k, v]) 
-    return fc2
+    return ma
 
 # For m34 Residual, use RepeatVector. Or tensorflow backend.repeat
 def identity_block(input_tensor, kernel_size, filters, stage, block):
@@ -66,7 +66,7 @@ def cnn_1d_model(opt):
     The model was rebuilt based on the construction of resnet 34 and inherited from this source code:
     https://github.com/philipperemy/very-deep-convnets-raw-waveforms/blob/master/model_resnet.py
     '''
-    inputs = Input(shape=[opt.input_shape, 1])
+    inputs = Input(shape=[opt.input_shape, 2])
     x = Conv1D(48,
                kernel_size=80,
                strides=4,
@@ -98,7 +98,7 @@ def cnn_1d_model(opt):
 
     x = GlobalAveragePooling1D()(x)
     
-    x = TransformerLayer(x, c=48)
+    x = TransformerLayer(x, c=384)
 
     if opt.rul_train:
       x = Activation("sigmoid")(x)
