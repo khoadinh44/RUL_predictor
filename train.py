@@ -4,6 +4,9 @@ from model.dnn import dnn_model
 from model.resnet import resnet_18
 from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
 from utils.save_data import start_save_data
+from tensorflow.keras.layers import Input
+from tensorflow.keras.models import Model
+from angular_grad import AngularGrad
 import argparse
 import numpy as np
 import os
@@ -53,9 +56,9 @@ def main(opt, train_data, train_label, test_data, test_label):
     network = autoencoder_model(train_data)
   
   if opt.condition_train:
-    network.compile(optimizer="Adam", loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
+    network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
-    network.compile(optimizer="Adam", loss='mean_squared_error', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error]) # loss='mse'
+    network.compile(optimizer=AngularGrad(), loss='mean_squared_error', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error]) # loss='mse'
   network.summary()
   history = network.fit(train_data, train_label,
                       epochs     = opt.epochs,
