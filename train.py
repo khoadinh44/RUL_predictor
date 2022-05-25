@@ -36,12 +36,10 @@ def main(opt, train_data, train_label, test_data, test_label):
       test_label  = to_onehot(test_label)
 
   if opt.model == 'dnn':
-    train_data = train_data.reshape(len(train_data), int(opt.input_shape*2), 1)
-    test_data  = test_data.reshape(len(test_data), int(opt.input_shape*2), 1)
-    network = dnn_model(opt)
-  if opt.model == 'cnn_1d':
     train_data = train_data.reshape(len(train_data), int(opt.input_shape*2))
     test_data  = test_data.reshape(len(test_data), int(opt.input_shape*2))
+    network = dnn_model(opt)
+  if opt.model == 'cnn_1d':
     network = cnn_2d_model(opt)
   if opt.model == 'resnet_cnn_2d':
     # horirontal------------
