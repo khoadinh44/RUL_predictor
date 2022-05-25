@@ -55,6 +55,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   
   if os.path.exists(os.path.join(opt.save_dir, opt.model)):
     network.load_weights(os.path.join(opt.save_dir, opt.model))
+
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(1e-4), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
