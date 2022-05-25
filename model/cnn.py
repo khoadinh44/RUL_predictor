@@ -2,7 +2,7 @@ from functools import partial
 import keras
 import tensorflow as tf
 from tensorflow_addons.layers import MultiHeadAttention
-from tensorflow.keras.layers import Conv1D, Activation, Dense, concatenate, BatchNormalization, GlobalAveragePooling1D, Input, MaxPooling1D, Lambda, GlobalAveragePooling2D
+from tensorflow.keras.layers import Conv1D, Activation, Dense, concatenate, BatchNormalization, GlobalAveragePooling1D, Input, MaxPooling1D, Lambda, GlobalAveragePooling2D, ReLU, MaxPooling2D, Flatten, Dropout
 import keras.backend as K
 from keras import layers, regularizers
 from keras.models import Model
@@ -93,16 +93,20 @@ def cnn_1d_model(opt):
     return m
 
 def cnn_2d_model(opt, input_shape=[128, 128, 2]):
-  inputs = Input(shape=input_shape)
-  # https://keras.io/api/applications/
-  base_model = DenseNet121(weights=None, input_tensor=inputs, include_top=False)
-
-  # add a global spatial average pooling layer
-  x = base_model.output
-  x = GlobalAveragePooling2D()(x)
+  DefaultConv2D = partial(keras.layers.Conv2D, kernel_size=3, activation='relu', padding="SAME")
+  model = keras.models.Sequential([
+            DefaultConv2D(filters=256, kernel_size=7, input_shape=[128, 128, 1]), #
+            ReLU(), #
+            MaxPooling2D(pool_size=3), #
+            Dropout(0.5), #
+            DefaultConv2D(filters=256), #
+            ReLU(), #
+            MaxPooling2D(pool_size=2),#
+            Flatten(),
+            Dense(units=512, activation='relu'),
+            Dropout(0.5)])
   if opt.rul_train:
-    x = keras.layers.Dense(units=opt.num_classes, activation='sigmoid')(x)
+    model.add(Dense(units=opt.num_classes, activation='sigmoid'))
   if opt.condition_train:
-    x = keras.layers.Dense(units=opt.num_classes, activation='softmax')(x)
-  m = Model(inputs, x)
-  return m
+    model.add(Dense(units=opt.num_classes, activation='softmax'))
+  return model
