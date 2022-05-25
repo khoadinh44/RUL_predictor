@@ -124,7 +124,7 @@ def convert_to_image(pkz_dir):
     data['x']=np.array(data['x'])
     data['y']=np.array(data['y'])
 
-    assert data['x'].shape==(no_of_files, 2, 128, 128)
+    assert data['x'].shape==(no_of_files, 128, 128, 2)
     x_shape = data['x'].shape
     y_shape = data['y'].shape
     print(f'Train data shape: {x_shape}   Train label shape: {y_shape}\n')
