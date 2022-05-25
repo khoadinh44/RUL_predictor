@@ -95,10 +95,9 @@ def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
     WAVELET_TYPE = 'morl'
     data_range = df_row_ind_to_data_range(ind)
     data = df[feature_name].values[data_range[0]: data_range[1]]
-    # use window to process(= prepare, develop) 1D signal
-    data = np.array([np.mean(data[i: i+WIN_SIZE]) for i in range(0, DATA_POINTS_PER_FILE, WIN_SIZE)])
-    # perform CWT on 1D data(= 1D array)
+    
     if opt.model in ['cnn_2d', 'resnet_cnn_2d']:
+        data = np.array([np.mean(data[i: i+WIN_SIZE]) for i in range(0, DATA_POINTS_PER_FILE, WIN_SIZE)])
         coef, _ = pywt.cwt(data, np.linspace(1,128,128), WAVELET_TYPE)
         # transform to power and apply logarithm?!
         coef = np.log2(coef**2 + 0.001)
