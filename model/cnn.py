@@ -95,18 +95,18 @@ def cnn_1d_model(opt):
 def cnn_2d_model(opt, input_shape=[128, 128, 2]):
   DefaultConv2D = partial(keras.layers.Conv2D, kernel_size=3, activation='relu', padding="SAME")
   model = keras.models.Sequential([
-            DefaultConv2D(filters=64, kernel_size=7, input_shape=input_shape), #
-            ReLU(), #
-            MaxPooling2D(pool_size=4), #
-            Dropout(0.5), #
-            DefaultConv2D(filters=128), #
-            ReLU(), #
-            MaxPooling2D(pool_size=4),#
+            DefaultConv2D(filters=64, kernel_size=7, input_shape=input_shape), 
+            Activation('relu'), 
+            MaxPooling2D(pool_size=4), 
+            Dropout(0.5), 
+            DefaultConv2D(filters=128), 
+            Activation('relu'), 
+            MaxPooling2D(pool_size=4),
             Flatten(),
-            Dense(units=512, activation='relu'),
+            Dense(units=256, activation='relu'),
             Dropout(0.5)])
   if opt.rul_train:
-    model.add(Dense(units=opt.num_classes, activation='sigmoid'))
+    model.add(Dense(units=opt.num_classes, activation='relu'))
   if opt.condition_train:
     model.add(Dense(units=opt.num_classes, activation='softmax'))
   return model
