@@ -8,7 +8,7 @@ from keras import layers, regularizers
 from keras.models import Model
 
 def dnn_model(opt):
-  input_ = keras.layers.Input(shape=[opt.input_shape, ])
+  input_ = keras.layers.Input(shape=[opt.input_shape*2, ])
   fc1 = keras.layers.Dense(2048, activation=tf.keras.layers.ReLU(), 
                                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                                      bias_regularizer=regularizers.l2(1e-4),
