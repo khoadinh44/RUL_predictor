@@ -21,10 +21,12 @@ def parse_opt(known=False):
     parser.add_argument('--num_classes', default=1, type=str, help='class condition number: 3, class rul condition: 1')
     parser.add_argument('--model', default='cnn_2d', type=str, help='lstm, dnn, cnn_1d, resnet_cnn_2d, cnn_2d, autoencoder')
     parser.add_argument('--save_dir', default='/content/drive/Shareddrives/newpro112233/company/PRONOSTIA', type=str)
+    parser.add_argument('--main_dir_colab', default='/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/', type=str)
     parser.add_argument('--epochs', default=100, type=int)
     parser.add_argument('--batch_size', default=32, type=int)
     parser.add_argument('--condition_train', default=False, type=bool)
     parser.add_argument('--rul_train', default=False, type=bool)
+    parser.add_argument('--load_weight', default=False, type=bool)
     
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
@@ -54,8 +56,9 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.model == 'lstm':
     network = lstm_model(opt)
   
-  if os.path.exists(os.path.join(opt.save_dir, opt.model)):
-    network.load_weights(os.path.join(opt.save_dir, opt.model))
+  if opt.load_weight:
+    if os.path.exists(os.path.join(opt.save_dir, opt.model)):
+      network.load_weights(os.path.join(opt.save_dir, opt.model))
 
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
@@ -79,7 +82,7 @@ def main(opt, train_data, train_label, test_data, test_label):
 
 if __name__ == '__main__':
   opt = parse_opt()
-  start_save_data()
+  start_save_data(opt)
   if opt.condition_train:
     from utils.load_condition_data import train_data, train_label, test_data, test_label
     main(opt, train_data, train_label, test_data, test_label)
