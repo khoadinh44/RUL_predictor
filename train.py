@@ -47,7 +47,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.model == 'resnet_cnn_2d':
     # horirontal------------
     inputs = Input(shape=[128, 128, 2])
-    output = resnet_101(opt)(inputs, training=True)
+    output = resnet_152(opt)(inputs, training=True)
     network = Model(inputs, output)
   if opt.model == 'cnn_2d':
     network = cnn_2d_model(opt, [128, 128, 2])
@@ -58,8 +58,9 @@ def main(opt, train_data, train_label, test_data, test_label):
   
   if opt.load_weight:
     if os.path.exists(os.path.join(opt.save_dir, opt.model)):
+      print(f'\nLoad weight: {os.path.join(opt.save_dir, opt.model)}\n')
       network.load_weights(os.path.join(opt.save_dir, opt.model))
-      print('\nLoad weight: {os.path.join(opt.save_dir, opt.model)}\n')
+      
 
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
