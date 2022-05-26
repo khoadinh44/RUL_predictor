@@ -43,12 +43,12 @@ if os.path.exists(test_data_path):
   test_label_rul  = load_df(test_label_path)
 else:
   # Train data-------------------------------------------------------------------------
-  Bearing1_1_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/Bearing1_1'
-  Bearing1_2_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/Bearing1_2'
-  Bearing2_1_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/Bearing2_1'
-  Bearing2_2_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/Bearing2_2'
-  Bearing3_1_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/Bearing3_1'
-  Bearing3_2_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/Bearing3_2'
+  Bearing1_1_path = main_dir_colab + 'Learning_set/Bearing1_1'
+  Bearing1_2_path = main_dir_colab + 'Learning_set/Bearing1_2'
+  Bearing2_1_path = main_dir_colab + 'Learning_set/Bearing2_1'
+  Bearing2_2_path = main_dir_colab + 'Learning_set/Bearing2_2'
+  Bearing3_1_path = main_dir_colab + 'Learning_set/Bearing3_1'
+  Bearing3_2_path = main_dir_colab + 'Learning_set/Bearing3_2'
   print('\n Training rul data'+'-'*100)
   Bearing3_2_data = convert_to_image(Bearing3_2_path, opt)
   Bearing3_1_data = convert_to_image(Bearing3_1_path, opt)
@@ -61,17 +61,17 @@ else:
   train_label_rul = np.concatenate((Bearing3_2_data['y'], Bearing3_1_data['y'], Bearing2_2_data['y'], Bearing2_1_data['y'], Bearing1_2_data['y'], Bearing1_1_data['y']))
 
   # Test data---------------------------------------------------------------------------
-  Bearing1_3_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing1_3'
-  Bearing1_4_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing1_4'
-  Bearing1_5_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing1_5'
-  Bearing1_6_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing1_6'
-  Bearing1_7_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing1_7'
-  Bearing2_3_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing2_3'
-  Bearing2_4_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing2_4'
-  Bearing2_5_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing2_5'
-  Bearing2_6_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing2_6'
-  Bearing2_7_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing2_7'
-  Bearing3_3_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/Bearing3_3'
+  Bearing1_3_path = 'Test_set/Bearing1_3'
+  Bearing1_4_path = 'Test_set/Bearing1_4'
+  Bearing1_5_path = 'Test_set/Bearing1_5'
+  Bearing1_6_path = 'Test_set/Bearing1_6'
+  Bearing1_7_path = 'Test_set/Bearing1_7'
+  Bearing2_3_path = 'Test_set/Bearing2_3'
+  Bearing2_4_path = 'Test_set/Bearing2_4'
+  Bearing2_5_path = 'Test_set/Bearing2_5'
+  Bearing2_6_path = 'Test_set/Bearing2_6'
+  Bearing2_7_path = 'Test_set/Bearing2_7'
+  Bearing3_3_path = 'Test_set/Bearing3_3'
   print('\n Test rul data'+'-'*100)
   Bearing1_3_data = convert_to_image(Bearing1_3_path, opt)
   Bearing1_4_data = convert_to_image(Bearing1_4_path, opt)
