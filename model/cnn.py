@@ -70,12 +70,13 @@ def cnn_1d_model(opt):
     https://github.com/philipperemy/very-deep-convnets-raw-waveforms/blob/master/model_resnet.py
     '''
     inputs = Input(shape=[opt.input_shape, 2])
+    x = LSTM(units=48, return_sequences=True)(inputs)
     x = Conv1D(48,
                kernel_size=80,
                strides=4,
                padding='same',
                kernel_initializer='glorot_uniform',
-               kernel_regularizer=regularizers.l2(l=0.0001),)(inputs)
+               kernel_regularizer=regularizers.l2(l=0.0001),)(x)
     x = BatchNormalization()(x)
     x = Activation('relu')(x)
     x = MaxPooling1D(pool_size=4, strides=None)(x)
@@ -99,11 +100,9 @@ def cnn_1d_model(opt):
     for i in range(3):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i)
 
-    x = LSTM(units=384*2, return_sequences=False)(x)
-
-    # x = GlobalAveragePooling1D()(x)
+    x = GlobalAveragePooling1D()(x)
     
-    x = TransformerLayer(x, c=384*2)
+    # x = TransformerLayer(x, c=384*2)
 
     if opt.rul_train:
       x = Activation("sigmoid")(x)
