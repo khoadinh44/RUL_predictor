@@ -9,8 +9,10 @@ def start_save_data():
   train_names = ['Bearing1_1', 'Bearing1_2', 'Bearing2_1', 'Bearing2_2', 'Bearing3_1', 'Bearing3_2']
   test_names = ['Bearing1_3', 'Bearing1_4', 'Bearing1_5', 'Bearing1_6', 'Bearing1_7', 'Bearing2_3', 'Bearing2_4', 'Bearing2_5', 'Bearing2_6', 'Bearing2_7', 'Bearing3_3']
 
-  train_main_dir = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/'
-  test_main_dir = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/'
+  # main_dir_colab = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/'
+  main_dir_colab = '/content/drive/MyDrive/Khoa/data/'
+  train_main_dir = main_dir_colab + 'Learning_set/'
+  test_main_dir = main_dir_colab + 'Test_set/'
   if os.path.exists(train_main_dir + train_names[0] + '.pkz')==False:
     for train_name in train_names:
       base_dir = train_main_dir + train_name + '/'
