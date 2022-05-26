@@ -19,19 +19,21 @@ VAL_SPLIT = 0.1
 opt = parse_opt()
 np.random.seed(1234)
 
-train_main_dir = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Training_set/Learning_set/'
-test_main_dir = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/Test_set/Test_set/'
+# main_dir_colab = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/'
+main_dir_colab = '/content/drive/MyDrive/Khoa/data/'
+train_main_dir = main_dir_colab + 'Learning_set/'
+test_main_dir = main_dir_colab + 'Test_set/Test_set/'
 
 if opt.model in ['cnn_2d', 'resnet_cnn_2d']:
-  train_data_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/train_data_rul.pkz'
-  train_label_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/train_label_rul.pkz'
-  test_data_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_data_rul.pkz'
-  test_label_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_label_rul.pkz'
+  train_data_path = main_dir_colab + 'train_data_rul.pkz'
+  train_label_path = main_dir_colab + 'train_label_rul.pkz'
+  test_data_path = main_dir_colab + 'test_data_rul.pkz'
+  test_label_path = main_dir_colab + 'test_label_rul.pkz'
 else:
-  train_data_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/train_data_1D.pkz'
-  train_label_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/train_label_1D.pkz'
-  test_data_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_data_1D.pkz'
-  test_label_path = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/test_label_1D.pkz'
+  train_data_path = main_dir_colab + 'train_data_1D.pkz'
+  train_label_path = main_dir_colab + 'train_label_1D.pkz'
+  test_data_path = main_dir_colab + 'test_data_1D.pkz'
+  test_label_path = main_dir_colab + 'test_label_1D.pkz'
  
  
 if os.path.exists(test_data_path):
