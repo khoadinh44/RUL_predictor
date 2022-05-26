@@ -14,17 +14,16 @@ def TransformerLayer(x=None, c=48, num_heads=4*3):
     q   = Dense(c, use_bias=True, 
                   kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                   bias_regularizer=regularizers.l2(1e-4),
-                  activity_regularizer=regularizers.l2(1e-5), activation='relu')(x)
+                  activity_regularizer=regularizers.l2(1e-5))(x)
     k   = Dense(c, use_bias=True, 
                   kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                   bias_regularizer=regularizers.l2(1e-4),
-                  activity_regularizer=regularizers.l2(1e-5), activation='relu')(x)
+                  activity_regularizer=regularizers.l2(1e-5))(x)
     v   = Dense(c, use_bias=True, 
                   kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                   bias_regularizer=regularizers.l2(1e-4),
-                  activity_regularizer=regularizers.l2(1e-5), activation='relu')(x)
+                  activity_regularizer=regularizers.l2(1e-5))(x)
     ma  = MultiHeadAttention(head_size=c, num_heads=num_heads)([q, k, v]) 
-    ma = Activation('relu')(ma)
     ma = Dropout(0.5)(ma)
     return ma
 
@@ -43,6 +42,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block):
               name=conv_name_base + '2a')(input_tensor)
     x = BatchNormalization(name=bn_name_base + '2a')(x)
     x = Activation('relu')(x)
+    x = Dropout(0.2)(x)
 
     x = Conv1D(filters,
                kernel_size=kernel_size,
@@ -61,6 +61,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block):
 
     x = BatchNormalization()(x)
     x = Activation('relu')(x)
+    x = Dropout(0.2)(x)
     return x
   
 def cnn_1d_model(opt):
