@@ -86,12 +86,12 @@ def cnn_1d_model(opt):
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(8):
+    for i in range(4):
         x = identity_block(x, kernel_size=3, filters=96, stage=2, block=i)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(36):
+    for i in range(23):
         x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
