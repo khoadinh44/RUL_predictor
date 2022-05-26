@@ -1,6 +1,24 @@
 import tensorflow as tf
 from model.residual_block import make_basic_block_layer, make_bottleneck_layer
 
+def TransformerLayer(x=None, c=512, num_heads=4*3):
+    # Transformer layer https://arxiv.org/abs/2010.11929 (LayerNorm layers removed for better performance)
+    q   = Dense(c, use_bias=True, 
+                  kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                  bias_regularizer=regularizers.l2(1e-4),
+                  activity_regularizer=regularizers.l2(1e-5), activation='relu')(x)
+    k   = Dense(c, use_bias=True, 
+                  kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                  bias_regularizer=regularizers.l2(1e-4),
+                  activity_regularizer=regularizers.l2(1e-5), activation='relu')(x)
+    v   = Dense(c, use_bias=True, 
+                  kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                  bias_regularizer=regularizers.l2(1e-4),
+                  activity_regularizer=regularizers.l2(1e-5), activation='relu')(x)
+    ma  = MultiHeadAttention(head_size=c, num_heads=num_heads)([q, k, v]) 
+    ma = Activation('relu')(ma)
+    ma = Dropout(0.5)(ma)
+    return ma
 
 class ResNetTypeI(tf.keras.Model):
     def __init__(self, opt, layer_params):
@@ -70,6 +88,7 @@ class ResNetTypeII(tf.keras.Model):
                                             stride=2)
 
         self.avgpool = tf.keras.layers.GlobalAveragePooling2D()
+        self.TransformerLayer = TransformerLayer
         self.fc = tf.keras.layers.Dense(units=opt.num_classes, activation=tf.keras.activations.sigmoid)
 
     def call(self, inputs, training=None, mask=None):
@@ -82,6 +101,7 @@ class ResNetTypeII(tf.keras.Model):
         x = self.layer3(x, training=training)
         x = self.layer4(x, training=training)
         x = self.avgpool(x)
+        x = self.TransformerLayer(x)
         output = self.fc(x)
 
         return output
