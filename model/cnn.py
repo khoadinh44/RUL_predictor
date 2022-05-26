@@ -2,7 +2,7 @@ from functools import partial
 import keras
 import tensorflow as tf
 from tensorflow_addons.layers import MultiHeadAttention
-from tensorflow.keras.layers import Conv1D, Activation, Dense, concatenate, BatchNormalization, GlobalAveragePooling1D, Input, MaxPooling1D, Lambda, GlobalAveragePooling2D, ReLU, MaxPooling2D, Flatten, Dropout
+from tensorflow.keras.layers import LSTM, Conv1D, Activation, Dense, concatenate, BatchNormalization, GlobalAveragePooling1D, Input, MaxPooling1D, Lambda, GlobalAveragePooling2D, ReLU, MaxPooling2D, Flatten, Dropout
 import keras.backend as K
 from keras import layers, regularizers
 from keras.models import Model
@@ -91,7 +91,7 @@ def cnn_1d_model(opt):
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(23):
+    for i in range(6):
         x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
@@ -99,9 +99,11 @@ def cnn_1d_model(opt):
     for i in range(3):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i)
 
-    x = GlobalAveragePooling1D()(x)
+    x = LSTM(units=384*2, return_sequences=False)(x)
+
+    # x = GlobalAveragePooling1D()(x)
     
-    x = TransformerLayer(x, c=384)
+    x = TransformerLayer(x, c=384*2)
 
     if opt.rul_train:
       x = Activation("sigmoid")(x)
