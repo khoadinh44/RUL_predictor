@@ -54,13 +54,13 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.model == 'lstm':
     network = lstm_model(opt)
   
-  # if os.path.exists(os.path.join(opt.save_dir, opt.model)):
-  #   network.load_weights(os.path.join(opt.save_dir, opt.model))
+  if os.path.exists(os.path.join(opt.save_dir, opt.model)):
+    network.load_weights(os.path.join(opt.save_dir, opt.model))
 
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
-    network.compile(optimizer=AngularGrad(), loss='mean_squared_error', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error]) # loss='mse' tf.keras.optimizers.RMSprop 'binary_crossentropy'
+    network.compile(optimizer=AngularGrad(1e-4), loss='mean_squared_error', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error]) # loss='mse' tf.keras.optimizers.RMSprop 'binary_crossentropy'
   network.summary()
   history = network.fit(train_data, train_label,
                       epochs     = opt.epochs,
