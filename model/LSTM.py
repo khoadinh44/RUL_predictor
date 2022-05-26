@@ -4,10 +4,10 @@ from keras.models import Model
 
 def lstm_model(opt):
   inputs = Input(shape=[opt.input_shape, 2])
-  x = LSTM(units=128, return_sequences=True)(inputs)
+  x = LSTM(units=10, return_sequences=True)(inputs)
   x = tf.keras.activations.tanh(x)
   x = Dropout(0.2)(x)
-  x = LSTM(units=64, return_sequences=True)(x)
+  x = LSTM(units=50, return_sequences=True)(x)
   x = tf.keras.activations.tanh(x)
   x = Dropout(0.2)(x)
   x = LSTM(units=1, return_sequences=False)(x)
