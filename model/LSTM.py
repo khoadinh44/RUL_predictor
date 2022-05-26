@@ -7,7 +7,7 @@ def lstm_model(opt):
   x = LSTM(units=128, return_sequences=True)(inputs)
   x = tf.keras.activations.tanh(x)
   x = Dropout(0.2)(x)
-  x = LSTM(units=128, return_sequences=True)(inputs)
+  x = LSTM(units=64, return_sequences=True)(inputs)
   x = tf.keras.activations.tanh(x)
   x = Dropout(0.2)(x)
   x = LSTM(units=64, return_sequences=False)(x)
