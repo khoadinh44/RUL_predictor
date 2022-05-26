@@ -1,7 +1,7 @@
 from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
-from model.resnet import resnet_18, resnet_101
+from model.resnet import resnet_18, resnet_101, resnet_152
 from model.LSTM import lstm_model
 from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
 from utils.save_data import start_save_data
@@ -45,7 +45,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.model == 'resnet_cnn_2d':
     # horirontal------------
     inputs = Input(shape=[128, 128, 2])
-    output = resnet_101(opt)(inputs, training=True)
+    output = resnet_152(opt)(inputs, training=True)
     network = Model(inputs, output)
   if opt.model == 'cnn_2d':
     network = cnn_2d_model(opt, [128, 128, 2])
@@ -54,13 +54,13 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.model == 'lstm':
     network = lstm_model(opt)
   
-  if os.path.exists(os.path.join(opt.save_dir, opt.model)):
-    network.load_weights(os.path.join(opt.save_dir, opt.model))
+  # if os.path.exists(os.path.join(opt.save_dir, opt.model)):
+  #   network.load_weights(os.path.join(opt.save_dir, opt.model))
 
   if opt.condition_train:
-    network.compile(optimizer=AngularGrad(1e-4), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
+    network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
-    network.compile(optimizer=AngularGrad(1e-4), loss='mean_squared_error', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error]) # loss='mse' tf.keras.optimizers.RMSprop 'binary_crossentropy'
+    network.compile(optimizer=AngularGrad(), loss='mean_squared_error', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error]) # loss='mse' tf.keras.optimizers.RMSprop 'binary_crossentropy'
   network.summary()
   history = network.fit(train_data, train_label,
                       epochs     = opt.epochs,
