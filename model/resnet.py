@@ -1,6 +1,17 @@
 import tensorflow as tf
 from model.residual_block import make_basic_block_layer, make_bottleneck_layer
 from model.cnn import TransformerLayer
+from tensorflow.keras.layers import Conv1D, Activation, Dense, concatenate, BatchNormalization, GlobalAveragePooling1D, Input, MaxPooling1D, Lambda, GlobalAveragePooling2D, ReLU, MaxPooling2D, Flatten, Dropout, LSTM
+
+
+def lstm_model(x):
+  x = LSTM(units=64, return_sequences=True)(x)
+  x = tf.keras.activations.tanh(x)
+  x = Dropout(0.2)(x)
+  x = GlobalAveragePooling1D(data_format='channels_first', keepdims=False)(x)
+  x = tf.keras.activations.tanh(x)
+  x = Dropout(0.2)(x)
+  return x
 
 class ResNetTypeI(tf.keras.Model):
     def __init__(self, opt, layer_params):
@@ -71,6 +82,8 @@ class ResNetTypeII(tf.keras.Model):
 
         self.avgpool = tf.keras.layers.GlobalAveragePooling2D()
         # self.TransformerLayer = TransformerLayer
+        self.lstm_model = lstm_model
+        self.expand_dims = tf.expand_dims
         self.fc = tf.keras.layers.Dense(units=opt.num_classes, activation=tf.keras.activations.sigmoid)
 
     def call(self, inputs, training=None, mask=None):
@@ -83,6 +96,8 @@ class ResNetTypeII(tf.keras.Model):
         x = self.layer3(x, training=training)
         x = self.layer4(x, training=training)
         x = self.avgpool(x)
+        x = self.expand_dims(x, -1)
+        x = self.lstm_model(x)
         # x = self.TransformerLayer(x)
         output = self.fc(x)
 
