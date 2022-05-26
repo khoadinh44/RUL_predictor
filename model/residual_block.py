@@ -63,18 +63,18 @@ class BottleNeck(tf.keras.layers.Layer):
                                                    kernel_size=(1, 1),
                                                    strides=stride))
         self.downsample.add(tf.keras.layers.BatchNormalization())
-        self.dropout = tf.keras.layers.Dropout(0.1)
+        # self.dropout = tf.keras.layers.Dropout(0.1)
     def call(self, inputs, training=None, **kwargs):
         residual = self.downsample(inputs)
 
         x = self.conv1(inputs)
         x = self.bn1(x, training=training)
         x = tf.nn.relu(x)
-        x = self.dropout(x)
+        # x = self.dropout(x)
         x = self.conv2(x)
         x = self.bn2(x, training=training)
         x = tf.nn.relu(x)
-        x = self.dropout(x)
+        # x = self.dropout(x)
         x = self.conv3(x)
         x = self.bn3(x, training=training)
 
