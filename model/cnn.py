@@ -70,7 +70,7 @@ def cnn_1d_model(opt):
     https://github.com/philipperemy/very-deep-convnets-raw-waveforms/blob/master/model_resnet.py
     '''
     inputs = Input(shape=[opt.input_shape, 2])
-    x = LSTM(units=48, return_sequences=True)(inputs)
+    x = LSTM(units=12, return_sequences=True)(inputs)
     x = Conv1D(48,
                kernel_size=80,
                strides=4,
@@ -92,7 +92,7 @@ def cnn_1d_model(opt):
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(6):
+    for i in range(23):
         x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
