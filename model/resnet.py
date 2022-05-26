@@ -70,7 +70,7 @@ class ResNetTypeII(tf.keras.Model):
                                             stride=2)
 
         self.avgpool = tf.keras.layers.GlobalAveragePooling2D()
-        self.TransformerLayer = TransformerLayer
+        # self.TransformerLayer = TransformerLayer
         self.fc = tf.keras.layers.Dense(units=opt.num_classes, activation=tf.keras.activations.sigmoid)
 
     def call(self, inputs, training=None, mask=None):
@@ -83,7 +83,7 @@ class ResNetTypeII(tf.keras.Model):
         x = self.layer3(x, training=training)
         x = self.layer4(x, training=training)
         x = self.avgpool(x)
-        x = self.TransformerLayer(x)
+        # x = self.TransformerLayer(x)
         output = self.fc(x)
 
         return output
