@@ -22,7 +22,7 @@ np.random.seed(1234)
 # main_dir_colab = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/'
 main_dir_colab = '/content/drive/MyDrive/Khoa/data/'
 train_main_dir = main_dir_colab + 'Learning_set/'
-test_main_dir = main_dir_colab + 'Test_set/Test_set/'
+test_main_dir = main_dir_colab + 'Test_set/'
 
 if opt.model in ['cnn_2d', 'resnet_cnn_2d']:
   train_data_path = main_dir_colab + 'train_data_rul.pkz'
