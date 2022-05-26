@@ -4,15 +4,12 @@ from keras.models import Model
 
 def lstm_model(opt):
   inputs = Input(shape=[opt.input_shape, 2])
-  x = LSTM(units=128, return_sequences=True)(inputs)
+  x = LSTM(units=256, return_sequences=True)(inputs)
   x = tf.keras.activations.tanh(x)
   x = Dropout(0.2)(x)
   x = LSTM(units=512, return_sequences=False)(x)
   x = tf.keras.activations.tanh(x)
   x = Dropout(0.2)(x)
-  # x = GlobalAveragePooling1D(data_format='channels_first', keepdims=False)(x)
-  # x = tf.keras.activations.tanh(x)
-  # x = Dropout(0.2)(x)
   fc = GlobalAveragePooling1D(data_format='channels_first', keepdims=False)(inputs)
   fc = Dense(2048, activation='tanh')(fc)
   fc = Dropout(0.2)(fc)
@@ -22,3 +19,24 @@ def lstm_model(opt):
   x = Dense(units=opt.num_classes, activation='sigmoid')(x)
   m = Model(inputs, x)
   return m
+
+# def lstm_model_1(opt):
+#   inputs = Input(shape=[opt.input_shape, 2])
+#   x = LSTM(units=128, return_sequences=True)(inputs)
+#   x = tf.keras.activations.tanh(x)
+#   x = Dropout(0.2)(x)
+#   x = LSTM(units=512, return_sequences=False)(x)
+#   x = tf.keras.activations.tanh(x)
+#   x = Dropout(0.2)(x)
+#   # x = GlobalAveragePooling1D(data_format='channels_first', keepdims=False)(x)
+#   # x = tf.keras.activations.tanh(x)
+#   # x = Dropout(0.2)(x)
+#   fc = GlobalAveragePooling1D(data_format='channels_first', keepdims=False)(inputs)
+#   fc = Dense(2048, activation='tanh')(fc)
+#   fc = Dropout(0.2)(fc)
+#   fc = Dense(512, activation='tanh')(fc)
+#   fc = Dropout(0.2)(fc)
+#   x = concatenate([x, fc])
+#   x = Dense(units=opt.num_classes, activation='sigmoid')(x)
+#   m = Model(inputs, x)
+#   return m
