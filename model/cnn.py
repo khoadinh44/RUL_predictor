@@ -105,7 +105,7 @@ def cnn_1d_model(opt):
     # x = TransformerLayer(x, c=384*2)
 
     if opt.rul_train:
-      x = Activation("sigmoid")(x)
+      x = Dense(opt.num_classes, activation='sigmoid')(x)
     if opt.condition_train:
       x = Dense(opt.num_classes, activation='softmax')(x)
 
