@@ -24,6 +24,7 @@ def TransformerLayer(x=None, c=48, num_heads=4*3):
                   bias_regularizer=regularizers.l2(1e-4),
                   activity_regularizer=regularizers.l2(1e-5))(x)
     ma  = MultiHeadAttention(head_size=c, num_heads=num_heads)([q, k, v]) 
+    ma = Dropout(0.1)(ma)
     return ma
 
 # For m34 Residual, use RepeatVector. Or tensorflow backend.repeat
@@ -41,6 +42,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block):
               name=conv_name_base + '2a')(input_tensor)
     x = BatchNormalization(name=bn_name_base + '2a')(x)
     x = Activation('relu')(x)
+    x = Dropout(0.1)(x)
 
     x = Conv1D(filters,
                kernel_size=kernel_size,
@@ -59,6 +61,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block):
 
     x = BatchNormalization()(x)
     x = Activation('relu')(x)
+    x = Dropout(0.1)(x)
     return x
   
 def cnn_1d_model(opt):
