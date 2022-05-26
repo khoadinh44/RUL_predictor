@@ -12,6 +12,7 @@ import argparse
 import numpy as np
 import os
 import tensorflow as tf
+callbacks = tf.keras.callbacks.EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=2)
 
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
@@ -53,8 +54,8 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.model == 'lstm':
     network = lstm_model(opt)
   
-  if os.path.exists(os.path.join(opt.save_dir, opt.model)):
-    network.load_weights(os.path.join(opt.save_dir, opt.model))
+#   if os.path.exists(os.path.join(opt.save_dir, opt.model)):
+#     network.load_weights(os.path.join(opt.save_dir, opt.model))
 
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(1e-4), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
@@ -64,7 +65,8 @@ def main(opt, train_data, train_label, test_data, test_label):
   history = network.fit(train_data, train_label,
                       epochs     = opt.epochs,
                       batch_size = opt.batch_size,
-                      # validation_data = (test_data, test_label)
+                      validation_data = (test_data, test_label),
+                      callbacks = [callbacks]
                       )
   # optimizer='rmsprop'
   if opt.condition_train:
