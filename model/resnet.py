@@ -96,8 +96,8 @@ class ResNetTypeII(tf.keras.Model):
         x = self.layer3(x, training=training)
         x = self.layer4(x, training=training)
         x = self.avgpool(x)
-        x = self.expand_dims(x, -1)
-        x = self.lstm_model(x)
+        # x = self.expand_dims(x, -1)
+        # x = self.lstm_model(x)
         # x = self.TransformerLayer(x)
         output = self.fc(x)
 
