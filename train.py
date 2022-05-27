@@ -53,8 +53,8 @@ def main():
     # test_data_2D, test_label_2D, test_data_1D, test_label_1D
     print(f'\nShape 1D data: {test_data_1D[name].shape}')
     print(f'Shape 2D data: {test_data_2D[name].shape}')
-    y_pred_1d = Predict(test_data_1D[name], 'lstm')
-    y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d')
+    y_pred_1d = Predict(test_data_1D[name], 'lstm_vs_dnn')
+    y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d_152')
     y_pred = (float(y_pred_1d) + float(y_pred_2d))/2
     plt.plot(test_label_1D[name], c='b')
     plt.plot(y_pred, c='r')
