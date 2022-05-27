@@ -49,6 +49,13 @@ def r2_keras(y_true, y_pred):
     SS_tot = K.sum(K.square( y_true - K.mean(y_true) ) )
     return ( 1 - SS_res/(SS_tot + K.epsilon()) )
 
+def r2_numpy(y_true, y_pred):
+    """Coefficient of Determination 
+    """
+    SS_res =  np.sum(( y_true - y_pred )**2)
+    SS_tot = np.sum(( y_true - np.mean(y_true) )**2)
+    return ( 1 - SS_res/(SS_tot + np.finfo(float).eps) )
+
 def mae(y_true, predictions):
     y_true, predictions = np.array(y_true), np.array(predictions)
     return np.mean(np.abs(y_true - predictions))
@@ -57,7 +64,7 @@ def mse(y_true, y_pred):
     return np.square(np.subtract(y_true, y_pred)).mean()
 
 def all_matric(y_true, y_pred):
-    r2 = r2_keras(y_true, y_pred)
+    r2 = r2_numpy(y_true, y_pred)
     mae_ = mae(y_true, y_pred)
     mse_ = mse(y_true, y_pred)
     return r2, mae_, mse_
