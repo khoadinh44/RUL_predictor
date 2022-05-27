@@ -47,7 +47,7 @@ def Predict(data, model):
   if model == 'lstm_1':
     network = lstm_model(opt)
   
-  print(f'\nLoad weight: {os.path.join(opt.save_dir, opt.model)}\n')
+  print(f'\nLoad weight: {os.path.join(opt.save_dir, model)}\n')
   network.load_weights(os.path.join(opt.save_dir, model))
       
   y_pred = network.predict(data)
@@ -70,7 +70,7 @@ def main():
     plt.savefig(f'{name}.png')
     plt.show()
     r2, mae_, mse_ = all_matric(test_label_1D[name], y_pred)
-    print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, MSE: {mse}-----')
+    print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, MSE: {mse_}-----')
     
 if __name__ == '__main__':
   warnings.filterwarnings("ignore", category=FutureWarning)
