@@ -5,7 +5,7 @@ import pandas as pd
 import pickle as pkl
 from matplotlib import pyplot as plt
 from train import parse_opt
-from utils.tools import load_df, save_df, df_row_ind_to_data_range, extract_feature_image, convert_to_image
+from utils.tools import load_df, seg_data
 
 DATA_POINTS_PER_FILE = 2560
 TIME_PER_REC = 0.1
@@ -23,12 +23,6 @@ main_dir_colab = opt.main_dir_colab
 train_main_dir = main_dir_colab + 'Learning_set/'
 test_main_dir = main_dir_colab + 'Test_set/'
 
-test_data_path_2D   = load_df(main_dir_colab + 'test_data_rul.pkz')
-test_label_path_2D  = load_df(main_dir_colab + 'test_label_rul.pkz')
-
-test_data_path_1D   = load_df(main_dir_colab + 'test_data_1D.pkz')
-test_label_path_1D  = load_df(main_dir_colab + 'test_label_1D.pkz')
-
 length = {'Bearing1_3': 1802,
           'Bearing1_4': 1139,
           'Bearing1_5': 2302,
@@ -41,5 +35,8 @@ length = {'Bearing1_3': 1802,
           'Bearing2_7': 172,
           'Bearing3_3': 352}
 
-def return_data(data, length):
-  Bearing1_3 = data['Bearing1_3']
+test_data_path_2D   = seg_data(load_df(main_dir_colab + 'test_data_rul.pkz'), length)
+test_label_path_2D  = seg_data(load_df(main_dir_colab + 'test_label_rul.pkz'), length)
+
+test_data_path_1D   = seg_data(load_df(main_dir_colab + 'test_data_1D.pkz'), length)
+test_label_path_1D  = seg_data(load_df(main_dir_colab + 'test_label_1D.pkz'), length)
