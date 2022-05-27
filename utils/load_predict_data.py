@@ -30,13 +30,16 @@ test_data_path_1D   = load_df(main_dir_colab + 'test_data_1D.pkz')
 test_label_path_1D  = load_df(main_dir_colab + 'test_label_1D.pkz')
 
 length = {'Bearing1_3': 1802,
-         'Bearing1_4': 1327,
-         'Bearing1_5': 2685,
-         'Bearing1_6': 2685,
-         'Bearing1_7': 1752,
-         'Bearing2_3': 1202,
-         'Bearing2_4': 713,
-         'Bearing2_5': 2337,
-         'Bearing2_6': 572,
-         'Bearing2_7': 200,
-         'Bearing3_3': 410}
+          'Bearing1_4': 1139,
+          'Bearing1_5': 2302,
+          'Bearing1_6': 2302,
+          'Bearing1_7': 1502,
+          'Bearing2_3': 1202,
+          'Bearing2_4': 612,
+          'Bearing2_5': 2002,
+          'Bearing2_6': 572,
+          'Bearing2_7': 172,
+          'Bearing3_3': 352}
+
+def return_data(data, length):
+  Bearing1_3 = data['Bearing1_3']
