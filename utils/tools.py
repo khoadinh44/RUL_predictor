@@ -132,3 +132,12 @@ def convert_to_image(pkz_dir, opt):
     y_shape = data['y'].shape
     print(f'Train data shape: {x_shape}   Train label shape: {y_shape}\n')
     return data
+
+# ---------------------- Load_predict_data.py----------------------
+def seg_data(data, length):
+  all_data = {}
+  num=0
+  for name in length:
+    all_data[name] = data[num: num+length[name]]
+    num += length[name]
+  return all_data
