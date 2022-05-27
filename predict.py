@@ -15,6 +15,7 @@ import argparse
 import numpy as np
 import os
 import tensorflow as tf
+import matplotlib.pyplot as plt
 
 opt = parse_opt()
 def Predict(data, model):
@@ -55,6 +56,10 @@ def main():
     y_pred_1d = Predict(test_data_1D[name], 'lstm')
     y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d')
     y_pred = (float(y_pred_1d) + float(y_pred_2d))/2
+    plt.plot(test_label_1D[name], c='b')
+    plt.plot(y_pred, c='r')
+    plt.savefig(f'{name}.png')
+    plt.show()
     r2, mae_, mse_ = all_matric(test_label_1D[name], y_pred)
     print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, MSE: {mse}-----')
     
