@@ -16,6 +16,14 @@ import numpy as np
 import os
 import tensorflow as tf
 import matplotlib.pyplot as plt
+import warnings
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+warnings.simplefilter("ignore")
+tf.get_logger().setLevel('INFO')
+import logging
+tf.get_logger().setLevel(logging.ERROR)
+logging.getLogger('tensorflow').disabled = True
 
 opt = parse_opt()
 def Predict(data, model):
@@ -36,7 +44,7 @@ def Predict(data, model):
     network = cnn_2d_model(opt, [128, 128, 2])
   if model == 'autoencoder':
     network = autoencoder_model(train_data)
-  if model == 'lstm_vs_dnn':
+  if model == 'lstm_1':
     network = lstm_model(opt)
   
   print(f'\nLoad weight: {os.path.join(opt.save_dir, opt.model)}\n')
@@ -51,7 +59,7 @@ def main():
     # test_data_2D, test_label_2D, test_data_1D, test_label_1D
     print(f'\nShape 1D data: {test_data_1D[name].shape}')
     print(f'Shape 2D data: {test_data_2D[name].shape}')
-    y_pred_1d = Predict(test_data_1D[name], 'lstm_vs_dnn')
+    y_pred_1d = Predict(test_data_1D[name], 'lstm_1')
     y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d')
     print(f'\nShape 1D prediction: {y_pred_1d.shape}')
     print(f'Shape 2D prediction: {y_pred_2d.shape}')
@@ -65,4 +73,6 @@ def main():
     print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, MSE: {mse}-----')
     
 if __name__ == '__main__':
+  warnings.filterwarnings("ignore", category=FutureWarning)
   main()
+
