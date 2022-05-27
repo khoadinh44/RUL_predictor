@@ -1,4 +1,4 @@
-from main import parse_opt
+from train import parse_opt
 from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
