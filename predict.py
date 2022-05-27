@@ -52,5 +52,9 @@ def main():
     # test_data_2D, test_label_2D, test_data_1D, test_label_1D
     y_pred_1d = Predict(test_data_1D)
     y_pred_2d = Predict(test_data_2D)
+    y_pred = (float(y_pred_1d) + float(y_pred_2d))/2
+    r2, mae_, mse_ = all_matric(test_label_1D, y_pred)
+    print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, MSE: {mse}-----')
     
-
+if __name__ == '__main__':
+  main()
