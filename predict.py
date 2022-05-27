@@ -6,7 +6,7 @@ from model.resnet import resnet_18, resnet_101, resnet_152
 from model.LSTM import lstm_model
 
 from utils.load_predict_data import test_data_2D, test_label_2D, test_data_1D, test_label_1D
-from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
+from utils.tools import all_matric
 from utils.save_data import start_save_data
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
@@ -32,17 +32,15 @@ def Predict(data, model):
     inputs = Input(shape=[128, 128, 2])
     output = resnet_152(opt)(inputs, training=None)
     network = Model(inputs, output)
-  if model == 'resnet_cnn_2d_152':
+  if model == 'cnn_2d':
     network = cnn_2d_model(opt, [128, 128, 2])
   if model == 'autoencoder':
     network = autoencoder_model(train_data)
   if model == 'lstm_vs_dnn':
     network = lstm_model(opt)
   
-  if opt.load_weight:
-    if os.path.exists(os.path.join(opt.save_dir, opt.model)):
-      print(f'\nLoad weight: {os.path.join(opt.save_dir, opt.model)}\n')
-      network.load_weights(os.path.join(opt.save_dir, opt.model))
+  print(f'\nLoad weight: {os.path.join(opt.save_dir, opt.model)}\n')
+  network.load_weights(os.path.join(opt.save_dir, model))
       
   y_pred = network.predict(data)
   return y_pred
@@ -54,8 +52,11 @@ def main():
     print(f'\nShape 1D data: {test_data_1D[name].shape}')
     print(f'Shape 2D data: {test_data_2D[name].shape}')
     y_pred_1d = Predict(test_data_1D[name], 'lstm_vs_dnn')
-    y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d_152')
-    y_pred = (y_pred_1d + y_pred_2d)/2.
+    y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d')
+    print(f'\nShape 1D prediction: {y_pred_1d.shape}')
+    print(f'Shape 2D prediction: {y_pred_2d.shape}')
+
+    y_pred = (y_pred_1d+y_pred_2d)/2.
     plt.plot(test_label_1D[name], c='b')
     plt.plot(y_pred, c='r')
     plt.savefig(f'{name}.png')
