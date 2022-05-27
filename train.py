@@ -65,7 +65,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
-    network.compile(optimizer=AngularGrad(1e-4), loss='mean_squared_error', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error], run_eagerly=True) # loss='mse' tf.keras.optimizers.RMSprop 'binary_crossentropy'
+    network.compile(optimizer=AngularGrad(1e-4), loss='binary_crossentropy', metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error], run_eagerly=True) # loss='mse' tf.keras.optimizers.RMSprop 'binary_crossentropy'
   network.summary()
   history = network.fit(train_data, train_label,
                       epochs     = opt.epochs,
@@ -80,7 +80,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.rul_train:
       _, test_mae, test_r2, test_mse = network.evaluate(test_data, test_label, verbose=0)
       print(f'----------Score in test set: \n mae: {test_mae}, r2: {test_r2}, mse: {test_mse}' )
-  network.save(os.path.join(opt.save_dir, opt.model))
+  network.save(os.path.join(opt.save_dir, opt.model+'_new'))
 
 if __name__ == '__main__':
   opt = parse_opt()
