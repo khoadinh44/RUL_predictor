@@ -35,8 +35,8 @@ length = {'Bearing1_3': 1802,
           'Bearing2_7': 172,
           'Bearing3_3': 352}
 
-test_data_path_2D   = seg_data(load_df(main_dir_colab + 'test_data_rul.pkz'), length)
-test_label_path_2D  = seg_data(load_df(main_dir_colab + 'test_label_rul.pkz'), length)
+test_data_2D   = seg_data(load_df(main_dir_colab + 'test_data_rul.pkz'), length)
+test_label_2D  = seg_data(load_df(main_dir_colab + 'test_label_rul.pkz'), length)
 
-test_data_path_1D   = seg_data(load_df(main_dir_colab + 'test_data_1D.pkz'), length)
-test_label_path_1D  = seg_data(load_df(main_dir_colab + 'test_label_1D.pkz'), length)
+test_data_1D   = seg_data(load_df(main_dir_colab + 'test_data_1D.pkz'), length)
+test_label_1D  = seg_data(load_df(main_dir_colab + 'test_label_1D.pkz'), length)
