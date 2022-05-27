@@ -32,11 +32,11 @@ def Predict(data, model):
     inputs = Input(shape=[128, 128, 2])
     output = resnet_152(opt)(inputs, training=None)
     network = Model(inputs, output)
-  if model == 'cnn_2d':
+  if model == 'resnet_cnn_2d_152':
     network = cnn_2d_model(opt, [128, 128, 2])
   if model == 'autoencoder':
     network = autoencoder_model(train_data)
-  if model == 'lstm':
+  if model == 'lstm_vs_dnn':
     network = lstm_model(opt)
   
   if opt.load_weight:
@@ -53,8 +53,8 @@ def main():
     # test_data_2D, test_label_2D, test_data_1D, test_label_1D
     print(f'\nShape 1D data: {test_data_1D[name].shape}')
     print(f'Shape 2D data: {test_data_2D[name].shape}')
-    y_pred_1d = Predict(test_data_1D[name], 'lstm')
-    y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d')
+    y_pred_1d = Predict(test_data_1D[name], 'lstm_vs_dnn')
+    y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d_152')
     y_pred = (float(y_pred_1d) + float(y_pred_2d))/2
     plt.plot(test_label_1D[name], c='b')
     plt.plot(y_pred, c='r')
