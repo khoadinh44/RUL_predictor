@@ -43,7 +43,7 @@ def main(opt, train_data, train_label, test_data, test_label):
     test_data  = test_data.reshape(len(test_data), int(opt.input_shape*2))
     network = dnn_model(opt)
   if opt.model == 'cnn_1d':
-    network = cnn_1d_model(opt)
+    network = cnn_1d_model(opt, training=True)
   if opt.model == 'resnet_cnn_2d':
     # horirontal------------
     inputs = Input(shape=[128, 128, 2])
