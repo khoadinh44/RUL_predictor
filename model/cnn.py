@@ -42,7 +42,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block, training):
               name=conv_name_base + '2a')(input_tensor)
     x = BatchNormalization(name=bn_name_base + '2a')(x, training=training)
     x = Activation('relu')(x)
-    x = Dropout(0.2)(x)
+#     x = Dropout(0.2)(x)
 
     x = Conv1D(filters,
                kernel_size=kernel_size,
@@ -61,7 +61,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block, training):
 
     x = BatchNormalization()(x, training=training)
     x = Activation('relu')(x)
-    x = Dropout(0.2)(x)
+#     x = Dropout(0.2)(x)
     return x
   
 def cnn_1d_model(opt, training=None):
