@@ -19,7 +19,6 @@ VAL_SPLIT = 0.1
 opt = parse_opt()
 np.random.seed(1234)
 
-main_dir_colab = '/content/drive/Shareddrives/newpro112233/company/PRONOSTIA/data/'
 main_dir_colab = opt.main_dir_colab
 train_main_dir = main_dir_colab + 'Learning_set/'
 test_main_dir = main_dir_colab + 'Test_set/'
