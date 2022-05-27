@@ -83,8 +83,6 @@ def main(opt, train_data, train_label, test_data, test_label):
   network.save(os.path.join(opt.save_dir, opt.model))
 
 if __name__ == '__main__':
-  print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
-  tf.debugging.set_log_device_placement(True)
   opt = parse_opt()
   start_save_data(opt)
   if opt.condition_train:
