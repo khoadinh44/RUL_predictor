@@ -1,5 +1,18 @@
 from main import parse_opt
-from utils.load_rul_data import train_data_rul, train_label_rul, test_data_rul, test_label_rul
+from model.autoencoder import autoencoder_model
+from model.cnn import cnn_1d_model, cnn_2d_model
+from model.dnn import dnn_model
+from model.resnet import resnet_18, resnet_101, resnet_152
+from model.LSTM import lstm_model
+from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
+from utils.save_data import start_save_data
+from tensorflow.keras.layers import Input
+from tensorflow.keras.models import Model
+from angular_grad import AngularGrad
+import argparse
+import numpy as np
+import os
+import tensorflow as tf
 
 opt = parse_opt()
 def Predict(data, model):
@@ -30,5 +43,6 @@ def Predict(data, model):
       
   y_pred = network.predict(data)
   return y_pred
+
 
 
