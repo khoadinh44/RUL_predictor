@@ -47,7 +47,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.model == 'resnet_cnn_2d':
     # horirontal------------
     inputs = Input(shape=[128, 128, 2])
-    output = resnet_152(opt)(inputs, training=None)
+    output = resnet_152(opt)(inputs, training=True)
     network = Model(inputs, output)
   if opt.model == 'cnn_2d':
     network = cnn_2d_model(opt, [128, 128, 2])
