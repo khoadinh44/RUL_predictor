@@ -87,11 +87,11 @@ def save_df(df, out_file):
     print('{0} saved'.format(out_file))
 
 def df_row_ind_to_data_range(ind):
-    DATA_POINTS_PER_FILE=2560
+    DATA_POINTS_PER_FILE=2559
     return (DATA_POINTS_PER_FILE*ind, DATA_POINTS_PER_FILE*(ind+1))
 
 def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
-    DATA_POINTS_PER_FILE=2560
+    DATA_POINTS_PER_FILE=2559
     WIN_SIZE = 20
     WAVELET_TYPE = 'morl'
     data_range = df_row_ind_to_data_range(ind)
@@ -110,7 +110,7 @@ def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
 def convert_to_image(pkz_dir, opt):
     df = load_df(pkz_dir+'.pkz')
     no_of_rows = df.shape[0]
-    DATA_POINTS_PER_FILE=2560
+    DATA_POINTS_PER_FILE=2559
     no_of_files = int(no_of_rows / DATA_POINTS_PER_FILE)
     print(f'pkz file length: {no_of_rows}, total subsequence data: {no_of_files}')
     
