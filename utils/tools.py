@@ -49,6 +49,19 @@ def r2_keras(y_true, y_pred):
     SS_tot = K.sum(K.square( y_true - K.mean(y_true) ) )
     return ( 1 - SS_res/(SS_tot + K.epsilon()) )
 
+def mae(y_true, predictions):
+    y_true, predictions = np.array(y_true), np.array(predictions)
+    return np.mean(np.abs(y_true - predictions))
+
+def mse(y_true, y_pred):
+    return np.square(np.subtract(y_true, y_pred)).mean()
+
+def all_matric(y_true, y_pred):
+    r2 = r2_keras(y_true, y_pred)
+    mae_ = mae(y_true, y_pred)
+    mse_ = mse(y_true, y_pred)
+    return r2, mae_, mse_
+    
 #----------------------save_data.py------------------------------------------------
 def read_data_as_df(base_dir):
   '''
@@ -141,3 +154,4 @@ def seg_data(data, length):
     all_data[name] = data[num: num+length[name]]
     num += length[name]
   return all_data
+
