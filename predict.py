@@ -4,6 +4,8 @@ from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
 from model.resnet import resnet_18, resnet_101, resnet_152
 from model.LSTM import lstm_model
+
+from utils.load_predict_data import test_data_2D, test_label_2D, test_data_1D, test_label_1D
 from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
 from utils.save_data import start_save_data
 from tensorflow.keras.layers import Input
@@ -44,5 +46,11 @@ def Predict(data, model):
   y_pred = network.predict(data)
   return y_pred
 
-
+def main():
+  result = {}
+  for name in test_data_1D:
+    # test_data_2D, test_label_2D, test_data_1D, test_label_1D
+    y_pred_1d = Predict(test_data_1D)
+    y_pred_2d = Predict(test_data_2D)
+    
 
