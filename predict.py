@@ -55,7 +55,7 @@ def main():
     y_pred_1d = Predict(test_data_1D[name], 'lstm')
     y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d')
     y_pred = (float(y_pred_1d) + float(y_pred_2d))/2
-    r2, mae_, mse_ = all_matric(test_label_1D, y_pred)
+    r2, mae_, mse_ = all_matric(test_label_1D[name], y_pred)
     print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, MSE: {mse}-----')
     
 if __name__ == '__main__':
