@@ -28,7 +28,7 @@ def TransformerLayer(x=None, c=48, num_heads=4*3):
     return ma
 
 # For m34 Residual, use RepeatVector. Or tensorflow backend.repeat
-def identity_block(input_tensor, kernel_size, filters, stage, block):
+def identity_block(input_tensor, kernel_size, filters, stage, block, training):
     conv_name_base = 'res' + str(stage) + str(block) + '_branch'
     bn_name_base = 'bn' + str(stage) + str(block) + '_branch'
 
@@ -40,7 +40,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block):
               bias_regularizer=regularizers.l2(1e-4),
               activity_regularizer=regularizers.l2(1e-5),
               name=conv_name_base + '2a')(input_tensor)
-    x = BatchNormalization(training=training, name=bn_name_base + '2a')(x)
+    x = BatchNormalization(name=bn_name_base + '2a')(x, training=training)
     x = Activation('relu')(x)
     x = Dropout(0.2)(x)
 
@@ -52,14 +52,14 @@ def identity_block(input_tensor, kernel_size, filters, stage, block):
               bias_regularizer=regularizers.l2(1e-4),
               activity_regularizer=regularizers.l2(1e-5),
               name=conv_name_base + '2b')(x)
-    x = BatchNormalization(training=training, name=bn_name_base + '2b')(x)
+    x = BatchNormalization(name=bn_name_base + '2b')(x, training=training)
 
     if input_tensor.shape[2] != x.shape[2]:
         x = layers.add([x, Lambda(lambda y: K.repeat_elements(y, rep=2, axis=2))(input_tensor)])
     else:
         x = layers.add([x, input_tensor])
 
-    x = BatchNormalization(training=training)(x)
+    x = BatchNormalization()(x, training=training)
     x = Activation('relu')(x)
     x = Dropout(0.2)(x)
     return x
@@ -77,7 +77,7 @@ def cnn_1d_model(opt, training=None):
                padding='same',
                kernel_initializer='glorot_uniform',
                kernel_regularizer=regularizers.l2(l=0.0001),)(x)
-    x = BatchNormalization(training=training)(x)
+    x = BatchNormalization()(x)
     x = Activation('relu')(x)
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
