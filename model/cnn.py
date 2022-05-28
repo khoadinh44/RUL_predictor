@@ -24,8 +24,8 @@ def TransformerLayer(x=None, c=48, num_heads=4*3):
                   bias_regularizer=regularizers.l2(1e-4),
                   activity_regularizer=regularizers.l2(1e-5))(x)
     ma  = MultiHeadAttention(head_size=c, num_heads=num_heads)([q, k, v]) 
-    ma = Activation('tanh')(ma)
-    ma = Dropout(0.2)(ma)
+    ma = Activation('relu')(ma)
+    # ma = Dropout(0.2)(ma)
     return ma
 
 # For m34 Residual, use RepeatVector. Or tensorflow backend.repeat
@@ -42,7 +42,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block, training):
               activity_regularizer=regularizers.l2(1e-5),
               name=conv_name_base + '2a')(input_tensor)
     x = BatchNormalization(name=bn_name_base + '2a')(x, training=training)
-    x = Activation('tanh')(x)
+    x = Activation('relu')(x)
 #     x = Dropout(0.2)(x)
 
     x = Conv1D(filters,
@@ -61,7 +61,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block, training):
         x = layers.add([x, input_tensor])
 
     x = BatchNormalization()(x, training=training)
-    x = Activation('tanh')(x)
+    x = Activation('relu')(x)
 #     x = Dropout(0.2)(x)
     return x
   
@@ -79,7 +79,7 @@ def cnn_1d_model(opt, training=None):
                kernel_initializer='glorot_uniform',
                kernel_regularizer=regularizers.l2(l=0.0001),)(x)
     x = BatchNormalization()(x)
-    x = Activation('tanh')(x)
+    x = Activation('relu')(x)
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
 
@@ -101,10 +101,10 @@ def cnn_1d_model(opt, training=None):
     for i in range(3):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
 
-    x = GlobalAveragePooling1D()(x)
-    x = tf.keras.activations.tanh(x)
-    
-    # x = concatenate([x, x1], axis=-1)
+    x = GlobalAveragePooling1D()(x)  
+    x1 = TransformerLayer(x, c=512, num_heads=4)
+    x2 = TransformerLayer(x, c=512, num_heads=4)
+    x = concatenate([x1, x2], axis=-1)
 
     if opt.rul_train:
       x = Dense(opt.num_classes, activation='sigmoid')(x)
