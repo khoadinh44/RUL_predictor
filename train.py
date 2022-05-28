@@ -38,10 +38,12 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.condition_train:
       train_label = to_onehot(train_label)
       test_label  = to_onehot(test_label)
+  val_data, val_label = test_data[:1000], test_label[:1000]
 
   if opt.model == 'dnn':
-    train_data = train_data.reshape(len(train_data), int(opt.input_shape*2))
-    test_data  = test_data.reshape(len(test_data), int(opt.input_shape*2))
+    train_data = [train_data[:, :, 0], train_data[:, :, 1]]
+    test_data = [test_data[:, :, 0], test_data[:, :, 1]]
+    val_data, val_label = [test_data[:1000][:, :, 0], test_data[:1000][:, :, 1]]
     network = dnn_model(opt)
   if opt.model == 'cnn_1d':
     network = cnn_1d_model(opt, training=True)
@@ -71,7 +73,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   history = network.fit(train_data, train_label,
                       epochs     = opt.epochs,
                       batch_size = opt.batch_size,
-                      validation_data = (test_data[:1000], test_label[:1000]),
+                      validation_data = (val_data, val_label),
                       # callbacks = [callbacks]
                       )
   # optimizer='rmsprop'
