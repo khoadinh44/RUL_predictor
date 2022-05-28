@@ -83,7 +83,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.rul_train:
       _, test_mae, test_r2, test_mse = network.evaluate(test_data, test_label, verbose=0)
       print(f'----------Score in test set: \n mae: {test_mae}, r2: {test_r2}, mse: {test_mse}' )
-  network.save(os.path.join(opt.save_dir, opt.model+'_50'))
+  network.save(os.path.join(opt.save_dir, opt.model))
 
 if __name__ == '__main__':
   opt = parse_opt()
