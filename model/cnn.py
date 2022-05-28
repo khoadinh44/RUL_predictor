@@ -92,7 +92,7 @@ def cnn_1d_model(opt, training=None):
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(23):
+    for i in range(6):
         x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i, training=training)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
@@ -102,7 +102,10 @@ def cnn_1d_model(opt, training=None):
 
     x = GlobalAveragePooling1D()(x)
     
-    # x = TransformerLayer(x, c=384*2)
+    x1 = TransformerLayer(x, c=384)
+    x2 = TransformerLayer(x, c=384)
+    x = concatenate([x1, x2], axis=-1)
+    x = Dropout(0.2)(x)
 
     if opt.rul_train:
       x = Dense(opt.num_classes, activation='sigmoid')(x)
