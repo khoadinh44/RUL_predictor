@@ -4,6 +4,13 @@ from keras import backend as K
 import pandas as pd
 import pickle as pkl
 import pywt
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MaxAbsScaler
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import RobustScaler
+from sklearn.preprocessing import Normalizer
+from sklearn.preprocessing import QuantileTransformer
+from sklearn.preprocessing import PowerTransformer
 
 
 #----------------------#### General ####------------------------------------------------
@@ -110,6 +117,19 @@ def df_row_ind_to_data_range(ind):
     DATA_POINTS_PER_FILE=2559
     return (DATA_POINTS_PER_FILE*ind, DATA_POINTS_PER_FILE*(ind+1))
 
+def scaler(signal, scale_method):
+  scale = scale_method().fit(signal)
+  return scale.transform(signal), scale
+
+def scaler_transform(signals, scale_method):
+  data = []
+  scale = scale_method()
+  for signal in signals:
+    if len(signal.shape) < 2:
+      signal = np.expand_dims(signal, axis=-1)
+    data.append(scale.fit_transform(signal))
+  return np.array(data)
+
 def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
     DATA_POINTS_PER_FILE=2559
     WIN_SIZE = 20
@@ -121,10 +141,11 @@ def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
         coef, _ = pywt.cwt(data, np.linspace(1,128,128), WAVELET_TYPE)
         # transform to power and apply logarithm?!
         coef = np.log2(coef**2 + 0.001)
+        coef = (coef - coef.min())/(coef.max() - coef.min()) 
     else:
         coef = data
-    # normalize coef
-    coef = (coef - coef.min())/(coef.max() - coef.min()) 
+        if opt.scaler != None:
+            coef = scaler_transform(coef, opt.scaler)
     return coef
 
 def convert_to_image(pkz_dir, opt):
