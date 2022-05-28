@@ -2,7 +2,7 @@ from train import parse_opt
 from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
-from model.resnet import resnet_18, resnet_101, resnet_152
+from model.resnet import resnet_18, resnet_101, resnet_152, resnet_50
 from model.LSTM import lstm_model
 
 from utils.load_predict_data import test_data_2D, test_label_2D, test_data_1D, test_label_1D
@@ -36,15 +36,15 @@ def Predict(data, model):
     network = dnn_model(opt)
   if model == 'cnn_1d':
     network = cnn_1d_model(opt, training=None)
-  if model == 'resnet_cnn_2d':
+  if model == 'resnet_cnn_2d_50_best':
     inputs = Input(shape=[128, 128, 2])
-    output = resnet_152(opt)(inputs, training=None)
+    output = resnet_50(opt)(inputs, training=None)
     network = Model(inputs, output)
   if model == 'cnn_2d':
     network = cnn_2d_model(opt, [128, 128, 2])
   if model == 'autoencoder':
     network = autoencoder_model(train_data)
-  if model == 'lstm_1':
+  if model == 'lstm':
     network = lstm_model(opt)
   
   print(f'\nLoad weight: {os.path.join(opt.save_dir, model)}\n')
@@ -59,16 +59,30 @@ def main():
     # test_data_2D, test_label_2D, test_data_1D, test_label_1D
     print(f'\nShape 1D data: {test_data_1D[name].shape}')
     print(f'Shape 2D data: {test_data_2D[name].shape}')
-    y_pred_1d = Predict(test_data_1D[name], 'lstm_1')
-    y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d')
+    y_pred_1d = Predict(test_data_1D[name], 'lstm')
+    y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d_50_best')
     print(f'\nShape 1D prediction: {y_pred_1d.shape}')
     print(f'Shape 2D prediction: {y_pred_2d.shape}')
 
     y_pred = (y_pred_1d+y_pred_2d)/2.
+
     plt.plot(test_label_1D[name], c='b')
     plt.plot(y_pred, c='r')
-    plt.savefig(f'{name}.png')
-    plt.show()
+    plt.title(f'{name}: combination prediction.')
+    plt.savefig(f'{name}_all.png')
+    plt.close()
+
+    plt.plot(test_label_1D[name], c='b')
+    plt.plot(y_pred_1d, c='r')
+    plt.title(f'{name}: LSTM prediction.')
+    plt.savefig(f'{name}_lstm.png')
+    plt.close()
+
+    plt.plot(test_label_1D[name], c='b')
+    plt.plot(y_pred_2d, c='r')
+    plt.title(f'{name}: Resnet 50 prediction.')
+    plt.savefig(f'{name}_resnet_50.png')
+    plt.close()
     r2, mae_, mse_ = all_matric(test_label_1D[name], y_pred)
     print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, MSE: {mse_}-----')
     
