@@ -83,29 +83,34 @@ def cnn_1d_model(opt, training=None):
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
 
-    for i in range(3):
+    for i in range(2):
         x = identity_block(x, kernel_size=3, filters=48, stage=1, block=i, training=training)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(4):
+    for i in range(2):
         x = identity_block(x, kernel_size=3, filters=96, stage=2, block=i, training=training)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(23):
+    for i in range(2):
         x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i, training=training)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(3):
+    for i in range(2):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
 
     x = GlobalAveragePooling1D()(x)
+    x = tf.keras.activations.tanh(x)
     
-    # x1 = TransformerLayer(x, c=384)
-    # x2 = TransformerLayer(x, c=384)
-    # x = concatenate([x1, x2], axis=-1)
+    x1 = LSTM(units=256, return_sequences=True)(inputs)
+    x1 = tf.keras.activations.tanh(x1)
+    x1 = Dropout(0.2)(x1)
+    x1 = LSTM(units=384, return_sequences=False)(x1)
+    x1 = tf.keras.activations.tanh(x1)
+    x1 = Dropout(0.2)(x1)
+    x = concatenate([x, x1], axis=-1)
 
     if opt.rul_train:
       x = Dense(opt.num_classes, activation='sigmoid')(x)
