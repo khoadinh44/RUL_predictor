@@ -21,6 +21,7 @@ def parse_opt(known=False):
     parser.add_argument('--num_classes', default=1, type=str, help='class condition number: 3, class rul condition: 1')
     parser.add_argument('--model', default='cnn_2d', type=str, help='lstm, dnn, cnn_1d, resnet_cnn_2d, cnn_2d, autoencoder')
     parser.add_argument('--save_dir', default=None, type=str)
+    parser.add_argument('--scaler', default=None, type=str)
     parser.add_argument('--main_dir_colab', default=None, type=str)
     parser.add_argument('--epochs', default=100, type=int)
     parser.add_argument('--batch_size', default=32, type=int)
