@@ -24,7 +24,8 @@ def TransformerLayer(x=None, c=48, num_heads=4*3):
                   bias_regularizer=regularizers.l2(1e-4),
                   activity_regularizer=regularizers.l2(1e-5))(x)
     ma  = MultiHeadAttention(head_size=c, num_heads=num_heads)([q, k, v]) 
-    ma = Dropout(0.5)(ma)
+    ma = Activation('relu')(ma)
+    ma = Dropout(0.2)(ma)
     return ma
 
 # For m34 Residual, use RepeatVector. Or tensorflow backend.repeat
@@ -105,7 +106,6 @@ def cnn_1d_model(opt, training=None):
     x1 = TransformerLayer(x, c=384)
     x2 = TransformerLayer(x, c=384)
     x = concatenate([x1, x2], axis=-1)
-    x = Dropout(0.2)(x)
 
     if opt.rul_train:
       x = Dense(opt.num_classes, activation='sigmoid')(x)
