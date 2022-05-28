@@ -24,7 +24,7 @@ def TransformerLayer(x=None, c=48, num_heads=4*3):
                   bias_regularizer=regularizers.l2(1e-4),
                   activity_regularizer=regularizers.l2(1e-5))(x)
     ma  = MultiHeadAttention(head_size=c, num_heads=num_heads)([q, k, v]) 
-    ma = Activation('relu')(ma)
+    ma = Activation('tanh')(ma)
     ma = Dropout(0.2)(ma)
     return ma
 
@@ -42,7 +42,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block, training):
               activity_regularizer=regularizers.l2(1e-5),
               name=conv_name_base + '2a')(input_tensor)
     x = BatchNormalization(name=bn_name_base + '2a')(x, training=training)
-    x = Activation('relu')(x)
+    x = Activation('tanh')(x)
 #     x = Dropout(0.2)(x)
 
     x = Conv1D(filters,
@@ -61,7 +61,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block, training):
         x = layers.add([x, input_tensor])
 
     x = BatchNormalization()(x, training=training)
-    x = Activation('relu')(x)
+    x = Activation('tanh')(x)
 #     x = Dropout(0.2)(x)
     return x
   
@@ -79,38 +79,32 @@ def cnn_1d_model(opt, training=None):
                kernel_initializer='glorot_uniform',
                kernel_regularizer=regularizers.l2(l=0.0001),)(x)
     x = BatchNormalization()(x)
-    x = Activation('relu')(x)
+    x = Activation('tanh')(x)
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
 
-    for i in range(2):
+    for i in range(3):
         x = identity_block(x, kernel_size=3, filters=48, stage=1, block=i, training=training)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(2):
+    for i in range(4):
         x = identity_block(x, kernel_size=3, filters=96, stage=2, block=i, training=training)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(2):
+    for i in range(23):
         x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i, training=training)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(2):
+    for i in range(3):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
 
     x = GlobalAveragePooling1D()(x)
     x = tf.keras.activations.tanh(x)
     
-    x1 = LSTM(units=256, return_sequences=True)(inputs)
-    x1 = tf.keras.activations.tanh(x1)
-    x1 = Dropout(0.2)(x1)
-    x1 = LSTM(units=384, return_sequences=False)(x1)
-    x1 = tf.keras.activations.tanh(x1)
-    x1 = Dropout(0.2)(x1)
-    x = concatenate([x, x1], axis=-1)
+    # x = concatenate([x, x1], axis=-1)
 
     if opt.rul_train:
       x = Dense(opt.num_classes, activation='sigmoid')(x)
