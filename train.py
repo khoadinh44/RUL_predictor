@@ -1,7 +1,7 @@
 from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
-from model.resnet import resnet_18, resnet_101, resnet_152
+from model.resnet import resnet_18, resnet_101, resnet_152, resnet_50
 from model.LSTM import lstm_model
 from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
 from utils.save_data import start_save_data
@@ -47,7 +47,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.model == 'resnet_cnn_2d':
     # horirontal------------
     inputs = Input(shape=[128, 128, 2])
-    output = resnet_152(opt)(inputs, training=True)
+    output = resnet_50(opt)(inputs, training=True)
     network = Model(inputs, output)
   if opt.model == 'cnn_2d':
     network = cnn_2d_model(opt, [128, 128, 2])
@@ -80,7 +80,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.rul_train:
       _, test_mae, test_r2, test_mse = network.evaluate(test_data, test_label, verbose=0)
       print(f'----------Score in test set: \n mae: {test_mae}, r2: {test_r2}, mse: {test_mse}' )
-  network.save(os.path.join(opt.save_dir, opt.model+'_new'))
+  network.save(os.path.join(opt.save_dir, opt.model+'_50'))
 
 if __name__ == '__main__':
   opt = parse_opt()
