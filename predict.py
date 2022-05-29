@@ -32,11 +32,11 @@ def Predict(data, model):
     test_label  = to_onehot(test_label)
 
   if model == 'dnn':
-    data = data.reshape(len(data), int(opt.input_shape*2))
+    data = (data[:, :, 0], data[:, :, 1])
     network = dnn_model(opt)
   if model == 'cnn_1d':
     network = cnn_1d_model(opt, training=None)
-  if model == 'resnet_cnn_2d_50_best':
+  if model == 'resnet_cnn_2d_50':
     inputs = Input(shape=[128, 128, 2])
     output = resnet_50(opt)(inputs, training=None)
     network = Model(inputs, output)
@@ -59,8 +59,8 @@ def main():
     # test_data_2D, test_label_2D, test_data_1D, test_label_1D
     print(f'\nShape 1D data: {test_data_1D[name].shape}')
     print(f'Shape 2D data: {test_data_2D[name].shape}')
-    y_pred_1d = Predict(test_data_1D[name], 'lstm')
-    y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d_50_best')
+    y_pred_1d = Predict(test_data_1D[name], 'dnn')
+    y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d_50')
     print(f'\nShape 1D prediction: {y_pred_1d.shape}')
     print(f'Shape 2D prediction: {y_pred_2d.shape}')
 
@@ -74,8 +74,8 @@ def main():
 
     plt.plot(test_label_1D[name], c='b')
     plt.plot(y_pred_1d, c='r')
-    plt.title(f'{name}: LSTM prediction.')
-    plt.savefig(f'{name}_lstm.png')
+    plt.title(f'{name}: dnn prediction.')
+    plt.savefig(f'{name}_dnn.png')
     plt.close()
 
     plt.plot(test_label_1D[name], c='b')
