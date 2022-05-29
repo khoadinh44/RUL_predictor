@@ -144,8 +144,22 @@ def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
         coef = (coef - coef.min())/(coef.max() - coef.min()) 
     else:
         coef = data
+        if opt.scaler == 'MinMaxScaler':
+          scaler = MinMaxScaler
+        elif opt.scaler == 'MaxAbsScaler':
+          scaler = MaxAbsScaler
+        elif opt.scaler == 'StandardScaler':
+          scaler = StandardScaler
+        elif opt.scaler == 'RobustScaler':
+          scaler = RobustScaler
+        elif opt.scaler == 'Normalizer':
+          scaler = Normalizer
+        elif opt.scaler == 'QuantileTransformer':
+          scaler = QuantileTransformer
+        elif opt.scaler == 'PowerTransformer':
+          scaler = PowerTransformer
         if opt.scaler != None:
-            coef = scaler_transform(coef, opt.scaler)
+          coef = scaler_transform(coef, scaler)
     return coef
 
 def convert_to_image(pkz_dir, opt):
@@ -182,4 +196,3 @@ def seg_data(data, length):
     all_data[name] = data[num: num+length[name]]
     num += length[name]
   return all_data
-
