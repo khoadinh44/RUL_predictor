@@ -143,7 +143,7 @@ def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
         coef = np.log2(coef**2 + 0.001)
         coef = (coef - coef.min())/(coef.max() - coef.min()) 
     else:
-        coef = data
+        coef = data.reshape(-1, 1)
         if opt.scaler == 'MinMaxScaler':
           scaler = MinMaxScaler
         elif opt.scaler == 'MaxAbsScaler':
@@ -196,3 +196,4 @@ def seg_data(data, length):
     all_data[name] = data[num: num+length[name]]
     num += length[name]
   return all_data
+
