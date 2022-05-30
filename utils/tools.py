@@ -160,6 +160,7 @@ def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
           scaler = PowerTransformer
         if opt.scaler != None:
           coef = scaler_transform(coef, scaler)
+        coef = coef.reshape(-1, )
     return coef
 
 def convert_to_image(pkz_dir, opt):
