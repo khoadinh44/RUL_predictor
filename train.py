@@ -57,7 +57,7 @@ def main(opt, train_data, train_label, test_data, test_label):
   if opt.model == 'autoencoder':
     network = autoencoder_model(train_data)
   if opt.model == 'lstm':
-    network = lstm_model(opt)
+    network = lstm_model(opt, training=True)
   
   if opt.load_weight:
     if os.path.exists(os.path.join(opt.save_dir, opt.model)):
