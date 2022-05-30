@@ -102,8 +102,8 @@ def cnn_1d_model(opt, training=None):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
 
     x = GlobalAveragePooling1D()(x)  
-    x1 = TransformerLayer(x, c=512, num_heads=4)
-    x2 = TransformerLayer(x, c=512, num_heads=4)
+    x1 = TransformerLayer(x, c=384, num_heads=4)
+    x2 = TransformerLayer(x, c=384, num_heads=4)
     x = concatenate([x1, x2], axis=-1)
 
     if opt.rul_train:
