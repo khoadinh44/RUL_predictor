@@ -143,24 +143,7 @@ def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
         coef = np.log2(coef**2 + 0.001)
         coef = (coef - coef.min())/(coef.max() - coef.min()) 
     else:
-        coef = data.reshape(-1, 1)
-        if opt.scaler == 'MinMaxScaler':
-          scaler = MinMaxScaler
-        elif opt.scaler == 'MaxAbsScaler':
-          scaler = MaxAbsScaler
-        elif opt.scaler == 'StandardScaler':
-          scaler = StandardScaler
-        elif opt.scaler == 'RobustScaler':
-          scaler = RobustScaler
-        elif opt.scaler == 'Normalizer':
-          scaler = Normalizer
-        elif opt.scaler == 'QuantileTransformer':
-          scaler = QuantileTransformer
-        elif opt.scaler == 'PowerTransformer':
-          scaler = PowerTransformer
-        if opt.scaler != None:
-          coef = scaler_transform(coef, scaler)
-        coef = coef.reshape(-1, )
+        coef = data
     return coef
 
 def convert_to_image(pkz_dir, opt):
@@ -175,12 +158,36 @@ def convert_to_image(pkz_dir, opt):
         coef_h = np.expand_dims(extract_feature_image(df, i, opt, feature_name='horiz accel'), axis=-1)
         coef_v = np.expand_dims(extract_feature_image(df, i, opt, feature_name='vert accel'), axis=-1)
         x_ = np.concatenate((coef_h, coef_v), axis=-1).tolist()
-#         x_ = np.array([coef_h, coef_v])
         all_nums = (no_of_files-1)
         y_ = float(all_nums-i)/float(all_nums)
         data['x'].append(x_)
         data['y'].append(y_)
-    data['x']=np.array(data['x'])
+
+    if opt.scaler == 'MinMaxScaler':
+      scaler = MinMaxScaler
+    if opt.scaler == 'MaxAbsScaler':
+      scaler = MaxAbsScaler
+    if opt.scaler == 'StandardScaler':
+      scaler = StandardScaler
+    if opt.scaler == 'RobustScaler':
+      scaler = RobustScaler
+    if opt.scaler == 'Normalizer':
+      scaler = Normalizer
+    if opt.scaler == 'QuantileTransformer':
+      scaler = QuantileTransformer
+    if opt.scaler == 'PowerTransformer':
+      scaler = PowerTransformer
+
+    if opt.scaler != None:
+      hor_data = np.array(data['x'])[:, :, 0]
+      ver_data = np.array(data['x'])[:, :, 1]
+      hor_data = scaler_transform(hor_data, scaler)
+      ver_data = scaler_transform(ver_data, scaler)
+      data_x = np.concatenate((hor_data, ver_data), axis=-1)
+      data['x'] = data_x
+    else:
+      data['x']=np.array(data['x'])
+      
     data['y']=np.array(data['y'])
 
     # assert data['x'].shape==(no_of_files, 128, 128, 2)
