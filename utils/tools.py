@@ -181,6 +181,7 @@ def convert_to_image(pkz_dir, opt):
     if opt.scaler != None:
       hor_data = np.array(data['x'])[:, :, 0]
       ver_data = np.array(data['x'])[:, :, 1]
+      print(f'Use scaler: {opt.scaler}\n')
       hor_data = scaler_transform(hor_data, scaler)
       ver_data = scaler_transform(ver_data, scaler)
       data_x = np.concatenate((hor_data, ver_data), axis=-1)
