@@ -11,20 +11,20 @@ from tensorflow.keras.applications import DenseNet121
 
 def TransformerLayer(x=None, c=48, num_heads=4*3):
     # Transformer layer https://arxiv.org/abs/2010.11929 (LayerNorm layers removed for better performance)
-    q   = Dense(c, use_bias=True, 
+    q   = Dense(c, activation='relu', 
                   kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                   bias_regularizer=regularizers.l2(1e-4),
                   activity_regularizer=regularizers.l2(1e-5))(x)
-    k   = Dense(c, use_bias=True, 
+    k   = Dense(c, activation='relu', 
                   kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                   bias_regularizer=regularizers.l2(1e-4),
                   activity_regularizer=regularizers.l2(1e-5))(x)
-    v   = Dense(c, use_bias=True, 
+    v   = Dense(c, activation='relu', 
                   kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                   bias_regularizer=regularizers.l2(1e-4),
                   activity_regularizer=regularizers.l2(1e-5))(x)
     ma  = MultiHeadAttention(head_size=c, num_heads=num_heads)([q, k, v]) 
-    ma = Activation('relu')(ma)
+    ma = Activation('sigmoid')(ma)
     # ma = Dropout(0.2)(ma)
     return ma
 
@@ -102,9 +102,9 @@ def cnn_1d_model(opt, training=None):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
 
     x = GlobalAveragePooling1D()(x)  
-    x1 = TransformerLayer(x, c=384, num_heads=4)
-    x2 = TransformerLayer(x, c=384, num_heads=4)
-    x = concatenate([x1, x2], axis=-1)
+    x = TransformerLayer(x, c=384, num_heads=4)+x
+    # x2 = TransformerLayer(x, c=384, num_heads=4)
+    # x = concatenate([x1, x2], axis=-1)
 
     if opt.rul_train:
       x = Dense(opt.num_classes, activation='sigmoid')(x)
