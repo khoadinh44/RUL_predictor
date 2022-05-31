@@ -77,10 +77,10 @@ def cnn_1d_model(opt, training=None):
                strides=4,
                padding='same',
                kernel_initializer='glorot_uniform',
-               kernel_regularizer=regularizers.l2(l=0.0001),)(x)
+               kernel_regularizer=regularizers.l2(l=0.0001),)(inputs)
     x = BatchNormalization()(x)
     x = Activation('relu')(x)
-    x = MaxPooling1D(pool_size=4, strides=None)(inputs)
+    x = MaxPooling1D(pool_size=4, strides=None)(x)
 
 
     for i in range(3):
