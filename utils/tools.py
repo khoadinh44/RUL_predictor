@@ -183,8 +183,8 @@ def convert_to_image(pkz_dir, opt):
       ver_data = np.array(data['x'])[:, :, 1]
       print(f'Use scaler: {opt.scaler}\n')
       if opt.scaler == 'FFT':
-        hor_data = FFT(hor_data)
-        ver_data = FFT(ver_data)
+        hor_data = np.expand_dims(FFT(hor_data), axis=-1)
+        ver_data = np.expand_dims(FFT(ver_data), axis=-1)
       else:
         hor_data = scaler_transform(hor_data, scaler)
         ver_data = scaler_transform(ver_data, scaler)
