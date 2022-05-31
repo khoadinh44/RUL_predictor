@@ -71,7 +71,7 @@ def cnn_1d_model(opt, training=None):
     https://github.com/philipperemy/very-deep-convnets-raw-waveforms/blob/master/model_resnet.py
     '''
     inputs = Input(shape=[opt.input_shape, 2])
-    x = LSTM(units=12, return_sequences=True)(inputs)
+    # x = LSTM(units=12, return_sequences=True)(inputs)
     x = Conv1D(48,
                kernel_size=80,
                strides=4,
@@ -80,7 +80,7 @@ def cnn_1d_model(opt, training=None):
                kernel_regularizer=regularizers.l2(l=0.0001),)(x)
     x = BatchNormalization()(x)
     x = Activation('relu')(x)
-    x = MaxPooling1D(pool_size=4, strides=None)(x)
+    x = MaxPooling1D(pool_size=4, strides=None)(inputs)
 
 
     for i in range(3):
