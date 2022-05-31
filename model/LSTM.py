@@ -54,26 +54,31 @@ def lstm_model(opt, training=None):
   x = BatchNormalization()(x)
   x = Activation('relu')(x)
   x = MaxPooling1D(pool_size=4, strides=None)(x)
+
   for i in range(2):
-        x = identity_block(x, kernel_size=3, filters=48, stage=1, block=i, training=training)
+    x = identity_block(x, kernel_size=3, filters=48, stage=1, block=i, training=training)
+    x = Dropout(0.1)(x)
 
   x = MaxPooling1D(pool_size=4, strides=None)(x)
 
   for i in range(2):
-      x = identity_block(x, kernel_size=3, filters=96, stage=2, block=i, training=training)
+    x = identity_block(x, kernel_size=3, filters=96, stage=2, block=i, training=training)
+    x = Dropout(0.1)(x)
 
   x = MaxPooling1D(pool_size=4, strides=None)(x)
 
   for i in range(2):
-      x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i, training=training)
+    x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i, training=training)
+    x = Dropout(0.1)(x)
 
   x = MaxPooling1D(pool_size=4, strides=None)(x)
 
   for i in range(2):
-      x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
+    x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
+    x = Dropout(0.1)(x)
 
   x = GlobalAveragePooling1D()(x)  
-  fc = Dense(units=384, activation='relu')(x)
+  x = Dropout(0.1)(x)
   fc = Dense(units=opt.num_classes, activation='sigmoid')(fc)
   m = Model(inputs, fc)
   return m
