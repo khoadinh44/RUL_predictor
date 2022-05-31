@@ -182,8 +182,12 @@ def convert_to_image(pkz_dir, opt):
       hor_data = np.array(data['x'])[:, :, 0]
       ver_data = np.array(data['x'])[:, :, 1]
       print(f'Use scaler: {opt.scaler}\n')
-      hor_data = scaler_transform(hor_data, scaler)
-      ver_data = scaler_transform(ver_data, scaler)
+      if opt.scaler == 'FFT':
+        hor_data = FFT(hor_data)
+        ver_data = FFT(ver_data)
+      else:
+        hor_data = scaler_transform(hor_data, scaler)
+        ver_data = scaler_transform(ver_data, scaler)
       data_x = np.concatenate((hor_data, ver_data), axis=-1)
       data['x'] = data_x
     else:
@@ -196,6 +200,19 @@ def convert_to_image(pkz_dir, opt):
     y_shape = data['y'].shape
     print(f'Train data shape: {x_shape}   Train label shape: {y_shape}\n')
     return data
+
+def FFT(signals):
+  fft_data = []
+  for signal in signals:
+    signal = np.fft.fft(signal)
+    signal = np.abs(signal) / len(signal)
+    signal = signal[range(signal.shape[0] // 2)]
+    signal = np.expand_dims(signal, axis=0)
+    if fft_data == []:
+      fft_data = signal
+    else:
+      fft_data = np.concatenate((fft_data, signal))
+  return fft_data
 
 # ---------------------- Load_predict_data.py----------------------
 def seg_data(data, length):
