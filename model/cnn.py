@@ -24,9 +24,9 @@ def TransformerLayer(x=None, c=48, num_heads=4*3, training=None):
                   bias_regularizer=regularizers.l2(1e-4),
                   activity_regularizer=regularizers.l2(1e-5))(x)
     ma  = MultiHeadAttention(head_size=c, num_heads=num_heads)([q, k, v]) 
-    ma = BatchNormalization()(ma, training=training)
+    # ma = BatchNormalization()(ma, training=training)
     ma = Activation('relu')(ma)
-    # ma = Dropout(0.2)(ma)
+    ma = Dropout(0.2)(ma)
     return ma
 
 # For m34 Residual, use RepeatVector. Or tensorflow backend.repeat
@@ -103,7 +103,7 @@ def cnn_1d_model(opt, training=None):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
 
     x = GlobalAveragePooling1D()(x)  
-    x = TransformerLayer(x, c=384, num_heads=4, training=training)+x
+    x = TransformerLayer(x, c=384, training=training)+x
     # x2 = TransformerLayer(x, c=384, num_heads=4)
     # x = concatenate([x1, x2], axis=-1)
 
