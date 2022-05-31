@@ -84,22 +84,22 @@ def cnn_1d_model(opt, training=None):
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
 
-    for i in range(3):
+    for i in range(2):
         x = identity_block(x, kernel_size=3, filters=48, stage=1, block=i, training=training)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(4):
+    for i in range(2):
         x = identity_block(x, kernel_size=3, filters=96, stage=2, block=i, training=training)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(6):
+    for i in range(2):
         x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i, training=training)
 
     x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-    for i in range(3):
+    for i in range(2):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
 
     x = GlobalAveragePooling1D()(x)  
