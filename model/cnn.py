@@ -11,22 +11,20 @@ from tensorflow.keras.applications import DenseNet121
 
 def TransformerLayer(x=None, c=48, num_heads=4*3, training=None):
     # Transformer layer https://arxiv.org/abs/2010.11929 (LayerNorm layers removed for better performance)
-    q   = Dense(c, activation='relu', 
+    q   = Dense(c,  
                   kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                   bias_regularizer=regularizers.l2(1e-4),
                   activity_regularizer=regularizers.l2(1e-5))(x)
-    k   = Dense(c, activation='relu', 
+    k   = Dense(c, 
                   kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                   bias_regularizer=regularizers.l2(1e-4),
                   activity_regularizer=regularizers.l2(1e-5))(x)
-    v   = Dense(c, activation='relu', 
+    v   = Dense(c, 
                   kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                   bias_regularizer=regularizers.l2(1e-4),
                   activity_regularizer=regularizers.l2(1e-5))(x)
     ma  = MultiHeadAttention(head_size=c, num_heads=num_heads)([q, k, v]) 
-    # ma = BatchNormalization()(ma, training=training)
     ma = Activation('relu')(ma)
-    ma = Dropout(0.2)(ma)
     return ma
 
 # For m34 Residual, use RepeatVector. Or tensorflow backend.repeat
@@ -101,9 +99,10 @@ def cnn_1d_model(opt, training=None):
 
     for i in range(2):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
-
-    x = GlobalAveragePooling1D()(x)  
-    x = TransformerLayer(x, c=384, training=training)+x
+    x = TransformerLayer(x, c=384, training=training)
+    x = GlobalAveragePooling1D()(x) 
+    x = BatchNormalization()(x, training=training) 
+  
     # x2 = TransformerLayer(x, c=384, num_heads=4)
     # x = concatenate([x1, x2], axis=-1)
 
