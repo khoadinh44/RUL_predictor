@@ -79,23 +79,23 @@ def cnn_1d_model(opt, training=None):
                kernel_regularizer=regularizers.l2(l=0.0001),)(inputs)
     x = BatchNormalization()(x)
     x = Activation('relu')(x)
-    x = MaxPooling1D(pool_size=4, strides=None)(x)
+    x = MaxPooling1D(pool_size=2, strides=None)(x)
 
 
     for i in range(2):
         x = identity_block(x, kernel_size=3, filters=48, stage=1, block=i, training=training)
 
-    x = MaxPooling1D(pool_size=4, strides=None)(x)
+    x = MaxPooling1D(pool_size=2, strides=None)(x)
 
     for i in range(2):
         x = identity_block(x, kernel_size=3, filters=96, stage=2, block=i, training=training)
 
-    x = MaxPooling1D(pool_size=4, strides=None)(x)
+    x = MaxPooling1D(pool_size=2, strides=None)(x)
 
     for i in range(2):
         x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i, training=training)
 
-    x = MaxPooling1D(pool_size=4, strides=None)(x)
+    x = MaxPooling1D(pool_size=2, strides=None)(x)
 
     for i in range(2):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
