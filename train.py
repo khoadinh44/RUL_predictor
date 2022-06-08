@@ -27,6 +27,7 @@ def parse_opt(known=False):
     parser.add_argument('--batch_size', default=32, type=int)
     parser.add_argument('--condition_train', default=False, type=bool)
     parser.add_argument('--rul_train', default=True, type=bool)
+    parser.add_argument('--mix_model', default=True, type=bool)
     parser.add_argument('--load_weight', default=False, type=bool)
     
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
