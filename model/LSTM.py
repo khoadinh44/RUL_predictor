@@ -42,7 +42,7 @@ def identity_block(input_tensor, kernel_size, filters, stage, block, training):
     return x
 
 def lstm_model(opt, training=None, inputs=None):
-  if opt.mix_model==False
+  if opt.mix_model==False:
     inputs = Input(shape=[opt.input_shape, 2])
   x = LSTM(units=12, return_sequences=True)(inputs)
   x = LSTM(units=24, return_sequences=True)(x)
