@@ -99,5 +99,5 @@ if __name__ == '__main__':
     from utils.load_condition_data import train_data, train_label, test_data, test_label
     main(opt, train_data, train_label, test_data, test_label)
   if opt.rul_train:
-    from utils.load_rul_data import train_data_rul, train_label_rul, test_data_rul, test_label_rul
+    from utils.load_rul_data import train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_label_rul_1D, train_data_rul_2D, train_label_rul_2D, test_data_rul_2D, test_label_rul_2D
     main(opt, train_data_rul, train_label_rul, test_data_rul, test_label_rul)
