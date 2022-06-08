@@ -23,19 +23,18 @@ main_dir_colab = opt.main_dir_colab
 train_main_dir = main_dir_colab + 'Learning_set/'
 test_main_dir = main_dir_colab + 'Test_set/'
 
-if opt.model in ['cnn_2d', 'resnet_cnn_2d']:
-  train_data_path_2D = main_dir_colab + 'train_data_rul.pkz'
-  train_label_path_2D = main_dir_colab + 'train_label_rul.pkz'
-  test_data_path_2D = main_dir_colab + 'test_data_rul.pkz'
-  test_label_path_2D = main_dir_colab + 'test_label_rul.pkz'
-else:
-  train_data_path_1D = main_dir_colab + 'train_data_1D.pkz'
-  train_label_path_1D = main_dir_colab + 'train_label_1D.pkz'
-  test_data_path_1D = main_dir_colab + 'test_data_1D.pkz'
-  test_label_path_1D = main_dir_colab + 'test_label_1D.pkz'
+train_data_path_2D = main_dir_colab + 'train_data_rul.pkz'
+train_label_path_2D = main_dir_colab + 'train_label_rul.pkz'
+test_data_path_2D = main_dir_colab + 'test_data_rul.pkz'
+test_label_path_2D = main_dir_colab + 'test_label_rul.pkz'
+
+train_data_path_1D = main_dir_colab + 'train_data_1D.pkz'
+train_label_path_1D = main_dir_colab + 'train_label_1D.pkz'
+test_data_path_1D = main_dir_colab + 'test_data_1D.pkz'
+test_label_path_1D = main_dir_colab + 'test_label_1D.pkz'
  
  
-if os.path.exists(test_data_path):
+if os.path.exists(train_data_path_1D):
   train_data_rul_1D  = load_df(train_data_path_1D)
   train_label_rul_1D = load_df(train_label_path_1D)
   test_data_rul_1D   = load_df(test_data_path_1D)
@@ -97,8 +96,8 @@ else:
   save_df(test_data_rul, test_data_path)
   save_df(test_label_rul, test_label_path)
   
-print(f'Train shape 1D: {train_data_rul_1D.shape}   {train_label_rul_1D.shape}\n')  
+print(f'Train shape 1D: {train_data_rul_1D.shape}   {train_label_rul_1D.shape}')  
 print(f'Test shape 1D: {test_data_rul_1D.shape}   {test_label_rul_1D.shape}\n')
 
-print(f'Train shape 2D: {train_data_rul_2D.shape}   {train_label_rul_2D.shape}\n')  
+print(f'Train shape 2D: {train_data_rul_2D.shape}   {train_label_rul_2D.shape}')  
 print(f'Test shape 2D: {test_data_rul_2D.shape}   {test_label_rul_2D.shape}\n')
