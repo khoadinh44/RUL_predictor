@@ -34,13 +34,13 @@ def parse_opt(known=False):
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
 
-def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_label_rul_1D, train_data_rul_2D, train_label_rul_2D, test_data_rul_2D, test_label_rul_2D):
-  print(f'Shape of train set: {train_data.shape}  {train_label.shape}')
-  print(f'Shape of test set: {test_data.shape}  {test_label.shape}')
+def main(opt, train_data_1D, train_label_1D, test_data_1D, test_label_1D, train_data_2D, train_label_2D, test_data_2D, test_label_2D):
+  # print(f'Shape of train set: {train_data.shape}  {train_label.shape}')
+  # print(f'Shape of test set: {test_data.shape}  {test_label.shape}')
   if opt.condition_train:
       train_label = to_onehot(train_label)
       test_label  = to_onehot(test_label)
-  val_data, val_label = test_data[:1000], test_label[:1000]
+  val_data_1D, val_data_2D, val_label = test_data_1D[:1000], test_data_2D[:1000], test_label_1D[:1000]
 
   if opt.model == 'dnn':
     train_data = [train_data[:, :, 0], train_data[:, :, 1]]
@@ -65,6 +65,12 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
     input_2D = Input((128, 128, 2), name='CNN_input')
     output = mix_model(opt, lstm_model, resnet_50, input_1D, input_2D, True)
     network = Model(inputs=[input_1D, input_2D], outputs=output)
+
+    # data-------------------------------
+    train_data = [train_data_1D, train_data_2D]
+    train_label = train_label_1D
+    test_data = [test_data_1D, test_data_2D]
+    test_label = test_label_1D
   
   if opt.load_weight:
     if os.path.exists(os.path.join(opt.save_dir, opt.model)):
