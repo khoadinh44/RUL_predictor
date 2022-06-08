@@ -20,7 +20,7 @@ def parse_opt(known=False):
    
     parser.add_argument('--input_shape', default=1279, type=int, help='1279 for using fft, 2559 for raw data')
     parser.add_argument('--num_classes', default=1, type=str, help='class condition number: 3, class rul condition: 1')
-    parser.add_argument('--model', default='cnn_2d', type=str, help='lstm, dnn, cnn_1d, resnet_cnn_2d, cnn_2d, autoencoder')
+    parser.add_argument('--model', default='cnn_2d', type=str, help='mix, lstm, dnn, cnn_1d, resnet_cnn_2d, cnn_2d, autoencoder')
     parser.add_argument('--save_dir', default=None, type=str)
     parser.add_argument('--scaler', default=None, type=str)
     parser.add_argument('--main_dir_colab', default=None, type=str)
@@ -82,7 +82,7 @@ def main(opt, train_data_1D, train_label_1D, test_data_1D, test_label_1D, train_
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
-    network.compile(optimizer=AngularGrad(1e-4), loss=tf.keras.losses.MeanSquaredLogarithmicError(), metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error], run_eagerly=True) # https://keras.io/api/losses/
+    network.compile(optimizer=AngularGrad(), loss=tf.keras.losses.MeanSquaredLogarithmicError(), metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error], run_eagerly=True) # https://keras.io/api/losses/
   network.summary()
   history = network.fit(train_data, train_label,
                       epochs     = opt.epochs,
