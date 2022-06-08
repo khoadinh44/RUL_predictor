@@ -34,7 +34,7 @@ def parse_opt(known=False):
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
 
-def main(opt, train_data, train_label, test_data, test_label):
+def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_label_rul_1D, train_data_rul_2D, train_label_rul_2D, test_data_rul_2D, test_label_rul_2D):
   print(f'Shape of train set: {train_data.shape}  {train_label.shape}')
   print(f'Shape of test set: {test_data.shape}  {test_label.shape}')
   if opt.condition_train:
@@ -100,4 +100,4 @@ if __name__ == '__main__':
     main(opt, train_data, train_label, test_data, test_label)
   if opt.rul_train:
     from utils.load_rul_data import train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_label_rul_1D, train_data_rul_2D, train_label_rul_2D, test_data_rul_2D, test_label_rul_2D
-    main(opt, train_data_rul, train_label_rul, test_data_rul, test_label_rul)
+    main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_label_rul_1D, train_data_rul_2D, train_label_rul_2D, test_data_rul_2D, test_label_rul_2D)
