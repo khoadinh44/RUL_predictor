@@ -76,6 +76,8 @@ def lstm_model(opt, training=None):
   x = GlobalAveragePooling1D()(x)  
   x = Dense(units=384, activation='relu')(x)
   x = Dropout(0.2)(x)
+  if opt.mix_model:
+      return x
   x = Dense(units=opt.num_classes, activation='sigmoid')(x)
   m = Model(inputs, x)
   return m
