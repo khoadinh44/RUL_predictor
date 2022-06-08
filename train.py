@@ -41,6 +41,7 @@ def main(opt, train_data_1D, train_label_1D, test_data_1D, test_label_1D, train_
       train_label = to_onehot(train_label)
       test_label  = to_onehot(test_label)
   val_data_1D, val_data_2D, val_label = test_data_1D[:1000], test_data_2D[:1000], test_label_1D[:1000]
+  val_data = [val_data_1D, val_data_2D]
 
   if opt.model == 'dnn':
     train_data = [train_data[:, :, 0], train_data[:, :, 1]]
