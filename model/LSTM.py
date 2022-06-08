@@ -41,8 +41,9 @@ def identity_block(input_tensor, kernel_size, filters, stage, block, training):
 #     x = Dropout(0.2)(x)
     return x
 
-def lstm_model(opt, training=None):
-  inputs = Input(shape=[opt.input_shape, 2])
+def lstm_model(opt, training=None, inputs=None):
+  if opt.mix_model==False
+    inputs = Input(shape=[opt.input_shape, 2])
   x = LSTM(units=12, return_sequences=True)(inputs)
   x = LSTM(units=24, return_sequences=True)(x)
   x = Conv1D(48,
@@ -55,22 +56,22 @@ def lstm_model(opt, training=None):
   x = Activation('relu')(x)
   x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-  for i in range(2):
+  for i in range(3):
     x = identity_block(x, kernel_size=3, filters=48, stage=1, block=i, training=training)
 
   x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-  for i in range(2):
+  for i in range(4):
     x = identity_block(x, kernel_size=3, filters=96, stage=2, block=i, training=training)
 
   x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-  for i in range(2):
+  for i in range(6):
     x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i, training=training)
 
   x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-  for i in range(2):
+  for i in range(3):
     x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
 
   x = GlobalAveragePooling1D()(x)  
