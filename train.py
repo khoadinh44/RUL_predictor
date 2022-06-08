@@ -1,6 +1,7 @@
 from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
+from model.LSTM_CNN_2D import mix_model
 from model.resnet import resnet_18, resnet_101, resnet_152, resnet_50
 from model.LSTM import lstm_model
 from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
@@ -59,6 +60,11 @@ def main(opt, train_data, train_label, test_data, test_label):
     network = autoencoder_model(train_data)
   if opt.model == 'lstm':
     network = lstm_model(opt, training=True)
+  if opt.mix_model:
+    input_1D = Input((opt.input_shape, 2), name='lstm_input')
+    input_2D = Input((128, 128, 2), name='CNN_input')
+    output = mix_model(opt, lstm_model, resnet_50, input_1D, input_2D, True)
+    network = Model(inputs=[input_1D, input_2D], outputs=output)
   
   if opt.load_weight:
     if os.path.exists(os.path.join(opt.save_dir, opt.model)):
