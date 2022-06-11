@@ -3,6 +3,7 @@ from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.dnn import dnn_model
 from model.resnet import resnet_18, resnet_101, resnet_152, resnet_50
+from model.LSTM_CNN_2D import mix_model
 from model.LSTM import lstm_model
 
 from utils.load_predict_data import test_data_2D, test_label_2D, test_data_1D, test_label_1D
