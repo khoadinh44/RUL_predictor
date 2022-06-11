@@ -75,8 +75,8 @@ def lstm_model(opt, training=None, inputs=None):
     x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
 
   x = GlobalAveragePooling1D()(x)  
-  x = Dense(units=384, activation='relu')(x)
-  x = Dropout(0.2)(x)
+  # x = Dense(units=384, activation='relu')(x)
+  # x = Dropout(0.2)(x)
   if opt.mix_model:
       return x
   x = Dense(units=opt.num_classes, activation='sigmoid')(x)
