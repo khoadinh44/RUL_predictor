@@ -18,6 +18,7 @@ def mix_model(opt, model_1D, model_2D, input_1D, input_2D, training):
   hidden_out_2D = network_2D([input_2D])
   
   merged_hidden = concatenate([hidden_out_1D, hidden_out_2D], axis=-1, name='merged_hidden_layer')
+  merged_hidden = BatchNormalization()(merged_hidden, training=training)
   output = Dense(1, activation='sigmoid')(merged_hidden)
   return output
   
