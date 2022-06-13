@@ -78,7 +78,7 @@ def lstm_model(opt, training=None, inputs=None):
   # x = Dense(units=384, activation='relu')(x)
   # x = Dropout(0.2)(x)
   if opt.mix_model:
-      return x
+      return Dense(units=384, activation='relu')(x)
   x = Dense(units=opt.num_classes, activation='sigmoid')(x)
   m = Model(inputs, x)
   return m
