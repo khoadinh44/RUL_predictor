@@ -84,7 +84,7 @@ class ResNetTypeII(tf.keras.Model):
         # self.TransformerLayer = TransformerLayer
         self.lstm_model = lstm_model
         self.expand_dims = tf.expand_dims
-        self.fc = tf.keras.layers.Dense(units=opt.num_classes, activation=tf.keras.activations.sigmoid)
+        self.fc = tf.keras.layers.Dense(units=384, activation='relu')
 
     def call(self, inputs, training=None, mask=None):
         x = self.conv1(inputs)
@@ -99,8 +99,8 @@ class ResNetTypeII(tf.keras.Model):
         # x = self.expand_dims(x, -1)
         # x = self.lstm_model(x)
         # x = self.TransformerLayer(x)
-        # output = self.fc(x)
-        output = x
+        output = self.fc(x)
+        # output = x
         return output
 
 
