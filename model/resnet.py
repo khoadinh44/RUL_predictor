@@ -99,8 +99,8 @@ class ResNetTypeII(tf.keras.Model):
         # x = self.expand_dims(x, -1)
         # x = self.lstm_model(x)
         # x = self.TransformerLayer(x)
-        output = self.fc(x)
-        # output = x
+        # output = self.fc(x)
+        output = x
         return output
 
 
