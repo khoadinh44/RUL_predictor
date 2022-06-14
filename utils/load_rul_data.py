@@ -91,10 +91,10 @@ else:
   test_data_rul = np.concatenate((Bearing1_3_data['x'], Bearing1_4_data['x'], Bearing1_5_data['x'], Bearing1_6_data['x'], Bearing1_7_data['x'], Bearing2_3_data['x'], Bearing2_4_data['x'], Bearing2_5_data['x'], Bearing2_6_data['x'], Bearing2_7_data['x'], Bearing3_3_data['x']))
   test_label_rul = np.concatenate((Bearing1_3_data['y'], Bearing1_4_data['y'], Bearing1_5_data['y'], Bearing1_6_data['y'], Bearing1_7_data['y'], Bearing2_3_data['y'], Bearing2_4_data['y'], Bearing2_5_data['y'], Bearing2_6_data['y'], Bearing2_7_data['y'], Bearing3_3_data['y']))
 
-  save_df(train_data_rul, train_data_path)
-  save_df(train_label_rul, train_label_path)
-  save_df(test_data_rul, test_data_path)
-  save_df(test_label_rul, test_label_path)
+  save_df(train_data_rul, train_data_path_1D)
+  save_df(train_label_rul, train_label_path_1D)
+  save_df(test_data_rul, test_data_path_1D)
+  save_df(test_label_rul, test_label_path_1D)
   
 print(f'Train shape 1D: {train_data_rul_1D.shape}   {train_label_rul_1D.shape}')  
 print(f'Test shape 1D: {test_data_rul_1D.shape}   {test_label_rul_1D.shape}\n')
