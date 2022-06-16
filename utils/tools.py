@@ -142,9 +142,9 @@ def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
         coef, _ = pywt.cwt(data, np.linspace(1,128,128), WAVELET_TYPE)
         # transform to power and apply logarithm?!
         coef = np.log2(coef**2 + 0.001)
-        coef = (coef - coef.min())/(coef.max() - coef.min()) 
     else:
         coef = data
+    coef = (coef - coef.min())/(coef.max() - coef.min()) 
     return coef
 
 def denoise(signals):
