@@ -4,6 +4,7 @@ from keras import backend as K
 import pandas as pd
 import pickle as pkl
 import pywt
+import noisereduce as nr
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import MaxAbsScaler
 from sklearn.preprocessing import StandardScaler
