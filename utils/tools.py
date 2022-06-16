@@ -150,7 +150,10 @@ def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
 def denoise(signals):
     all_signal = []
     for x in signals:
-        all_signal.append(nr.reduce_noise(y=x, sr=2560, time_constant_s=0.1, prop_decrease=0.5, freq_mask_smooth_hz=25600))
+        # print('-')
+        L1, L2 = pywt.wavedec(x, 'coif7', level=1)
+        all_signal.append(L2)
+        # all_signal.append(nr.reduce_noise(y=x, sr=2559, hop_length=20, time_constant_s=0.1, prop_decrease=0.5, freq_mask_smooth_hz=25600))
     return np.expand_dims(all_signal, axis=-1)
 
 def convert_to_image(pkz_dir, opt):
