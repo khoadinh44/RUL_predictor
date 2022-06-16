@@ -146,6 +146,12 @@ def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
         coef = data
     return coef
 
+def denoise(signals):
+    all_signal = []
+    for x in signals:
+        all_signal.append(nr.reduce_noise(y=x, sr=2560, time_constant_s=0.1, prop_decrease=0.5, freq_mask_smooth_hz=25600))
+    return np.expand_dims(all_signal, axis=-1)
+
 def convert_to_image(pkz_dir, opt):
     df = load_df(pkz_dir+'.pkz')
     no_of_rows = df.shape[0]
@@ -181,10 +187,13 @@ def convert_to_image(pkz_dir, opt):
     if opt.scaler != None:
       hor_data = np.array(data['x'])[:, :, 0]
       ver_data = np.array(data['x'])[:, :, 1]
-      print(f'Use scaler: {opt.scaler}\n')
+      print(f'------------------Use scaler: {opt.scaler}-----------------\n')
       if opt.scaler == 'FFT':
         hor_data = np.expand_dims(FFT(hor_data), axis=-1)
         ver_data = np.expand_dims(FFT(ver_data), axis=-1)
+      elif opt.scaler == 'denoise':
+        hor_data = denoise(hor_data)
+        ver_data = denoise(ver_data)
       else:
         hor_data = scaler_transform(hor_data, scaler)
         ver_data = scaler_transform(ver_data, scaler)
