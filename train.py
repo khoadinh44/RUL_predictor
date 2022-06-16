@@ -82,7 +82,7 @@ def main(opt, train_data_1D, train_label_1D, test_data_1D, test_label_1D, train_
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
-    network.compile(optimizer=AngularGrad(), loss=tf.keras.losses.MeanSquaredLogarithmicError(), metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error], run_eagerly=True) # https://keras.io/api/losses/
+    network.compile(optimizer=AngularGrad(1e-4), loss=tf.keras.losses.MeanSquaredLogarithmicError(), metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error], run_eagerly=True) # https://keras.io/api/losses/
   network.summary()
   history = network.fit(train_data, train_label,
                       epochs     = opt.epochs,
@@ -90,14 +90,13 @@ def main(opt, train_data_1D, train_label_1D, test_data_1D, test_label_1D, train_
                       validation_data = (val_data, val_label),
                       # callbacks = [callbacks]
                       )
-  # optimizer='rmsprop'
+  network.save(os.path.join(opt.save_dir, opt.model))
   if opt.condition_train:
       _, test_acc,  test_f1_m,  test_precision_m,  test_recall_m  = network.evaluate(test_data, test_label, verbose=0)
       print(f'----------Score in test set: \n Accuracy: {test_acc}, F1: {test_f1_m}, Precision: {test_precision_m}, recall: {test_recall_m}' )
   if opt.rul_train:
       _, test_mae, test_r2, test_mse = network.evaluate(test_data, test_label, verbose=0)
       print(f'----------Score in test set: \n mae: {test_mae}, r2: {test_r2}, mse: {test_mse}' )
-  network.save(os.path.join(opt.save_dir, opt.model))
 
 if __name__ == '__main__':
   opt = parse_opt()
