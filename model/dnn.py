@@ -4,6 +4,7 @@ import tensorflow as tf
 from tensorflow_addons.layers import MultiHeadAttention
 from tensorflow.keras.layers import Conv1D, Activation, Dense, concatenate, BatchNormalization, GlobalAveragePooling1D, Input, MaxPooling1D, Lambda, Dropout
 import keras.backend as K
+from tensorflow.keras.layers import Input, Dropout, Dense, LSTM, TimeDistributed, RepeatVector
 from keras import layers, regularizers
 from keras.models import Model
 
@@ -76,26 +77,48 @@ def dnn_model(opt):
   model = keras.models.Model(inputs=[input_1, input_2], outputs=[output])
   return model
 
+# def dnn_extracted_model(opt, training, inputs):
+#   x = keras.layers.Flatten()(x)
+#   x = keras.layers.Dense(56, activation=tf.keras.layers.ReLU(), 
+#                                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+#                                      bias_regularizer=regularizers.l2(1e-4),
+#                                      activity_regularizer=regularizers.l2(1e-5))(x)
+#   x = keras.layers.Dense(112,activation=tf.keras.layers.ReLU(), 
+#                                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+#                                      bias_regularizer=regularizers.l2(1e-4),
+#                                      activity_regularizer=regularizers.l2(1e-5))(x)
+#   x = keras.layers.Dense(224,activation=tf.keras.layers.ReLU(), 
+#                                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+#                                      bias_regularizer=regularizers.l2(1e-4),
+#                                      activity_regularizer=regularizers.l2(1e-5))(x)
+#   x = keras.layers.Dense(384,activation=tf.keras.layers.ReLU(), 
+#                                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+#                                      bias_regularizer=regularizers.l2(1e-4),
+#                                      activity_regularizer=regularizers.l2(1e-5))(x)
+#   x = BatchNormalization(training=training)(x)
+#   return x
+
 def dnn_extracted_model(opt, training, inputs):
-  x = keras.layers.Dense(28, activation=tf.keras.layers.ReLU(), 
-                                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                                     bias_regularizer=regularizers.l2(1e-4),
-                                     activity_regularizer=regularizers.l2(1e-5))(inputs)
-  x = keras.layers.Dense(56,activation=tf.keras.layers.ReLU(), 
-                                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                                     bias_regularizer=regularizers.l2(1e-4),
-                                     activity_regularizer=regularizers.l2(1e-5))(x)
-  x = keras.layers.Dense(112,activation=tf.keras.layers.ReLU(), 
-                                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                                     bias_regularizer=regularizers.l2(1e-4),
-                                     activity_regularizer=regularizers.l2(1e-5))(x)
-  x = keras.layers.Dense(224,activation=tf.keras.layers.ReLU(), 
-                                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                                     bias_regularizer=regularizers.l2(1e-4),
-                                     activity_regularizer=regularizers.l2(1e-5))(x)
-  x = keras.layers.Dense(384,activation=tf.keras.layers.ReLU(), 
-                                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                                     bias_regularizer=regularizers.l2(1e-4),
-                                     activity_regularizer=regularizers.l2(1e-5))(x)
-  x = BatchNormalization(training=training)(x)
+  x = LSTM(56, activation='relu', 
+                return_sequences=True, 
+                kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                bias_regularizer=regularizers.l2(1e-4),
+                activity_regularizer=regularizers.l2(1e-5))(inputs)
+  x = LSTM(112, activation='relu', 
+                return_sequences=True,
+                kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                bias_regularizer=regularizers.l2(1e-4),
+                activity_regularizer=regularizers.l2(1e-5))(x)
+  x = LSTM(256, activation='relu',
+                  return_sequences=True, 
+                  kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                  bias_regularizer=regularizers.l2(1e-4),
+                  activity_regularizer=regularizers.l2(1e-5))(x)
+  x = LSTM(384, activation='relu', 
+                  return_sequences=False, 
+                  kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                  bias_regularizer=regularizers.l2(1e-4),
+                  activity_regularizer=regularizers.l2(1e-5))(x)
+  x = Dense(384)(x) 
+  x = BatchNormalization(training=training)(x)   
   return x
