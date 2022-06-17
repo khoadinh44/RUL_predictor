@@ -12,6 +12,7 @@ from sklearn.preprocessing import RobustScaler
 from sklearn.preprocessing import Normalizer
 from sklearn.preprocessing import QuantileTransformer
 from sklearn.preprocessing import PowerTransformer
+from utils.extract_features import extracted_feature_of_signal
 
 
 #----------------------#### General ####------------------------------------------------
@@ -201,6 +202,9 @@ def convert_to_image(pkz_dir, opt):
       elif opt.scaler == 'denoise':
         hor_data = denoise(hor_data)
         ver_data = denoise(ver_data)
+      elif opt.scaler == 'extracted':
+        hor_data = np.expand_dims(extracted_feature_of_signal(hor_data), axis=-1)
+        ver_data = np.expand_dims(extracted_feature_of_signal(ver_data), axis=-1)
       else:
         hor_data = scaler_transform(hor_data, scaler)
         ver_data = scaler_transform(ver_data, scaler)
