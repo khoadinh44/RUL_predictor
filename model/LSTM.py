@@ -52,7 +52,7 @@ def lstm_model(opt, training=None, inputs=None):
                padding='same',
                kernel_initializer='glorot_uniform',
                kernel_regularizer=regularizers.l2(l=0.0001),)(x)
-  x = BatchNormalization()(x)
+  x = BatchNormalization()(x, training=training)
   x = Activation('relu')(x)
   x = MaxPooling1D(pool_size=4, strides=None)(x)
 
