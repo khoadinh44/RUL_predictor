@@ -75,3 +75,27 @@ def dnn_model(opt):
     output = Dense(opt.num_classes, activation='softmax')(x)
   model = keras.models.Model(inputs=[input_1, input_2], outputs=[output])
   return model
+
+def dnn_extracted_model(opt, training, inputs):
+  x = keras.layers.Dense(28, activation=tf.keras.layers.ReLU(), 
+                                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                                     bias_regularizer=regularizers.l2(1e-4),
+                                     activity_regularizer=regularizers.l2(1e-5))(inputs)
+  x = keras.layers.Dense(56,activation=tf.keras.layers.ReLU(), 
+                                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                                     bias_regularizer=regularizers.l2(1e-4),
+                                     activity_regularizer=regularizers.l2(1e-5))(x)
+  x = keras.layers.Dense(112,activation=tf.keras.layers.ReLU(), 
+                                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                                     bias_regularizer=regularizers.l2(1e-4),
+                                     activity_regularizer=regularizers.l2(1e-5))(x)
+  x = keras.layers.Dense(224,activation=tf.keras.layers.ReLU(), 
+                                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                                     bias_regularizer=regularizers.l2(1e-4),
+                                     activity_regularizer=regularizers.l2(1e-5))(x)
+  x = keras.layers.Dense(384,activation=tf.keras.layers.ReLU(), 
+                                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                                     bias_regularizer=regularizers.l2(1e-4),
+                                     activity_regularizer=regularizers.l2(1e-5))(x)
+  x = BatchNormalization(training=training)(x)
+  return x
