@@ -63,7 +63,7 @@ def main(opt, train_data_1D, train_label_1D, test_data_1D, test_label_1D, train_
     network = lstm_model(opt, training=True)
   if opt.mix_model:
 #     input_1D = Input((opt.input_shape, 2), name='lstm_input')
-    input_1D = Input((14, ), name='DNN')
+    input_1D = Input((14, 2), name='DNN')
     input_2D = Input((128, 128, 2), name='CNN_input')
     output = mix_model(opt, dnn_extracted_model, resnet_50, input_1D, input_2D, True)
     network = Model(inputs=[input_1D, input_2D], outputs=output)
@@ -83,7 +83,7 @@ def main(opt, train_data_1D, train_label_1D, test_data_1D, test_label_1D, train_
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
-    network.compile(optimizer=AngularGrad(1e-4), loss=tf.keras.losses.MeanSquaredLogarithmicError(), metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error], run_eagerly=True) # https://keras.io/api/losses/
+    network.compile(optimizer=AngularGrad(), loss=tf.keras.losses.MeanSquaredLogarithmicError(), metrics=['mae', r2_keras, tf.keras.metrics.mean_squared_error], run_eagerly=True) # https://keras.io/api/losses/
   network.summary()
   history = network.fit(train_data, train_label,
                       epochs     = opt.epochs,
