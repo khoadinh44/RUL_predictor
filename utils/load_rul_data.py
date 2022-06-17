@@ -44,6 +44,11 @@ if os.path.exists(train_data_path_1D):
   train_label_rul_2D = load_df(train_label_path_2D)
   test_data_rul_2D   = load_df(test_data_path_2D)
   test_label_rul_2D  = load_df(test_label_path_2D)
+  print(f'Train shape 1D: {train_data_rul_1D.shape}   {train_label_rul_1D.shape}')  
+  print(f'Test shape 1D: {test_data_rul_1D.shape}   {test_label_rul_1D.shape}\n')
+
+  print(f'Train shape 2D: {train_data_rul_2D.shape}   {train_label_rul_2D.shape}')  
+  print(f'Test shape 2D: {test_data_rul_2D.shape}   {test_label_rul_2D.shape}\n')
 else:
   # Train data-------------------------------------------------------------------------
   Bearing1_1_path = main_dir_colab + 'Learning_set/Bearing1_1'
@@ -95,9 +100,5 @@ else:
   save_df(train_label_rul, train_label_path_1D)
   save_df(test_data_rul, test_data_path_1D)
   save_df(test_label_rul, test_label_path_1D)
-  
-print(f'Train shape 1D: {train_data_rul_1D.shape}   {train_label_rul_1D.shape}')  
-print(f'Test shape 1D: {test_data_rul_1D.shape}   {test_label_rul_1D.shape}\n')
 
-print(f'Train shape 2D: {train_data_rul_2D.shape}   {train_label_rul_2D.shape}')  
-print(f'Test shape 2D: {test_data_rul_2D.shape}   {test_label_rul_2D.shape}\n')
+
