@@ -1,9 +1,9 @@
 from train import parse_opt
 from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
-from model.dnn import dnn_model
+from model.dnn import dnn_model, dnn_extracted_model
 from model.resnet import resnet_18, resnet_101, resnet_152, resnet_50
-from model.LSTM_CNN_2D import mix_model
+from model.MIX_1D_2D import mix_model
 from model.LSTM import lstm_model
 
 from utils.load_predict_data import test_data_2D, test_label_2D, test_data_1D, test_label_1D
@@ -48,9 +48,9 @@ def Predict(data, model):
   if model == 'lstm':
     network = lstm_model(opt)
   if model == 'mix':
-    input_1D = Input((opt.input_shape, 2), name='lstm_input')
+    input_1D = Input((14, 2), name='DNN')
     input_2D = Input((128, 128, 2), name='CNN_input')
-    output = mix_model(opt, lstm_model, resnet_50, input_1D, input_2D, True)
+    output = mix_model(opt, dnn_extracted_model, resnet_50, input_1D, input_2D, None)
     network = Model(inputs=[input_1D, input_2D], outputs=output)
   
   print(f'\nLoad weight: {os.path.join(opt.save_dir, model)}\n')
