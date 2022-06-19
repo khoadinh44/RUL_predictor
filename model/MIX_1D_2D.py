@@ -30,7 +30,7 @@ def mix_model(opt, cnn_1d_model, resnet_50, lstm_extracted_model, lstm_condition
   merged_value = concatenate([hidden_out_extracted, hidden_out_type], axis=-1, name='merged_value_layer')
   
   output = TransformerLayer(hidden_out_1D, hidden_out_2D, merged_value, 4, training)
-  output = Dense(1, activation='sigmoid')(merged_hidden)
+  output = Dense(1, activation='sigmoid')(output)
   return output
   
   
