@@ -146,6 +146,7 @@ def extract_feature_image(df, ind, opt, type_data, feature_name='horiz accel'):
         coef = np.log2(coef**2 + 0.001)
         coef = (coef - coef.min())/(coef.max() - coef.min())
     else:
+        print('-'*10, f'Convert to 1D data', '-'*10, '\n')
         coef = data 
     return coef
 
@@ -216,7 +217,7 @@ def convert_to_image(pkz_dir, opt, type_data):
       data_x = np.concatenate((hor_data, ver_data), axis=-1)
       data['x'] = data_x
     else:
-      print('-'*10, 'Raw 1D data', '-'*10, '\n')
+      print('-'*10, 'Raw data', '-'*10, '\n')
       data['x']=np.array(data['x'])
     
     data['y']=np.array(data['y'])
