@@ -38,33 +38,7 @@ test_data_path_extract = main_dir_colab + f'test_data_extract_{opt.condition}.pk
 train_c_path = main_dir_colab + f'train_c_{opt.condition}.pkz'
 test_c_path = main_dir_colab + f'test_c_{opt.condition}.pkz'
  
- 
-if os.path.exists(test_label_path_extract):
-  train_data_rul_1D  = load_df(train_data_path_1D)
-  train_label_rul_1D = load_df(train_label_path_1D)
-  test_data_rul_1D   = load_df(test_data_path_1D)
-  test_label_rul_1D  = load_df(test_label_path_1D)
-  
-  train_data_rul_2D  = load_df(train_data_path_2D)
-  test_data_rul_2D   = load_df(test_data_path_2D)
-  
-  train_data_rul_extract  = load_df(train_data_path_extract)
-  test_data_rul_extract   = load_df(test_data_path_extract)
-  
-  train_c   = load_df(train_c_path)
-  test_c  = load_df(test_c_path)
-  
-  print(f'Train shape 1D: {train_data_rul_1D.shape}   {train_label_rul_1D.shape}')  
-  print(f'Test shape 1D: {test_data_rul_1D.shape}   {test_label_rul_1D.shape}\n')
-
-  print(f'Train shape 2D: {train_data_rul_2D.shape}')  
-  print(f'Test shape 2D: {test_data_rul_2D.shape} \n')
-  
-  print(f'Train shape extract: {train_data_rul_extract.shape}   ')  
-  print(f'Test shape extract: {test_data_rul_extract.shape} \n')
-  
-  print(f'shape of condition train and test: {train_c.shape}   {test_c.shape}\n')
-else:
+if os.path.exists(train_data_path_1D) == False:
   for type_data in opt.data_type:
     # Train data-------------------------------------------------------------------------
     Bearing1_1_path = main_dir_colab + 'Learning_set/Bearing1_1'
@@ -157,6 +131,28 @@ else:
       save_df(train_data_rul, train_data_path_2D)
       save_df(test_data_rul, test_data_path_2D)
     print('#'*100)
-      
 
+train_data_rul_1D  = load_df(train_data_path_1D)
+train_label_rul_1D = load_df(train_label_path_1D)
+test_data_rul_1D   = load_df(test_data_path_1D)
+test_label_rul_1D  = load_df(test_label_path_1D)
 
+train_data_rul_2D  = load_df(train_data_path_2D)
+test_data_rul_2D   = load_df(test_data_path_2D)
+
+train_data_rul_extract  = load_df(train_data_path_extract)
+test_data_rul_extract   = load_df(test_data_path_extract)
+
+train_c   = load_df(train_c_path)
+test_c  = load_df(test_c_path)
+
+print(f'Train shape 1D: {train_data_rul_1D.shape}   {train_label_rul_1D.shape}')  
+print(f'Test shape 1D: {test_data_rul_1D.shape}   {test_label_rul_1D.shape}\n')
+
+print(f'Train shape 2D: {train_data_rul_2D.shape}')  
+print(f'Test shape 2D: {test_data_rul_2D.shape} \n')
+
+print(f'Train shape extract: {train_data_rul_extract.shape}')  
+print(f'Test shape extract: {test_data_rul_extract.shape} \n')
+
+print(f'shape of condition train and test: {train_c.shape}   {test_c.shape}\n')
