@@ -171,8 +171,8 @@ def convert_to_image(pkz_dir, opt, type_data):
     if type_data == '2d':
       print('-'*10, f'Convert to 2D data', '-'*10, '\n')
     else:
-      print('-'*10, f'Maintain to 1D data', '-'*10, '\n')
-      
+      print('-'*10, f'Maintain 1D data', '-'*10, '\n')
+
     for i in range(0, no_of_files):
         coef_h = np.expand_dims(extract_feature_image(df, i, opt, type_data, feature_name='horiz accel'), axis=-1)
         coef_v = np.expand_dims(extract_feature_image(df, i, opt, type_data, feature_name='vert accel'), axis=-1)
