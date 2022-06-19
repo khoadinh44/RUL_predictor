@@ -108,9 +108,9 @@ if __name__ == '__main__':
   if opt.rul_train:
     from utils.load_rul_data import train_data_rul_1D, train_label_rul_1D, \
                                     test_data_rul_1D, test_label_rul_1D, \
-                                    train_data_rul_2D, train_label_rul_2D, \
-                                    test_data_rul_2D, test_label_rul_2D,\
-                                    train_data_rul_extract, train_label_rul_extract,\
-                                    test_data_rul_extract, test_label_rul_extract,\
+                                    train_data_rul_2D, \
+                                    test_data_rul_2D,\
+                                    train_data_rul_extract, \
+                                    test_data_rul_extract,\
                                     train_c, test_c
     main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_label_rul_1D, train_data_rul_2D, test_data_rul_2D, train_data_rul_extract, test_data_rul_extract, train_c, test_c)
