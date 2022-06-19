@@ -1,6 +1,7 @@
 from tensorflow.keras.layers import Conv1D, Activation, Dense, concatenate, BatchNormalization, GlobalAveragePooling1D, Input, MaxPooling1D, Lambda, GlobalAveragePooling2D, ReLU, MaxPooling2D, Flatten, Dropout, LSTM
 import tensorflow as tf
 from keras.models import Model
+from tensorflow_addons.layers import MultiHeadAttention
 from keras import layers, regularizers
 import keras.backend as K
 
