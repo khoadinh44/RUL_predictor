@@ -132,13 +132,13 @@ def scaler_transform(signals, scale_method):
     data.append(scale.fit_transform(signal))
   return np.array(data)
 
-def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
+def extract_feature_image(df, ind, opt, type_data, feature_name='horiz accel'):
     DATA_POINTS_PER_FILE=2559
     WIN_SIZE = 20
     WAVELET_TYPE = 'morl'
     data_range = df_row_ind_to_data_range(ind)
     data = df[feature_name].values[data_range[0]: data_range[1]]
-    if '2d' in opt.data_type:
+    if type_data == '2d':
         data = np.array([np.mean(data[i: i+WIN_SIZE]) for i in range(0, DATA_POINTS_PER_FILE, WIN_SIZE)])
         coef, _ = pywt.cwt(data, np.linspace(1,128,128), WAVELET_TYPE)
         # transform to power and apply logarithm?!
@@ -160,7 +160,7 @@ def denoise(signals):
         # all_signal.append(nr.reduce_noise(y=x, sr=2559, hop_length=20, time_constant_s=0.1, prop_decrease=0.5, freq_mask_smooth_hz=25600))
     return np.expand_dims(all_signal, axis=-1)
 
-def convert_to_image(pkz_dir, opt):
+def convert_to_image(pkz_dir, opt, type_data):
     df = load_df(pkz_dir+'.pkz')
     no_of_rows = df.shape[0]
     DATA_POINTS_PER_FILE=2559
@@ -169,14 +169,21 @@ def convert_to_image(pkz_dir, opt):
     
     data = {'x': [], 'y': []}
     for i in range(0, no_of_files):
-        coef_h = np.expand_dims(extract_feature_image(df, i, opt, feature_name='horiz accel'), axis=-1)
-        coef_v = np.expand_dims(extract_feature_image(df, i, opt, feature_name='vert accel'), axis=-1)
+        coef_h = np.expand_dims(extract_feature_image(df, i, opt, type_data, feature_name='horiz accel'), axis=-1)
+        coef_v = np.expand_dims(extract_feature_image(df, i, opt, type_data, feature_name='vert accel'), axis=-1)
         x_ = np.concatenate((coef_h, coef_v), axis=-1).tolist()
         all_nums = (no_of_files-1)
         y_ = float(all_nums-i)/float(all_nums)
         data['x'].append(x_)
         data['y'].append(y_)
-
+        
+    if type_data=='extract':
+      print('-'*10, 'Extracted data', '-'*10, '\n')
+      hor_data = np.array(data['x'])[:, :, 0]
+      ver_data = np.array(data['x'])[:, :, 1]
+      data_x = np.concatenate((hor_data, ver_data), axis=-1)
+      data['x'] = data_x
+    
     if opt.scaler == 'MinMaxScaler':
       scaler = MinMaxScaler
     if opt.scaler == 'MaxAbsScaler':
@@ -191,11 +198,11 @@ def convert_to_image(pkz_dir, opt):
       scaler = QuantileTransformer
     if opt.scaler == 'PowerTransformer':
       scaler = PowerTransformer
-
+      
     if opt.scaler != None:
       hor_data = np.array(data['x'])[:, :, 0]
       ver_data = np.array(data['x'])[:, :, 1]
-      print(f'------------------Use scaler: {opt.scaler}-----------------\n')
+      print('-'*10, f'Use scaler: {opt.scaler}', '-'*10, '\n')
       if opt.scaler == 'FFT':
         hor_data = np.expand_dims(FFT(hor_data), axis=-1)
         ver_data = np.expand_dims(FFT(ver_data), axis=-1)
@@ -207,15 +214,10 @@ def convert_to_image(pkz_dir, opt):
         ver_data = scaler_transform(ver_data, scaler)
       data_x = np.concatenate((hor_data, ver_data), axis=-1)
       data['x'] = data_x
-    elif 'extract' in opt.data_type:
-      print('-'*10, 'Extracted data', '-'*10, '\n')
-      hor_data = np.array(data['x'])[:, :, 0]
-      ver_data = np.array(data['x'])[:, :, 1]
-      data_x = np.concatenate((hor_data, ver_data), axis=-1)
-      data['x'] = data_x
     else:
       data['x']=np.array(data['x'])
-      data['y']=np.array(data['y'])
+    
+    data['y']=np.array(data['y'])
 
     # assert data['x'].shape==(no_of_files, 128, 128, 2)
     x_shape = data['x'].shape
