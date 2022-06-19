@@ -139,14 +139,12 @@ def extract_feature_image(df, ind, opt, type_data, feature_name='horiz accel'):
     data_range = df_row_ind_to_data_range(ind)
     data = df[feature_name].values[data_range[0]: data_range[1]]
     if type_data == '2d':
-        print('-'*10, f'Convert to 2D data', '-'*10, '\n')
         data = np.array([np.mean(data[i: i+WIN_SIZE]) for i in range(0, DATA_POINTS_PER_FILE, WIN_SIZE)])
         coef, _ = pywt.cwt(data, np.linspace(1,128,128), WAVELET_TYPE)
         # transform to power and apply logarithm?!
         coef = np.log2(coef**2 + 0.001)
         coef = (coef - coef.min())/(coef.max() - coef.min())
     else:
-        print('-'*10, f'Convert to 1D data', '-'*10, '\n')
         coef = data 
     return coef
 
@@ -170,6 +168,11 @@ def convert_to_image(pkz_dir, opt, type_data):
     print(f'pkz file length: {no_of_rows}, total subsequence data: {no_of_files}')
     
     data = {'x': [], 'y': []}
+    if type_data == '2d':
+      print('-'*10, f'Convert to 2D data', '-'*10, '\n')
+    else:
+      print('-'*10, f'Maintain to 1D data', '-'*10, '\n')
+      
     for i in range(0, no_of_files):
         coef_h = np.expand_dims(extract_feature_image(df, i, opt, type_data, feature_name='horiz accel'), axis=-1)
         coef_v = np.expand_dims(extract_feature_image(df, i, opt, type_data, feature_name='vert accel'), axis=-1)
