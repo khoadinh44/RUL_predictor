@@ -14,12 +14,12 @@ def mix_model(opt, cnn_1d_model, resnet_50, lstm_extracted_model, lstm_condition
   out_1D = cnn_1d_model(opt, training, input_1D)
   out_2D = resnet_50(opt)(input_2D, training=training)
   out_extracted = lstm_extracted_model(opt, training, input_extracted)
-  out_type = lstm_extracted_model(opt, training, input_type)
+  out_type = lstm_condition_model(opt, training, input_type)
   
-  network_1D = BatchNormalization()(Model(input_1D, out_1D), training=training)
-  network_2D = BatchNormalization()(Model(input_2D, out_2D), training=training)
-  network_extracted = BatchNormalization()(Model(input_extracted, out_extracted), training=training)
-  network_type = BatchNormalization()(Model(input_type, out_type), training=training)
+  network_1D = Model(input_1D, out_1D)
+  network_2D = Model(input_2D, out_2D)
+  network_extracted = Model(input_extracted, out_extracted)
+  network_type = Model(input_type, out_type)
   
   hidden_out_1D = network_1D([input_1D])
   hidden_out_2D = network_2D([input_2D])
