@@ -43,7 +43,7 @@ train_c_path = main_dir_colab + f'train_c_{opt.condition}.pkz'
 test_c_path = main_dir_colab + f'test_c_{opt.condition}.pkz'
  
  
-if os.path.exists(train_data_path_1D):
+if os.path.exists(test_label_path_extract):
   train_data_rul_1D  = load_df(train_data_path_1D)
   train_label_rul_1D = load_df(train_label_path_1D)
   test_data_rul_1D   = load_df(test_data_path_1D)
@@ -168,3 +168,7 @@ else:
       save_df(train_label_rul, train_label_path_2D)
       save_df(test_data_rul, test_data_path_2D)
       save_df(test_label_rul, test_label_path_2D)
+    print('#'*100)
+      
+
+
