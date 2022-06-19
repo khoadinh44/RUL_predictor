@@ -82,30 +82,27 @@ def cnn_1d_model(opt, training=None):
     x = MaxPooling1D(pool_size=2, strides=None)(x)
 
 
-    for i in range(2):
+    for i in range(3):
         x = identity_block(x, kernel_size=3, filters=48, stage=1, block=i, training=training)
 
     x = MaxPooling1D(pool_size=2, strides=None)(x)
 
-    for i in range(2):
+    for i in range(4):
         x = identity_block(x, kernel_size=3, filters=96, stage=2, block=i, training=training)
 
     x = MaxPooling1D(pool_size=2, strides=None)(x)
 
-    for i in range(2):
+    for i in range(6):
         x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i, training=training)
 
     x = MaxPooling1D(pool_size=2, strides=None)(x)
 
-    for i in range(2):
+    for i in range(3):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
-    x = TransformerLayer(x, c=384, training=training)
     x = GlobalAveragePooling1D()(x) 
-    x = BatchNormalization()(x, training=training) 
-  
-    # x2 = TransformerLayer(x, c=384, num_heads=4)
-    # x = concatenate([x1, x2], axis=-1)
-
+    
+    if opt.mix_model:
+      return x
     if opt.rul_train:
       x = Dense(opt.num_classes, activation='sigmoid')(x)
     if opt.condition_train:
