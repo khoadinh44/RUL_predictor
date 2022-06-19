@@ -7,7 +7,7 @@ import keras.backend as K
 
 def TransformerLayer(q, k, v, num_heads=4, training=None):
     # Transformer layer https://arxiv.org/abs/2010.11929 (LayerNorm layers removed for better performance)
-    ma  = MultiHeadAttention(head_size=c, num_heads=num_heads)([q, k, v]) 
+    ma  = MultiHeadAttention(head_size=num_heads, num_heads=num_heads)([q, k, v]) 
     ma = Activation('relu')(ma)
     return ma
 
