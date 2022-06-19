@@ -184,8 +184,8 @@ def convert_to_image(pkz_dir, opt, type_data):
         
     if type_data=='extract':
       print('-'*10, 'Convert to Extracted data', '-'*10, '\n')
-      hor_data = np.array(data['x'])[:, :, 0]
-      ver_data = np.array(data['x'])[:, :, 1]
+      hor_data = extracted_feature_of_signal(np.array(data['x'])[:, :, 0])
+      ver_data = extracted_feature_of_signal(np.array(data['x'])[:, :, 1])
       data_x = np.concatenate((hor_data, ver_data), axis=-1)
       data['x'] = data_x
     
