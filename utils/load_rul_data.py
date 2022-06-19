@@ -24,23 +24,23 @@ train_main_dir = main_dir_colab + 'Learning_set/'
 test_main_dir = main_dir_colab + 'Test_set/'
 
 # Path for saving data-------------------------------------------------------------------
-train_data_path_2D = main_dir_colab + 'train_data_2D_{opt.condition}.pkz'
-train_label_path_2D = main_dir_colab + 'train_label_2D_{opt.condition}rul.pkz'
-test_data_path_2D = main_dir_colab + 'test_data_2D_{opt.condition}.pkz'
-test_label_path_2D = main_dir_colab + 'test_label_2D_{opt.condition}.pkz'
+train_data_path_2D = main_dir_colab + f'train_data_2D_{opt.condition}.pkz'
+train_label_path_2D = main_dir_colab + f'train_label_2D_{opt.condition}rul.pkz'
+test_data_path_2D = main_dir_colab + f'test_data_2D_{opt.condition}.pkz'
+test_label_path_2D = main_dir_colab + f'test_label_2D_{opt.condition}.pkz'
 
-train_data_path_1D = main_dir_colab + 'train_data_1D_{opt.condition}.pkz'
-train_label_path_1D = main_dir_colab + 'train_label_1D_{opt.condition}.pkz'
-test_data_path_1D = main_dir_colab + 'test_data_1D_{opt.condition}.pkz'
-test_label_path_1D = main_dir_colab + 'test_label_1D_{opt.condition}.pkz'
+train_data_path_1D = main_dir_colab + f'train_data_1D_{opt.condition}.pkz'
+train_label_path_1D = main_dir_colab + f'train_label_1D_{opt.condition}.pkz'
+test_data_path_1D = main_dir_colab + f'test_data_1D_{opt.condition}.pkz'
+test_label_path_1D = main_dir_colab + f'test_label_1D_{opt.condition}.pkz'
 
-train_data_path_extract = main_dir_colab + 'train_data_extract_{opt.condition}.pkz'
-train_label_path_extract = main_dir_colab + 'train_label_extract_{opt.condition}.pkz'
-test_data_path_extract = main_dir_colab + 'test_data_extract_{opt.condition}.pkz'
-test_label_path_extract = main_dir_colab + 'test_label_extract_{opt.condition}.pkz'
+train_data_path_extract = main_dir_colab + f'train_data_extract_{opt.condition}.pkz'
+train_label_path_extract = main_dir_colab + f'train_label_extract_{opt.condition}.pkz'
+test_data_path_extract = main_dir_colab + f'test_data_extract_{opt.condition}.pkz'
+test_label_path_extract = main_dir_colab + f'test_label_extract_{opt.condition}.pkz'
 
-train_c_path = main_dir_colab + 'train_c_{opt.condition}.pkz'
-test_c_path = main_dir_colab + 'test_c_{opt.condition}.pkz'
+train_c_path = main_dir_colab + f'train_c_{opt.condition}.pkz'
+test_c_path = main_dir_colab + f'test_c_{opt.condition}.pkz'
  
  
 if os.path.exists(train_data_path_1D):
@@ -168,6 +168,3 @@ else:
       save_df(train_label_rul, train_label_path_2D)
       save_df(test_data_rul, test_data_path_2D)
       save_df(test_label_rul, test_label_path_2D)
-      
-
-
