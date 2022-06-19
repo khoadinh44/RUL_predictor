@@ -71,8 +71,6 @@ class ResNetTypeII(tf.keras.Model):
                                             stride=2)
 
         self.avgpool = tf.keras.layers.GlobalAveragePooling2D()
-        # self.TransformerLayer = TransformerLayer
-        self.lstm_model = lstm_model
         self.expand_dims = tf.expand_dims
         self.fc = tf.keras.layers.Dense(units=384, activation='relu')
 
@@ -86,9 +84,6 @@ class ResNetTypeII(tf.keras.Model):
         x = self.layer3(x, training=training)
         x = self.layer4(x, training=training)
         x = self.avgpool(x)
-        # x = self.expand_dims(x, -1)
-        # x = self.lstm_model(x)
-        # x = self.TransformerLayer(x)
         output = self.fc(x)
         return output
 
