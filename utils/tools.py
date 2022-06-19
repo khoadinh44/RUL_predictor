@@ -138,7 +138,7 @@ def extract_feature_image(df, ind, opt, feature_name='horiz accel'):
     WAVELET_TYPE = 'morl'
     data_range = df_row_ind_to_data_range(ind)
     data = df[feature_name].values[data_range[0]: data_range[1]]
-    if opt.model in ['cnn_2d', 'resnet_cnn_2d']:
+    if '2d' in opt.data_type:
         data = np.array([np.mean(data[i: i+WIN_SIZE]) for i in range(0, DATA_POINTS_PER_FILE, WIN_SIZE)])
         coef, _ = pywt.cwt(data, np.linspace(1,128,128), WAVELET_TYPE)
         # transform to power and apply logarithm?!
@@ -202,18 +202,20 @@ def convert_to_image(pkz_dir, opt):
       elif opt.scaler == 'denoise':
         hor_data = denoise(hor_data)
         ver_data = denoise(ver_data)
-      elif opt.scaler == 'extracted':
-        hor_data = np.expand_dims(extracted_feature_of_signal(hor_data), axis=-1)
-        ver_data = np.expand_dims(extracted_feature_of_signal(ver_data), axis=-1)
       else:
         hor_data = scaler_transform(hor_data, scaler)
         ver_data = scaler_transform(ver_data, scaler)
       data_x = np.concatenate((hor_data, ver_data), axis=-1)
       data['x'] = data_x
+    elif 'extract' in opt.data_type:
+      print('-'*10, 'Extracted data', '-'*10, '\n')
+      hor_data = np.array(data['x'])[:, :, 0]
+      ver_data = np.array(data['x'])[:, :, 1]
+      data_x = np.concatenate((hor_data, ver_data), axis=-1)
+      data['x'] = data_x
     else:
       data['x']=np.array(data['x'])
-      
-    data['y']=np.array(data['y'])
+      data['y']=np.array(data['y'])
 
     # assert data['x'].shape==(no_of_files, 128, 128, 2)
     x_shape = data['x'].shape
