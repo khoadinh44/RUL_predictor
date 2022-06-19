@@ -39,7 +39,7 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
   if opt.condition_train:
       train_label = to_onehot(train_label)
       test_label  = to_onehot(test_label)
-  val_data_1D, val_data_2D, val_extract, val_c, val_label = test_data_1D[:1000], test_data_2D[:1000], test_data_rul_extract[:1000], test_c[:1000], test_label_1D[:1000]
+  val_data_1D, val_data_2D, val_extract, val_c, val_label = test_data_rul_1D[:1000], test_data_rul_2D[:1000], test_data_rul_extract[:1000], test_c[:1000], test_label_rul_1D[:1000]
   val_data = [val_data_1D, val_data_2D, val_extract, val_c]
 
   if opt.model == 'dnn':
@@ -69,10 +69,10 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
     network = Model(inputs=[input_1D, input_2D, input_extracted, input_type], outputs=output)
 
     # data-------------------------------
-    train_data = [train_data_1D, train_data_2D, train_data_rul_extract, train_c]
-    train_label = train_label_1D
-    test_data = [test_data_1D, test_data_2D, test_data_rul_extract, test_c]
-    test_label = test_label_1D
+    train_data = [train_data_rul_1D, train_data_rul_2D, train_data_rul_extract, train_c]
+    train_label = train_label_rul_1D
+    test_data = [test_data_rul_1D, test_data_rul_2D, test_data_rul_extract, test_c]
+    test_label = test_label_rul_1D
   
   if opt.load_weight:
     if os.path.exists(os.path.join(opt.save_dir, f'model_{opt.condition}')):
