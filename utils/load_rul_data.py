@@ -132,16 +132,16 @@ else:
     Bearing3_3_data = convert_to_image(Bearing3_3_path, opt, type_data)
     
     if opt.condition in ['c_1', 'c_all']:
-      test_data_rul = train_data_1 = np.concatenate((Bearing1_3_data['x'], Bearing1_4_data['x'], Bearing1_5_data['x'], Bearing1_6_data['x'], Bearing1_7_data['x']))
-      test_label_rul = train_label_1 = np.concatenate((Bearing1_3_data['y'], Bearing1_4_data['y'], Bearing1_5_data['y'], Bearing1_6_data['y'], Bearing1_7_data['y']))
+      test_data_rul = test_data_1 = np.concatenate((Bearing1_3_data['x'], Bearing1_4_data['x'], Bearing1_5_data['x'], Bearing1_6_data['x'], Bearing1_7_data['x']))
+      test_label_rul = test_label_1 = np.concatenate((Bearing1_3_data['y'], Bearing1_4_data['y'], Bearing1_5_data['y'], Bearing1_6_data['y'], Bearing1_7_data['y']))
       test_c_type    = test_c_type_1 = np.array([1.]*len(test_label_1))
     if opt.condition in ['c_2', 'c_all']:
-      test_data_rul = train_data_2 = np.concatenate((Bearing2_3_data['x'], Bearing2_4_data['x'], Bearing2_5_data['x'], Bearing2_6_data['x'], Bearing2_7_data['x']))
-      test_label_rul = train_label_2 = np.concatenate((Bearing2_3_data['y'], Bearing2_4_data['y'], Bearing2_5_data['y'], Bearing2_6_data['y'], Bearing2_7_data['y']))
+      test_data_rul = test_data_2 = np.concatenate((Bearing2_3_data['x'], Bearing2_4_data['x'], Bearing2_5_data['x'], Bearing2_6_data['x'], Bearing2_7_data['x']))
+      test_label_rul = test_label_2 = np.concatenate((Bearing2_3_data['y'], Bearing2_4_data['y'], Bearing2_5_data['y'], Bearing2_6_data['y'], Bearing2_7_data['y']))
       test_c_type    = test_c_type_1 = np.array([2.]*len(test_label_2))
     if opt.condition in ['c_3', 'c_all']:
-      test_data_rul = train_data_3 = np.concatenate((Bearing3_3_data['x']))
-      test_label_rul = train_label_3 = np.concatenate((Bearing3_3_data['y']))
+      test_data_rul = test_data_3 = np.concatenate((Bearing3_3_data['x']))
+      test_label_rul = test_label_3 = np.concatenate((Bearing3_3_data['y']))
       test_c_type    = test_c_type_3 = np.array([3.]*len(test_label_3))
     if opt.condition in ['c_all']:
       test_data_rul = np.concatenate((test_data_1, test_data_2, test_data_3))
