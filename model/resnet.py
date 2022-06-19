@@ -72,6 +72,7 @@ class ResNetTypeII(tf.keras.Model):
 
         self.avgpool = tf.keras.layers.GlobalAveragePooling2D()
         self.expand_dims = tf.expand_dims
+        self.norm = BatchNormalization()
         self.fc = tf.keras.layers.Dense(units=384, activation='relu')
 
     def call(self, inputs, training=None, mask=None):
@@ -84,7 +85,8 @@ class ResNetTypeII(tf.keras.Model):
         x = self.layer3(x, training=training)
         x = self.layer4(x, training=training)
         x = self.avgpool(x)
-        output = self.fc(x)
+        x = self.fc(x)
+        output = self.norm(x, training=training)
         return output
 
 
