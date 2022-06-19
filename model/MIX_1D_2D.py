@@ -4,18 +4,31 @@ from keras.models import Model
 from keras import layers, regularizers
 import keras.backend as K
 
-def mix_model(opt, model_1D, model_2D, input_1D, input_2D, training=False):
-  out_1D = model_1D(opt, training, input_1D)
-  out_2D = model_2D(opt)(input_2D, training=training)
+def TransformerLayer(q, k, v, num_heads=4, training=None):
+    # Transformer layer https://arxiv.org/abs/2010.11929 (LayerNorm layers removed for better performance)
+    ma  = MultiHeadAttention(head_size=c, num_heads=num_heads)([q, k, v]) 
+    ma = Activation('relu')(ma)
+    return ma
+
+def mix_model(opt, cnn_1d_model, resnet_50, lstm_extracted_model, lstm_condition_model, input_1D, input_2D, input_extracted, input_type, training=False):
+  out_1D = cnn_1d_model(opt, training, input_1D)
+  out_2D = resnet_50(opt)(input_2D, training=training)
+  out_extracted = lstm_extracted_model(opt, training, input_extracted)
+  out_type = lstm_extracted_model(opt, training, input_type)
   
-  network_1D = Model(input_1D, out_1D)
-  network_2D = Model(input_2D, out_2D)
+  network_1D = BatchNormalization()(Model(input_1D, out_1D), training=training)
+  network_2D = BatchNormalization()(Model(input_2D, out_2D), training=training)
+  network_extracted = BatchNormalization()(Model(input_extracted, out_extracted), training=training)
+  network_type = BatchNormalization()(Model(input_type, out_type), training=training)
   
   hidden_out_1D = network_1D([input_1D])
   hidden_out_2D = network_2D([input_2D])
+  hidden_out_extracted = network_extracted([out_extracted])
+  hidden_out_type = network_type([out_type])
   
-  merged_hidden = concatenate([hidden_out_1D, hidden_out_2D], axis=-1, name='merged_hidden_layer')
-  # merged_hidden = BatchNormalization()(merged_hidden, training=training)
+  merged_value = concatenate([hidden_out_extracted, hidden_out_type], axis=-1, name='merged_value_layer')
+  
+  output = TransformerLayer(hidden_out_1D, hidden_out_2D, merged_value, 8, training)
   output = Dense(1, activation='sigmoid')(merged_hidden)
   return output
   
