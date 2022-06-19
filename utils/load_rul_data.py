@@ -59,6 +59,9 @@ if os.path.exists(train_data_path_1D):
   test_data_rul_extract   = load_df(test_data_path_extract)
   test_label_rul_extract  = load_df(test_label_path_extract)
   
+  train_c   = load_df(train_c_path)
+  test_c  = load_df(test_c_path)
+  
   print(f'Train shape 1D: {train_data_rul_1D.shape}   {train_label_rul_1D.shape}')  
   print(f'Test shape 1D: {test_data_rul_1D.shape}   {test_label_rul_1D.shape}\n')
 
@@ -67,6 +70,8 @@ if os.path.exists(train_data_path_1D):
   
   print(f'Train shape extract: {train_data_rul_extract.shape}   {train_label_rul_extract.shape}')  
   print(f'Test shape extract: {test_data_rul_extract.shape}   {test_label_rul_extract.shape}\n')
+  
+  print(f'shape of condition train and test: {train_c.shape}   {test_c.shape}\n')
 else:
   for type_data in opt.data_type:
     # Train data-------------------------------------------------------------------------
