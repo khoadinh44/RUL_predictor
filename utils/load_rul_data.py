@@ -106,8 +106,8 @@ if os.path.exists(train_data_path_1D) == False:
       test_label_rul = test_label_2 = np.concatenate((Bearing2_3_data['y'], Bearing2_4_data['y'], Bearing2_5_data['y'], Bearing2_6_data['y'], Bearing2_7_data['y']))
       test_c_type    = test_c_type_1 = np.array([2.]*len(test_label_2))
     if opt.condition in ['c_3', 'c_all']:
-      test_data_rul = test_data_3 = np.concatenate((Bearing3_3_data['x']))
-      test_label_rul = test_label_3 = np.concatenate((Bearing3_3_data['y']))
+      test_data_rul = test_data_3 = Bearing3_3_data['x']
+      test_label_rul = test_label_3 = Bearing3_3_data['y']
       test_c_type    = test_c_type_3 = np.array([3.]*len(test_label_3))
     if opt.condition in ['c_all']:
       test_data_rul = np.concatenate((test_data_1, test_data_2, test_data_3))
@@ -156,3 +156,6 @@ print(f'Train shape extract: {train_data_rul_extract.shape}')
 print(f'Test shape extract: {test_data_rul_extract.shape} \n')
 
 print(f'shape of condition train and test: {train_c.shape}   {test_c.shape}\n')
+    
+
+
