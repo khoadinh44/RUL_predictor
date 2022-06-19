@@ -67,4 +67,4 @@ def extracted_feature_of_signal(signals):
                 shape_factor(signal), Line_integral(signal), Peak_peak_value(signal), \
                 Skewness(signal), Peak_FFT(signal), energy_FFT(signal), PSD_FFT(signal)]
     data.append(features)
-  return np.array(data)
+  return np.expand_dims(data, axis=-1)
