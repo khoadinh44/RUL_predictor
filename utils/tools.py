@@ -139,6 +139,7 @@ def extract_feature_image(df, ind, opt, type_data, feature_name='horiz accel'):
     data_range = df_row_ind_to_data_range(ind)
     data = df[feature_name].values[data_range[0]: data_range[1]]
     if type_data == '2d':
+        print('-'*10, f'Convert to 2D data', '-'*10, '\n')
         data = np.array([np.mean(data[i: i+WIN_SIZE]) for i in range(0, DATA_POINTS_PER_FILE, WIN_SIZE)])
         coef, _ = pywt.cwt(data, np.linspace(1,128,128), WAVELET_TYPE)
         # transform to power and apply logarithm?!
@@ -178,7 +179,7 @@ def convert_to_image(pkz_dir, opt, type_data):
         data['y'].append(y_)
         
     if type_data=='extract':
-      print('-'*10, 'Extracted data', '-'*10, '\n')
+      print('-'*10, 'Convert to Extracted data', '-'*10, '\n')
       hor_data = np.array(data['x'])[:, :, 0]
       ver_data = np.array(data['x'])[:, :, 1]
       data_x = np.concatenate((hor_data, ver_data), axis=-1)
@@ -215,6 +216,7 @@ def convert_to_image(pkz_dir, opt, type_data):
       data_x = np.concatenate((hor_data, ver_data), axis=-1)
       data['x'] = data_x
     else:
+      print('-'*10, 'Raw 1D data', '-'*10, '\n')
       data['x']=np.array(data['x'])
     
     data['y']=np.array(data['y'])
