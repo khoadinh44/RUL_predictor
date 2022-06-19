@@ -75,6 +75,7 @@ def lstm_model(opt, training=None, inputs=None):
     x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
 
   x = GlobalAveragePooling1D()(x)  
+  x = BatchNormalization()(x, training=training)
   # x = Dense(units=384, activation='relu')(x)
   # x = Dropout(0.2)(x)
   if opt.mix_model:
@@ -89,6 +90,7 @@ def lstm_extracted_model(opt, training=None, inputs=None):
                 kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                 bias_regularizer=regularizers.l2(1e-4),
                 activity_regularizer=regularizers.l2(1e-5))(inputs)
+  x = BatchNormalization()(x, training=training)
   return x
 
 def lstm_condition_model(opt, training=None, inputs=None):
@@ -96,4 +98,5 @@ def lstm_condition_model(opt, training=None, inputs=None):
             kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
             bias_regularizer=regularizers.l2(1e-4),
             activity_regularizer=regularizers.l2(1e-5))(inputs)
+  x = BatchNormalization()(x, training=training)
   return x
