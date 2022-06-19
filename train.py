@@ -22,7 +22,7 @@ def parse_opt(known=False):
     parser.add_argument('--num_classes', default=1, type=str, help='class condition number: 3, class rul condition: 1')
     parser.add_argument('--model', default='cnn_2d', type=str, help='mix, lstm, dnn, cnn_1d, resnet_cnn_2d, cnn_2d, autoencoder')
     parser.add_argument('--save_dir', default=None, type=str)
-    parser.add_argument('--data_type', default=['1d', 'extract'], help='shape of data. They can be 1-D data or to be extracted to vectors of (14)')
+    parser.add_argument('--data_type', default=['1d', 'extract'], help='shape of data. They can be 1d, 2d, extract')
     parser.add_argument('--scaler', default=None, type=str)
     parser.add_argument('--main_dir_colab', default=None, type=str)
     parser.add_argument('--epochs', default=100, type=int)
