@@ -23,8 +23,8 @@ def mix_model(opt, cnn_1d_model, resnet_50, lstm_extracted_model, lstm_condition
   
   hidden_out_1D = network_1D([input_1D])
   hidden_out_2D = network_2D([input_2D])
-  hidden_out_extracted = network_extracted([out_extracted])
-  hidden_out_type = network_type([out_type])
+  hidden_out_extracted = network_extracted([input_extracted])
+  hidden_out_type = network_type([input_type])
   
   merged_value = concatenate([hidden_out_extracted, hidden_out_type], axis=-1, name='merged_value_layer')
   
