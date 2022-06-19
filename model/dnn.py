@@ -97,23 +97,3 @@ def dnn_model(opt):
 #                                      activity_regularizer=regularizers.l2(1e-5))(x)
 #   x = BatchNormalization()(x, training=training)
 #   return x
-
-def dnn_extracted_model(opt, training=None, inputs=None):
-  x = LSTM(56, activation='relu', 
-                return_sequences=True, 
-                kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                bias_regularizer=regularizers.l2(1e-4),
-                activity_regularizer=regularizers.l2(1e-5))(inputs)
-  x = LSTM(112, activation='relu', 
-                return_sequences=True,
-                kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                bias_regularizer=regularizers.l2(1e-4),
-                activity_regularizer=regularizers.l2(1e-5))(x)
-  x = LSTM(512, activation='relu', 
-                  return_sequences=False, 
-                  kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                  bias_regularizer=regularizers.l2(1e-4),
-                  activity_regularizer=regularizers.l2(1e-5))(x)
-  x = Dense(2048)(x) 
-  x = BatchNormalization()(x, training=training)   
-  return x
