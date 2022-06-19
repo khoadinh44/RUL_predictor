@@ -2,7 +2,7 @@ from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model
 from model.MIX_1D_2D import mix_model
 from model.resnet import resnet_18, resnet_101, resnet_152, resnet_50
-from model.LSTM import lstm_extracted_model, lstm_condition_model
+from model.LSTM import lstm_extracted_model, lstm_condition_model, lstm_model
 from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
 from utils.save_data import start_save_data
 from tensorflow.keras.layers import Input
@@ -67,7 +67,7 @@ def main(opt, train_data_1D, train_label_1D, test_data_1D, test_label_1D, train_
     input_type = Input((1,), name='DNN_input')
     input_1D = Input((2559, 2), name='LSTM_CNN1D_input')
     input_2D = Input((128, 128, 2), name='CNN_input')
-    output = mix_model(opt, cnn_1d_model, resnet_50, lstm_extracted_model, lstm_condition_model, input_1D, input_2D, input_extracted, input_type, True)
+    output = mix_model(opt, lstm_model, resnet_50, lstm_extracted_model, lstm_condition_model, input_1D, input_2D, input_extracted, input_type, True)
     network = Model(inputs=[input_1D, input_2D, input_extracted, input_type], outputs=output)
 
     # data-------------------------------
