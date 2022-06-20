@@ -6,15 +6,15 @@ from keras import layers, regularizers
 import keras.backend as K
 
 def TransformerLayer(q, k, v, num_heads=4, training=None):
-    q = tf.layers.Dense(384, activation=tf.keras.layers.ReLU(), 
+    q = tf.keras.layers.Dense(384, activation=tf.keras.layers.ReLU(), 
                                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                                      bias_regularizer=regularizers.l2(1e-4),
                                      activity_regularizer=regularizers.l2(1e-5))(q)
-    k = tf.layers.Dense(384, activation=tf.keras.layers.ReLU(), 
+    k = tf.keras.layers.Dense(384, activation=tf.keras.layers.ReLU(), 
                                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                                      bias_regularizer=regularizers.l2(1e-4),
                                      activity_regularizer=regularizers.l2(1e-5))(k)
-    v = tf.layers.Dense(384, activation=tf.keras.layers.ReLU(), 
+    v = tf.keras.layers.Dense(384, activation=tf.keras.layers.ReLU(), 
                                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                                      bias_regularizer=regularizers.l2(1e-4),
                                      activity_regularizer=regularizers.l2(1e-5))(v)
