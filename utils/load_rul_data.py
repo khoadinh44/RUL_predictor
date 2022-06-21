@@ -124,10 +124,10 @@ if os.path.exists(train_data_path_1D) == False:
       save_df(train_label_rul, train_label_path_1D)
       save_df(test_data_rul, test_data_path_1D)
       save_df(test_label_rul, test_label_path_1D)
-    elif type_data == 'extract':
+    if type_data == 'extract':
       save_df(train_data_rul, train_data_path_extract)
       save_df(test_data_rul, test_data_path_extract)
-    elif type_data == '2d':
+    if type_data == '2d':
       save_df(train_data_rul, train_data_path_2D)
       save_df(test_data_rul, test_data_path_2D)
     print('#'*100)
