@@ -6,11 +6,7 @@ from model.resnet import resnet_18, resnet_101, resnet_152, resnet_50
 from model.MIX_1D_2D import mix_model
 from model.LSTM import lstm_model
 from model.MIX_1D_2D import mix_model
-
-    from utils.load_rul_data import test_data_rul_1D, test_label_rul_1D, \
-                                    test_data_rul_2D,\
-                                    test_data_rul_extract,\
-                                    train_c, test_c
+from utils.load_predict_data import test_data_2D , test_data_1D , test_data_extract , test_data_c
 from utils.tools import all_matric
 from utils.save_data import start_save_data
 from tensorflow.keras.layers import Input
@@ -71,7 +67,7 @@ def main():
     # test_data_2D, test_label_2D, test_data_1D, test_label_1D
     print(f'\nShape 1D data: {test_data_1D[name].shape}')
     print(f'Shape 2D data: {test_data_2D[name].shape}')
-    y_pred = Predict([test_data_1D[name], test_data_2D[name]], 'mix')
+    y_pred = Predict([test_data_1D[name], test_data_2D[name], test_data_extract[name], test_data_c[name]], 'mix')
 
     plt.plot(test_label_1D[name], c='b')
     plt.plot(y_pred, c='r')
