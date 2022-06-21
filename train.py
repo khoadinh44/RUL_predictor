@@ -21,7 +21,7 @@ def parse_opt(known=False):
     parser.add_argument('--num_classes', default=1, type=str, help='class condition number: 3, class rul condition: 1')
     parser.add_argument('--model', default='cnn_2d', type=str, help='mix, lstm, dnn, cnn_1d, resnet_cnn_2d, cnn_2d, autoencoder')
     parser.add_argument('--save_dir', default=None, type=str)
-    parser.add_argument('--data_type', default=['1d', '2d', 'extract'], type=str, help='shape of data. They can be 1d, 2d, extract')
+    parser.add_argument('--data_type', default=['2d'], type=str, help='shape of data. They can be 1d, 2d, extract')
     parser.add_argument('--condition', default=None, type=str, help='c_1, c_2, c_3, c_all')
     parser.add_argument('--scaler', default=None, type=str)
     parser.add_argument('--main_dir_colab', default=None, type=str)
@@ -76,7 +76,8 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
   
   if opt.load_weight:
     if os.path.exists(os.path.join(opt.save_dir, f'model_{opt.condition}')):
-      print(f'\nLoad weight: {os.path.join(opt.save_dir, f'model_{opt.condition}')}\n')
+      name = f'model_{opt.condition}'
+      print(f'\nLoad weight: {os.path.join(opt.save_dir, name)}\n')
       network.load_weights(os.path.join(opt.save_dir, f'model_{opt.condition}'))
       
 
