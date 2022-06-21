@@ -76,8 +76,8 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
   
   if opt.load_weight:
     if os.path.exists(os.path.join(opt.save_dir, f'model_{opt.condition}')):
-      print(f'\nLoad weight: {os.path.join(opt.save_dir, opt.model)}\n')
-      network.load_weights(os.path.join(opt.save_dir, opt.model))
+      print(f'\nLoad weight: {os.path.join(opt.save_dir, f'model_{opt.condition}')}\n')
+      network.load_weights(os.path.join(opt.save_dir, f'model_{opt.condition}'))
       
 
   if opt.condition_train:
