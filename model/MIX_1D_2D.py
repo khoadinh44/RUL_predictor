@@ -42,8 +42,9 @@ def mix_model(opt, cnn_1d_model, resnet_50, lstm_extracted_model, lstm_condition
   
   merged_value = concatenate([hidden_out_extracted, hidden_out_type], axis=-1, name='merged_value_layer')
   
-  output = TransformerLayer(hidden_out_1D, hidden_out_2D, merged_value, 8, training)
-  output = Dense(1, activation='sigmoid')(output)
+  merged_value_0 = TransformerLayer(hidden_out_1D, hidden_out_2D, merged_value, 8, training)
+  merged_value_1 = concatenate([hidden_out_2D, merged_value_0], axis=-1, name='merged_value_layer')
+  output = Dense(1, activation='sigmoid')(merged_value_1)
   return output
   
   
