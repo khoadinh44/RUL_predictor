@@ -5,8 +5,12 @@ from model.dnn import dnn_model, dnn_extracted_model
 from model.resnet import resnet_18, resnet_101, resnet_152, resnet_50
 from model.MIX_1D_2D import mix_model
 from model.LSTM import lstm_model
+from model.MIX_1D_2D import mix_model
 
-from utils.load_predict_data import test_data_2D, test_label_2D, test_data_1D, test_label_1D
+    from utils.load_rul_data import test_data_rul_1D, test_label_rul_1D, \
+                                    test_data_rul_2D,\
+                                    test_data_rul_extract,\
+                                    train_c, test_c
 from utils.tools import all_matric
 from utils.save_data import start_save_data
 from tensorflow.keras.layers import Input
@@ -48,10 +52,12 @@ def Predict(data, model):
   if model == 'lstm':
     network = lstm_model(opt)
   if model == 'mix':
-    input_1D = Input((14, 2), name='DNN')
+    input_extracted = Input((14, 2), name='Extracted_LSTM_input')
+    input_type = Input((1,), name='DNN_input')
+    input_1D = Input((2559, 2), name='LSTM_CNN1D_input')
     input_2D = Input((128, 128, 2), name='CNN_input')
-    output = mix_model(opt, dnn_extracted_model, resnet_50, input_1D, input_2D, None)
-    network = Model(inputs=[input_1D, input_2D], outputs=output)
+    output = mix_model(opt, lstm_model, resnet_50, lstm_extracted_model, lstm_condition_model, input_1D, input_2D, input_extracted, input_type, True)
+    network = Model(inputs=[input_1D, input_2D, input_extracted, input_type], outputs=output)
   
   print(f'\nLoad weight: {os.path.join(opt.save_dir, model)}\n')
   network.load_weights(os.path.join(opt.save_dir, model))
@@ -65,11 +71,6 @@ def main():
     # test_data_2D, test_label_2D, test_data_1D, test_label_1D
     print(f'\nShape 1D data: {test_data_1D[name].shape}')
     print(f'Shape 2D data: {test_data_2D[name].shape}')
-#     y_pred_1d = Predict(test_data_1D[name], 'dnn')
-#     y_pred_2d = Predict(test_data_2D[name], 'resnet_cnn_2d_50')
-#     print(f'\nShape 1D prediction: {y_pred_1d.shape}')
-#     print(f'Shape 2D prediction: {y_pred_2d.shape}')
-#     y_pred = (y_pred_1d+y_pred_2d)/2.
     y_pred = Predict([test_data_1D[name], test_data_2D[name]], 'mix')
 
     plt.plot(test_label_1D[name], c='b')
@@ -77,18 +78,6 @@ def main():
     plt.title(f'{name}: combination prediction.')
     plt.savefig(f'{name}_all.png')
     plt.close()
-
-#     plt.plot(test_label_1D[name], c='b')
-#     plt.plot(y_pred_1d, c='r')
-#     plt.title(f'{name}: dnn prediction.')
-#     plt.savefig(f'{name}_dnn.png')
-#     plt.close()
-
-#     plt.plot(test_label_1D[name], c='b')
-#     plt.plot(y_pred_2d, c='r')
-#     plt.title(f'{name}: Resnet 50 prediction.')
-#     plt.savefig(f'{name}_resnet_50.png')
-#     plt.close()
     r2, mae_, mse_ = all_matric(test_label_1D[name], y_pred)
     print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, MSE: {mse_}-----')
     
