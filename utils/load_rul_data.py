@@ -38,7 +38,7 @@ test_data_path_extract = main_dir_colab + f'test_data_extract_{opt.condition}.pk
 train_c_path = main_dir_colab + f'train_c_{opt.condition}.pkz'
 test_c_path = main_dir_colab + f'test_c_{opt.condition}.pkz'
  
-if os.path.exists(train_data_path_1D) == False:
+if os.path.exists(test_data_path_2D) == False:
   for type_data in opt.data_type:
     # Train data-------------------------------------------------------------------------
     Bearing1_1_path = main_dir_colab + 'Learning_set/Bearing1_1'
@@ -156,6 +156,3 @@ print(f'Train shape extract: {train_data_rul_extract.shape}')
 print(f'Test shape extract: {test_data_rul_extract.shape} \n')
 
 print(f'shape of condition train and test: {train_c.shape}   {test_c.shape}\n')
-    
-
-
