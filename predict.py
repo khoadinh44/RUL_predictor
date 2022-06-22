@@ -1,7 +1,6 @@
 from train import parse_opt
 from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
-from model.dnn import dnn_model, dnn_extracted_model
 from model.resnet import resnet_18, resnet_101, resnet_152, resnet_50
 from model.MIX_1D_2D import mix_model
 from model.LSTM import lstm_model
