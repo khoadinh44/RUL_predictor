@@ -115,10 +115,8 @@ if os.path.exists(test_data_path_2D) == False:
       test_c_type = np.concatenate((test_c_type_1, test_c_type_2, test_c_type_3))
     
     # Save condition of data------------------------------------------------
-    # save_df(train_c_type, train_c_path)
-    # save_df(test_c_type, test_c_path)
-    save_df(test_data_rul, f'test_data_2D_{opt.condition}.pkz')
-    save_df(test_data_rul, test_data_path_2D)
+    save_df(train_c_type, train_c_path)
+    save_df(test_c_type, test_c_path)
     
     # Save data following to each type--------------------------------------
     if type_data == '1d':
