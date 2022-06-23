@@ -85,7 +85,7 @@ class ResNetTypeII(tf.keras.Model):
         x = self.layer3(x, training=training)
         x = self.layer4(x, training=training)
         x = self.avgpool(x)
-        x = self.fc(x)
+#         x = self.fc(x)
 #         output = self.norm(x, training=training)
         return x
 
