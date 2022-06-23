@@ -53,9 +53,9 @@ def Predict(data, model):
     input_2D = Input((128, 128, 2), name='CNN_input')
     output = mix_model(opt, lstm_model, resnet_50, lstm_extracted_model, lstm_condition_model, input_1D, input_2D, input_extracted, input_type, True)
     network = Model(inputs=[input_1D, input_2D, input_extracted, input_type], outputs=output)
-  
-  print(f'\nLoad weight: {os.path.join(opt.save_dir, model)}\n')
-  network.load_weights(os.path.join(opt.save_dir, model))
+  name = f'model_{opt.condition}'
+  print(f'\nLoad weight: {os.path.join(opt.save_dir, name)}\n')
+  network.load_weights(os.path.join(opt.save_dir,  f'model_{opt.condition}'))
       
   y_pred = network.predict(data)
   return y_pred
@@ -79,3 +79,4 @@ def main():
 if __name__ == '__main__':
   warnings.filterwarnings("ignore", category=FutureWarning)
   main()
+
