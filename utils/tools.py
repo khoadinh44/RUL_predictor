@@ -13,6 +13,7 @@ from sklearn.preprocessing import Normalizer
 from sklearn.preprocessing import QuantileTransformer
 from sklearn.preprocessing import PowerTransformer
 from utils.extract_features import extracted_feature_of_signal
+from sklearn.metrics import r2_score
 
 
 #----------------------#### General ####------------------------------------------------
@@ -73,7 +74,8 @@ def mse(y_true, y_pred):
     return np.square(np.subtract(y_true, y_pred)).mean()
 
 def all_matric(y_true, y_pred):
-    r2 = r2_numpy(y_true, y_pred)
+    # r2 = r2_numpy(y_true, y_pred)
+    r2 = r2_score(y_true, y_pred)
     mae_ = mae(y_true, y_pred)
     mse_ = mse(y_true, y_pred)
     return r2, mae_, mse_
