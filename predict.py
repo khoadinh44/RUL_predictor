@@ -3,7 +3,7 @@ from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.resnet import resnet_18, resnet_101, resnet_152, resnet_50
 from model.MIX_1D_2D import mix_model
-from model.LSTM import lstm_model
+from model.LSTM import lstm_extracted_model, lstm_condition_model, lstm_model
 from model.MIX_1D_2D import mix_model
 from utils.load_predict_data import test_data_2D , test_data_1D , test_data_extract , test_data_c
 from utils.tools import all_matric
@@ -79,4 +79,3 @@ def main():
 if __name__ == '__main__':
   warnings.filterwarnings("ignore", category=FutureWarning)
   main()
-
