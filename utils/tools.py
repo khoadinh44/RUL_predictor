@@ -54,16 +54,16 @@ def to_onehot(label):
 def r2_keras(y_true, y_pred):
     """Coefficient of Determination 
     """
-    SS_res =  K.sum(K.square( y_true - y_pred ))
+    SS_res =  K.sum(K.square( y_pred - K.mean(y_true) ))
     SS_tot = K.sum(K.square( y_true - K.mean(y_true) ) )
-    return ( 1 - SS_res/(SS_tot + K.epsilon()) )
+    return SS_res/SS_tot 
 
 def r2_numpy(y_true, y_pred):
     """Coefficient of Determination 
     """
-    SS_res =  np.sum(( y_true - y_pred )**2)
+    SS_res =  np.sum(( y_pred - np.mean(y_true) )**2)
     SS_tot = np.sum(( y_true - np.mean(y_true) )**2)
-    return ( 1 - SS_res/(SS_tot + np.finfo(float).eps) )
+    return SS_res/SS_tot 
 
 def mae(y_true, predictions):
     y_true, predictions = np.array(y_true), np.array(predictions)
