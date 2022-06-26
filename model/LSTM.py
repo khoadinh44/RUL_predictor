@@ -44,14 +44,12 @@ def identity_block(input_tensor, kernel_size, filters, stage, block, training):
 def lstm_model(opt, training=None, inputs=None):
   if opt.mix_model==False:
     inputs = Input(shape=[opt.input_shape, 2])
-  x = LSTM(units=12, return_sequences=True)(inputs)
-  x = LSTM(units=24, return_sequences=True)(x)
   x = Conv1D(48,
                kernel_size=80,
                strides=4,
                padding='same',
                kernel_initializer='glorot_uniform',
-               kernel_regularizer=regularizers.l2(l=0.0001),)(x)
+               kernel_regularizer=regularizers.l2(l=0.0001))(inputs)
   x = BatchNormalization()(x, training=training)
   x = Activation('relu')(x)
   x = MaxPooling1D(pool_size=4, strides=None)(x)
@@ -66,18 +64,15 @@ def lstm_model(opt, training=None, inputs=None):
 
   x = MaxPooling1D(pool_size=4, strides=None)(x)
 
-  for i in range(6):
+  for i in range(3):
     x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i, training=training)
 
   x = MaxPooling1D(pool_size=4, strides=None)(x)
 
   for i in range(3):
     x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
+  x = tf.keras.layers.Bidirectional(LSTM(units=512, return_sequences=False))(x)
 
-  x = GlobalAveragePooling1D()(x)  
-#   x = BatchNormalization()(x, training=training)
-  # x = Dense(units=384, activation='relu')(x)
-  # x = Dropout(0.2)(x)
   if opt.mix_model:
       return x
   x = Dense(units=opt.num_classes, activation='sigmoid')(x)
@@ -85,7 +80,7 @@ def lstm_model(opt, training=None, inputs=None):
   return m
 
 def lstm_extracted_model(opt, training=None, inputs=None):
-  x = LSTM(192, activation='relu', 
+  x = LSTM(128, activation='relu', 
                 return_sequences=False, 
                 kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                 bias_regularizer=regularizers.l2(1e-4),
@@ -94,7 +89,7 @@ def lstm_extracted_model(opt, training=None, inputs=None):
   return x
 
 def lstm_condition_model(opt, training=None, inputs=None):
-  x = Dense(192, activation='relu',
+  x = Dense(128, activation='relu',
             kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
             bias_regularizer=regularizers.l2(1e-4),
             activity_regularizer=regularizers.l2(1e-5))(inputs)
