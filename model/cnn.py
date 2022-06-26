@@ -70,7 +70,6 @@ def cnn_1d_model(opt, training=None):
     https://github.com/philipperemy/very-deep-convnets-raw-waveforms/blob/master/model_resnet.py
     '''
     inputs = Input(shape=[opt.input_shape, 2])
-    # x = LSTM(units=12, return_sequences=True)(inputs)
     x = Conv1D(48,
                kernel_size=80,
                strides=4,
@@ -82,24 +81,25 @@ def cnn_1d_model(opt, training=None):
     x = MaxPooling1D(pool_size=2, strides=None)(x)
 
 
-    for i in range(3):
+    for i in range(2):
         x = identity_block(x, kernel_size=3, filters=48, stage=1, block=i, training=training)
 
     x = MaxPooling1D(pool_size=2, strides=None)(x)
 
-    for i in range(4):
+    for i in range(2):
         x = identity_block(x, kernel_size=3, filters=96, stage=2, block=i, training=training)
 
     x = MaxPooling1D(pool_size=2, strides=None)(x)
 
-    for i in range(6):
+    for i in range(2):
         x = identity_block(x, kernel_size=3, filters=192, stage=3, block=i, training=training)
 
     x = MaxPooling1D(pool_size=2, strides=None)(x)
 
-    for i in range(3):
+    for i in range(2):
         x = identity_block(x, kernel_size=3, filters=384, stage=4, block=i, training=training)
-    x = GlobalAveragePooling1D()(x) 
+    x = tf.keras.layers.Bidirectional(LSTM(units=512, return_sequences=False)(x))
+    # x = GlobalAveragePooling1D()(x) 
     
     if opt.mix_model:
       return x
