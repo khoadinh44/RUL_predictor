@@ -258,8 +258,9 @@ def seg_data(data, length):
 def percent_error(y_true, y_pred):
     y_pred = y_pred.reshape(-1, )
     E = 100.*(y_true - y_pred)/y_true
+    E = E.astype(np.float32)
     A = []
-    for i in E[0]:
+    for i in E:
         if i <= 0.:
             A.append(np.exp(-np.log(0.5)*(i/5.)))
         else:
