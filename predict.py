@@ -74,7 +74,7 @@ def main():
     plt.savefig(f'{name}_all.png')
     plt.close()
     r2, mae_, mse_, A = all_matric(test_label_1D[name], y_pred)
-    print('\n-----{}:      R2: {0:.4f}, MAE: {0:.4f}, MSE: {0:.4f}, Score Acc: {0:.4f}-----'.format(name, r2, mae_, mse_, A))
+    print('\n-----{}:      R2: {.4f}, MAE: .4f}, MSE: {.4f}, Score Acc: {.4f}-----'.format(name, float(r2), float(mae_), float(mse_), float(A)))
     
 if __name__ == '__main__':
   warnings.filterwarnings("ignore", category=FutureWarning)
