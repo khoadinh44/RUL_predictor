@@ -73,8 +73,8 @@ def main():
     plt.title(f'{name}: combination prediction.')
     plt.savefig(f'{name}_all.png')
     plt.close()
-    r2, mae_, mse_ = all_matric(test_label_1D[name], y_pred)
-    print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, MSE: {mse_}-----')
+    r2, mae_, mse_, A = all_matric(test_label_1D[name], y_pred)
+    print('\n-----{}:      R2: {0:.4f}, MAE: {0:.4f}, MSE: {0:.4f}, Score Acc: {0:.4f}-----'.format(name, r2, mae_, mse_, A))
     
 if __name__ == '__main__':
   warnings.filterwarnings("ignore", category=FutureWarning)
