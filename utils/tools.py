@@ -268,4 +268,4 @@ def percent_error(y_true, y_pred):
     score = []
     for i in range(1, 12):
         score.append(A[i])
-    return sum(score)
+    return np.mean(score)
