@@ -74,11 +74,11 @@ def mse(y_true, y_pred):
     return np.square(np.subtract(y_true, y_pred)).mean()
 
 def all_matric(y_true, y_pred):
-    # r2 = r2_numpy(y_true, y_pred)
+    A = percent_error(y_true, y_pred)
     r2 = r2_score(y_true, y_pred)
     mae_ = mae(y_true, y_pred)
     mse_ = mse(y_true, y_pred)
-    return r2, mae_, mse_
+    return r2, mae_, mse_, A
     
 #----------------------save_data.py------------------------------------------------
 def read_data_as_df(base_dir):
@@ -256,9 +256,10 @@ def seg_data(data, length):
   return all_data
 
 def percent_error(y_true, y_pred):
-    E = 100*(y_true - y_pred)/y_true
+    y_pred = y_pred.reshape(-1, )
+    E = 100.*(y_true - y_pred)/y_true
     A = []
-    for i in E:
+    for i in E[0]:
         if i <= 0.:
             A.append(np.exp(-np.log(0.5)*(i/5.)))
         else:
@@ -267,5 +268,3 @@ def percent_error(y_true, y_pred):
     for i in range(1, 12):
         score.append(A[i])
     return sum(score)
-        
-            
