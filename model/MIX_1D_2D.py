@@ -20,8 +20,8 @@ def TransformerLayer(q, k, v, num_heads=4, training=None):
                                      activity_regularizer=regularizers.l2(1e-5))(v)
     # Transformer layer https://arxiv.org/abs/2010.11929 (LayerNorm layers removed for better performance)
     ma  = MultiHeadAttention(head_size=num_heads, num_heads=num_heads)([q, k, v]) 
-    # ma = BatchNormalization()(ma, training=training)
-    # ma = Activation('relu')(ma)
+    ma = BatchNormalization()(ma, training=training)
+    ma = Activation('relu')(ma)
     return ma
 
 def mix_model(opt, cnn_1d_model, resnet_50, lstm_extracted_model, lstm_condition_model, input_1D, input_2D, input_extracted, input_type, training=False):
