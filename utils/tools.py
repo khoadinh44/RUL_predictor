@@ -255,3 +255,17 @@ def seg_data(data, length):
     num += length[name]
   return all_data
 
+def percent_error(y_true, y_pred):
+    E = 100*(y_true - y_pred)/y_true
+    A = []
+    for i in E:
+        if i <= 0.:
+            A.append(np.exp(-np.log(0.5)*(i/5.)))
+        else:
+            A.append(np.exp(np.log(0.5)*(i/20.)))
+    score = []
+    for i in range(1, 12):
+        score.append(A[i])
+    return sum(score)
+        
+            
