@@ -47,9 +47,9 @@ def accuracy_m(y_true, y_pred):
   return accuracy
 
 def to_onehot(label):
-  new_label = np.zeros((len(label), np.max(label)))
+  new_label = np.zeros((len(label), int(np.max(label))))
   for idx, i in enumerate(label):
-    new_label[idx][i-1] = 1.
+    new_label[idx][int(i-1.)] = 1.
   return new_label
 
 def r2_keras(y_true, y_pred):
