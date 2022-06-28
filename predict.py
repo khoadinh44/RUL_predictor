@@ -51,7 +51,7 @@ def Predict(data, model):
     input_type = Input((1,), name='DNN_input')
     input_1D = Input((2559, 2), name='LSTM_CNN1D_input')
     input_2D = Input((128, 128, 2), name='CNN_input')
-    output = mix_model(opt, lstm_model, resnet_50, lstm_extracted_model, lstm_condition_model, input_1D, input_2D, input_extracted, input_type, True)
+    output = mix_model(opt, lstm_model, resnet_101, lstm_extracted_model, lstm_condition_model, input_1D, input_2D, input_extracted, input_type, True)
     network = Model(inputs=[input_1D, input_2D, input_extracted, input_type], outputs=output)
   name = f'model_{opt.condition}'
   print(f'\nLoad weight: {os.path.join(opt.save_dir, name)}\n')
