@@ -42,8 +42,9 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
       test_label  = to_onehot(test_label)
   train_c = to_onehot(train_c)
   test_c = to_onehot(test_c)
-  val_data_1D, val_data_2D, val_extract, val_c, val_label = test_data_rul_1D[:1000], test_data_rul_2D[:1000], test_data_rul_extract[:1000], test_c[:1000], test_label_rul_1D[:1000]
-  val_data = [val_data_1D, val_data_2D, val_extract, val_c]
+  val_data_1D, val_data_2D, val_extract, val_c, val_label_RUL = test_data_rul_1D[:1000], test_data_rul_2D[:1000], test_data_rul_extract[:1000], test_c[:1000], test_label_rul_1D[:1000]
+  val_data = [val_data_1D, val_data_2D, val_extract]
+  val_label = [val_c, val_label_RUL]
 
   if opt.model == 'dnn':
     train_data = [train_data[:, :, 0], train_data[:, :, 1]]
@@ -68,14 +69,14 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
     input_type = Input((3,), name='DNN_input')
     input_1D = Input((2559, 2), name='LSTM_CNN1D_input')
     input_2D = Input((128, 128, 2), name='CNN_input')
-    output = mix_model(opt, lstm_model, resnet_101, lstm_extracted_model, input_1D, input_2D, input_extracted, input_type, True)
-    network = Model(inputs=[input_1D, input_2D, input_extracted, input_type], outputs=output)
+    Condition, RUL = mix_model(opt, lstm_model, resnet_101, lstm_extracted_model, input_1D, input_2D, input_extracted, input_type, True)
+    network = Model(inputs=[input_1D, input_2D, input_extracted], outputs=[Condition, RUL])
 
     # data-------------------------------
-    train_data = [train_data_rul_1D, train_data_rul_2D, train_data_rul_extract, train_c]
-    train_label = train_label_rul_1D
-    test_data = [test_data_rul_1D, test_data_rul_2D, test_data_rul_extract, test_c]
-    test_label = test_label_rul_1D
+    train_data = [train_data_rul_1D, train_data_rul_2D, train_data_rul_extract]
+    train_label = [train_c, train_label_rul_1D]
+    test_data = [test_data_rul_1D, test_data_rul_2D, test_data_rul_extract]
+    test_label = [test_c, test_label_rul_1D]
   
   if opt.load_weight:
     if os.path.exists(os.path.join(opt.save_dir, f'model_{opt.condition}')):
@@ -87,12 +88,16 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
   if opt.condition_train:
     network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
   if opt.rul_train:
-    network.compile(optimizer=tf.keras.optimizers.RMSprop(), loss=tf.keras.losses.MeanSquaredLogarithmicError(), metrics=['mae', tfa.metrics.RSquare(), tf.keras.metrics.mean_squared_error], run_eagerly=True) # https://keras.io/api/losses/ 
+    network.compile(optimizer=tf.keras.optimizers.RMSprop(),
+                    loss=['categorical_crossentropy', tf.keras.losses.MeanSquaredLogarithmicError()], 
+                    metrics=['mae', tfa.metrics.RSquare(), tf.keras.metrics.mean_squared_error], 
+                    loss_weights=[1, 1],
+                    run_eagerly=True) # https://keras.io/api/losses/ 
   network.summary()
   history = network.fit(train_data, train_label,
-                      epochs     = opt.epochs,
-                      batch_size = opt.batch_size,
-                      validation_data = (val_data, val_label),
+                        epochs     = opt.epochs,
+                        batch_size = opt.batch_size,
+                        validation_data = (val_data, val_label),
                       # callbacks = [callbacks]
                       )
   network.save(os.path.join(opt.save_dir, f'model_{opt.condition}'))
