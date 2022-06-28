@@ -3,7 +3,7 @@ from model.cnn import cnn_1d_model
 from model.MIX_1D_2D import mix_model
 from model.resnet import resnet_18, resnet_101, resnet_152, resnet_50
 from model.LSTM import lstm_extracted_model, lstm_condition_model, lstm_model
-from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras
+from utils.tools import recall_m, precision_m, f1_m, to_onehot, r2_keras, to_onehot
 from utils.save_data import start_save_data
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
@@ -40,6 +40,8 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
   if opt.condition_train:
       train_label = to_onehot(train_label)
       test_label  = to_onehot(test_label)
+  train_c = to_onehot(train_c)
+  test_c = to_onehot(test_c)
   val_data_1D, val_data_2D, val_extract, val_c, val_label = test_data_rul_1D[:1000], test_data_rul_2D[:1000], test_data_rul_extract[:1000], test_c[:1000], test_label_rul_1D[:1000]
   val_data = [val_data_1D, val_data_2D, val_extract, val_c]
 
