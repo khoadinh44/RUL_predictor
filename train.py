@@ -36,9 +36,6 @@ def parse_opt(known=False):
     return opt
 
 def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_label_rul_1D, train_data_rul_2D, test_data_rul_2D, train_data_rul_extract, test_data_rul_extract, train_c, test_c):
-  if opt.condition_train:
-      train_label = to_onehot(train_label)
-      test_label  = to_onehot(test_label)
   train_c = to_onehot(train_c)
   test_c = to_onehot(test_c)
   val_data_1D, val_data_2D, val_extract, val_c, val_label_RUL = test_data_rul_1D[:1000], test_data_rul_2D[:1000], test_data_rul_extract[:1000], test_c[:1000], test_label_rul_1D[:1000]
@@ -83,15 +80,11 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
       print(f'\nLoad weight: {os.path.join(opt.save_dir, name)}\n')
       network.load_weights(os.path.join(opt.save_dir, f'model_{opt.condition}'))
       
-
-  if opt.condition_train:
-    network.compile(optimizer=AngularGrad(), loss='categorical_crossentropy', metrics=['acc', f1_m, precision_m, recall_m]) # loss='mse'
-  if opt.rul_train:
-    network.compile(optimizer=tf.keras.optimizers.RMSprop(),
-                    loss=['categorical_crossentropy', tf.keras.losses.MeanSquaredLogarithmicError()], 
-                    metrics=['acc', 'mae', tfa.metrics.RSquare(), tf.keras.metrics.mean_squared_error], 
-                    loss_weights=[0.5, 1],
-                    run_eagerly=True) # https://keras.io/api/losses/ 
+  network.compile(optimizer=AngularGrad(),
+                  loss=['categorical_crossentropy', tf.keras.losses.MeanSquaredLogarithmicError()], 
+                  metrics=['acc', 'mae', tfa.metrics.RSquare(), tf.keras.metrics.mean_squared_error()], 
+                  loss_weights=[0.5, 1],
+                  run_eagerly=True) # https://keras.io/api/losses/ 
   network.summary()
   history = network.fit(train_data, train_label,
                         epochs     = opt.epochs,
@@ -100,21 +93,18 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
                       # callbacks = [callbacks]
                       )
   network.save(os.path.join(opt.save_dir, f'model_{opt.condition}'))
-  _, _, test_acc, test_mae, test_r2, test_mse = network.evaluate(test_data, test_label, verbose=0)
+  print(network.evaluate(val_data, val_label, verbose=0))
+  _, _, test_acc, test_mae, test_r2, test_mse = network.evaluate(val_data, val_label, verbose=0)
   print(f'\n----------Score in test set: \n Condition acc: {test_acc}, mae: {test_mae}, r2: {test_r2}, mse: {test_mse}\n' )
 
 if __name__ == '__main__':
   opt = parse_opt()
   start_save_data(opt)
-  if opt.condition_train:
-    from utils.load_condition_data import train_data, train_label, test_data, test_label
-    main(opt, train_data, train_label, test_data, test_label)
-  if opt.rul_train:
-    from utils.load_rul_data import train_data_rul_1D, train_label_rul_1D, \
-                                    test_data_rul_1D, test_label_rul_1D, \
-                                    train_data_rul_2D, \
-                                    test_data_rul_2D,\
-                                    train_data_rul_extract, \
-                                    test_data_rul_extract,\
-                                    train_c, test_c
-    main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_label_rul_1D, train_data_rul_2D, test_data_rul_2D, train_data_rul_extract, test_data_rul_extract, train_c, test_c)
+  from utils.load_rul_data import train_data_rul_1D, train_label_rul_1D, \
+                                  test_data_rul_1D, test_label_rul_1D, \
+                                  train_data_rul_2D, \
+                                  test_data_rul_2D,\
+                                  train_data_rul_extract, \
+                                  test_data_rul_extract,\
+                                  train_c, test_c
+  main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_label_rul_1D, train_data_rul_2D, test_data_rul_2D, train_data_rul_extract, test_data_rul_extract, train_c, test_c)
