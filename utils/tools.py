@@ -70,15 +70,15 @@ def mae(y_true, predictions):
     y_true, predictions = np.array(y_true), np.array(predictions)
     return np.mean(np.abs(y_true - predictions))
 
-def mse(y_true, y_pred):
-    return np.square(np.subtract(y_true, y_pred)).mean()
+def rmse(y_true, y_pred):
+    return np.sqrt(np.square(np.subtract(y_true, y_pred)).mean())
 
 def all_matric(y_true, y_pred):
     A = percent_error(y_true, y_pred)
     r2 = r2_score(y_true, y_pred)
     mae_ = mae(y_true, y_pred)
-    mse_ = mse(y_true, y_pred)
-    return r2, mae_, mse_, A
+    rmse_ = mse(y_true, y_pred)
+    return r2, mae_, rmse_, A
     
 #----------------------save_data.py------------------------------------------------
 def read_data_as_df(base_dir):
