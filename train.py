@@ -92,7 +92,6 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
                         validation_data = (val_data, val_label),
                       )
   network.save(os.path.join(opt.save_dir, f'model_{opt.condition}'))
-  print(network.evaluate(val_data, val_label, verbose=0))
   _, _, _, Condition_acc, _, _, _, _, RUL_mae, RUL_r_square, RUL_mean_squared_error = network.evaluate(val_data, val_label, verbose=0)
   Condition_acc = round(Condition_acc, 4)
   RUL_mae = round(RUL_mae, 4)
