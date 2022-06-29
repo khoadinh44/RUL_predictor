@@ -25,7 +25,7 @@ def TransformerLayer(q, k, v, num_heads=4, training=None):
     ma = Activation('relu')(ma)
     return ma
 
-def mix_model(opt, cnn_1d_model, resnet_50, lstm_extracted_model, input_1D, input_2D, input_extracted, input_type, training=False):
+def mix_model(opt, cnn_1d_model, resnet_50, lstm_extracted_model, input_1D, input_2D, input_extracted, training=False):
   out_1D = cnn_1d_model(opt, training, input_1D)
   out_2D = resnet_50(opt)(input_2D, training=training)
   out_extracted = lstm_extracted_model(opt, training, input_extracted)
