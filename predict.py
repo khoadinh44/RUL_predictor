@@ -3,7 +3,7 @@ from model.autoencoder import autoencoder_model
 from model.cnn import cnn_1d_model, cnn_2d_model
 from model.resnet import resnet_18, resnet_101, resnet_152, resnet_50
 from model.MIX_1D_2D import mix_model
-from model.LSTM import lstm_extracted_model, lstm_condition_model, lstm_model
+from model.LSTM import lstm_extracted_model, lstm_model
 from model.MIX_1D_2D import mix_model
 from utils.load_predict_data import test_data_2D , test_data_1D , test_data_extract , test_data_c, test_label_1D
 from utils.tools import all_matric
@@ -48,10 +48,9 @@ def Predict(data, model):
     network = lstm_model(opt)
   if model == 'mix':
     input_extracted = Input((14, 2), name='Extracted_LSTM_input')
-    input_type = Input((1,), name='DNN_input')
     input_1D = Input((2559, 2), name='LSTM_CNN1D_input')
     input_2D = Input((128, 128, 2), name='CNN_input')
-    output = mix_model(opt, lstm_model, resnet_101, lstm_extracted_model, lstm_condition_model, input_1D, input_2D, input_extracted, input_type, True)
+    output = mix_model(opt, lstm_model, resnet_101, lstm_extracted_model, input_1D, input_2D, input_extracted, True)
     network = Model(inputs=[input_1D, input_2D, input_extracted, input_type], outputs=output)
   name = f'model_{opt.condition}'
   print(f'\nLoad weight: {os.path.join(opt.save_dir, name)}\n')
@@ -76,9 +75,9 @@ def main():
     r2, mae_, mse_, A = all_matric(test_label_1D[name], y_pred)
     A = round(A, 4)
     mae_ = round(mae_, 4)
-    mse_ = round(mse_, 4)
+    rmse_ = round(mse_, 4)
     r2 = round(r2, 4)
-    print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, MSE: {mse_}, Score: {A}-----')
+    print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, RMSE: {rmse_}, Score: {A}-----')
     
 if __name__ == '__main__':
   warnings.filterwarnings("ignore", category=FutureWarning)
