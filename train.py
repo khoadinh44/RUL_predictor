@@ -82,7 +82,7 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
       
   network.compile(optimizer=AngularGrad(),
                   loss=['categorical_crossentropy', tf.keras.losses.MeanSquaredLogarithmicError()], 
-                  metrics=['acc', 'mae', tfa.metrics.RSquare(), tf.keras.metrics.mean_squared_error], 
+                  metrics=['acc', 'mae', tfa.metrics.RSquare(), tf.keras.metrics.RootMeanSquaredError()], 
                   loss_weights=[0.5, 1],
                   run_eagerly=True) # https://keras.io/api/losses/ 
   network.summary()
@@ -97,7 +97,7 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
   RUL_mae = round(RUL_mae, 4)
   RUL_r_square = round(RUL_r_square, 4)
   RUL_mean_squared_error = round(RUL_mean_squared_error, 4)
-  print(f'\n----------Score in test set: \n Condition acc: {Condition_acc}, mae: {RUL_mae}, r2: {RUL_r_square}, mse: {RUL_mean_squared_error}\n' )
+  print(f'\n----------Score in test set: \n Condition acc: {Condition_acc}, mae: {RUL_mae}, r2: {RUL_r_square}, rmse: {RUL_mean_squared_error}\n' )
 
 if __name__ == '__main__':
   opt = parse_opt()
