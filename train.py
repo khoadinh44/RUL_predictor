@@ -28,7 +28,6 @@ def parse_opt(known=False):
     parser.add_argument('--main_dir_colab', default=None, type=str)
     parser.add_argument('--epochs', default=100, type=int)
     parser.add_argument('--batch_size', default=32, type=int)
-    parser.add_argument('--condition_train', default=False, type=bool)
     parser.add_argument('--rul_train', default=True, type=bool)
     parser.add_argument('--mix_model', default=True, type=bool)
     parser.add_argument('--load_weight', default=False, type=bool)
@@ -101,12 +100,8 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
                       # callbacks = [callbacks]
                       )
   network.save(os.path.join(opt.save_dir, f'model_{opt.condition}'))
-  if opt.condition_train:
-      _, _, test_acc, test_f1_m,  test_precision_m,  test_recall_m  = network.evaluate(test_data, test_label, verbose=0)
-      print(f'----------Score in test set: \n Accuracy: {test_acc}, F1: {test_f1_m}, Precision: {test_precision_m}, recall: {test_recall_m}' )
-  if opt.rul_train:
-      _, _, test_acc, test_mae, test_r2, test_mse = network.evaluate(test_data, test_label, verbose=0)
-      print(f'\n----------Score in test set: \n Condition acc: {test_acc}, mae: {test_mae}, r2: {test_r2}, mse: {test_mse}\n' )
+  _, _, test_acc, test_mae, test_r2, test_mse = network.evaluate(test_data, test_label, verbose=0)
+  print(f'\n----------Score in test set: \n Condition acc: {test_acc}, mae: {test_mae}, r2: {test_r2}, mse: {test_mse}\n' )
 
 if __name__ == '__main__':
   opt = parse_opt()
