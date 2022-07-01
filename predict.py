@@ -56,8 +56,8 @@ def Predict(data, model):
   print(f'\nLoad weight: {os.path.join(opt.save_dir, name)}\n')
   network.load_weights(os.path.join(opt.save_dir,  f'model_{opt.condition}'))
       
-  y_pred = network.predict(data)
-  return y_pred
+  Condition, RUL = network.predict(data)
+  return Condition, RUL 
 
 def main():
   result = {}
@@ -65,14 +65,14 @@ def main():
     # test_data_2D, test_label_2D, test_data_1D, test_label_1D
     print(f'\nShape 1D data: {test_data_1D[name].shape}')
     print(f'Shape 2D data: {test_data_2D[name].shape}')
-    y_pred = Predict([test_data_1D[name], test_data_2D[name], test_data_extract[name]], 'mix')
+    Condition, RUL = Predict([test_data_1D[name], test_data_2D[name], test_data_extract[name]], 'mix')
 
     plt.plot(test_label_1D[name], c='b')
     plt.plot(y_pred, c='r')
     plt.title(f'{name}: combination prediction.')
     plt.savefig(f'{name}_all.png')
     plt.close()
-    r2, mae_, mse_, acc = all_matric(test_label_1D[name], y_pred, test_data_c[name]])
+    r2, mae_, mse_, acc = all_matric(test_label_1D[name], RUL, test_data_c[name], Condition)
     acc = round(acc, 4)
     mae_ = round(mae_, 4)
     rmse_ = round(mse_, 4)
