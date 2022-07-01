@@ -50,8 +50,8 @@ def Predict(data, model):
     input_extracted = Input((14, 2), name='Extracted_LSTM_input')
     input_1D = Input((2559, 2), name='LSTM_CNN1D_input')
     input_2D = Input((128, 128, 2), name='CNN_input')
-    output = mix_model(opt, lstm_model, resnet_101, lstm_extracted_model, input_1D, input_2D, input_extracted, True)
-    network = Model(inputs=[input_1D, input_2D, input_extracted, input_type], outputs=output)
+    Condition, RUL = mix_model(opt, lstm_model, resnet_101, lstm_extracted_model, input_1D, input_2D, input_extracted, False)
+    network = Model(inputs=[input_1D, input_2D, input_extracted], outputs=[Condition, RUL])
   name = f'model_{opt.condition}'
   print(f'\nLoad weight: {os.path.join(opt.save_dir, name)}\n')
   network.load_weights(os.path.join(opt.save_dir,  f'model_{opt.condition}'))
@@ -65,19 +65,19 @@ def main():
     # test_data_2D, test_label_2D, test_data_1D, test_label_1D
     print(f'\nShape 1D data: {test_data_1D[name].shape}')
     print(f'Shape 2D data: {test_data_2D[name].shape}')
-    y_pred = Predict([test_data_1D[name], test_data_2D[name], test_data_extract[name], test_data_c[name]], 'mix')
+    y_pred = Predict([test_data_1D[name], test_data_2D[name], test_data_extract[name]], 'mix')
 
     plt.plot(test_label_1D[name], c='b')
     plt.plot(y_pred, c='r')
     plt.title(f'{name}: combination prediction.')
     plt.savefig(f'{name}_all.png')
     plt.close()
-    r2, mae_, mse_, A = all_matric(test_label_1D[name], y_pred)
-    A = round(A, 4)
+    r2, mae_, mse_, acc = all_matric(test_label_1D[name], y_pred, test_data_c[name]])
+    acc = round(acc, 4)
     mae_ = round(mae_, 4)
     rmse_ = round(mse_, 4)
     r2 = round(r2, 4)
-    print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, RMSE: {rmse_}, Score: {A}-----')
+    print(f'\n-----{name}:      R2: {r2}, MAE: {mae_}, RMSE: {rmse_}, Acc: {acc}-----')
     
 if __name__ == '__main__':
   warnings.filterwarnings("ignore", category=FutureWarning)
