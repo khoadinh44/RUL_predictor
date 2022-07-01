@@ -64,7 +64,7 @@ def main():
     Condition, RUL = Predict([test_data_1D[name], test_data_2D[name], test_data_extract[name]], 'mix')
 
     plt.plot(test_label_1D[name], c='b')
-    plt.plot(y_pred, c='r')
+    plt.plot(RUL, c='r')
     plt.title(f'{name}: combination prediction.')
     plt.savefig(f'{name}_all.png')
     plt.close()
