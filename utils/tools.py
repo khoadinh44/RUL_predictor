@@ -52,6 +52,12 @@ def to_onehot(label):
     new_label[idx][int(i-1.)] = 1.
   return new_label
 
+def back_onehot(label):
+  a = []
+  for i in label:
+    a.append(np.argmax(i))
+  return np.array(a)
+
 def r2_keras(y_true, y_pred):
     """Coefficient of Determination 
     """
@@ -78,6 +84,8 @@ def all_matric(y_true_rul, y_pred_rul, y_true_con, y_pred_con):
     y_pred_rul = np.squeeze(y_pred_rul)
     y_true_con = np.squeeze(y_true_con)
     y_pred_con = np.squeeze(y_pred_con)
+    print(y_true_con.shape)
+    print(y_pred_con.shape)
     
     acc = accuracy_score(y_true_con, y_pred_con)
     r2 = r2_score(y_true_rul, y_pred_rul)
