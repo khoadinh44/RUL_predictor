@@ -13,7 +13,7 @@ from sklearn.preprocessing import Normalizer
 from sklearn.preprocessing import QuantileTransformer
 from sklearn.preprocessing import PowerTransformer
 from utils.extract_features import extracted_feature_of_signal
-from sklearn.metrics import r2_score
+from sklearn.metrics import r2_score, accuracy_score
 
 
 #----------------------#### General ####------------------------------------------------
@@ -73,12 +73,17 @@ def mae(y_true, predictions):
 def rmse(y_true, y_pred):
     return np.sqrt(np.square(np.subtract(y_true, y_pred)).mean())
 
-def all_matric(y_true, y_pred):
-    A = percent_error(y_true, y_pred)
-    r2 = r2_score(y_true, y_pred)
-    mae_ = mae(y_true, y_pred)
-    rmse_ = mse(y_true, y_pred)
-    return r2, mae_, rmse_, A
+def all_matric(y_true_rul, y_pred_rul, y_true_con, y_pred_con):
+    y_true_rul = np.squeeze(y_true_rul)
+    y_pred_rul = np.squeeze(y_pred_rul)
+    y_true_con = np.squeeze(y_true_con)
+    y_pred_con = np.squeeze(y_pred_con)
+    
+    acc = accuracy_score(y_true_con, y_pred_con)
+    r2 = r2_score(y_true_rul, y_pred_rul)
+    mae_ = mae(y_true_rul, y_pred_rul)
+    rmse_ = mse(y_true_rul, y_pred_rul)
+    return r2, mae_, rmse_, acc
     
 #----------------------save_data.py------------------------------------------------
 def read_data_as_df(base_dir):
