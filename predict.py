@@ -27,10 +27,6 @@ logging.getLogger('tensorflow').disabled = True
 
 opt = parse_opt()
 def Predict(data, model):
-  if opt.condition_train:
-    train_label = to_onehot(train_label)
-    test_label  = to_onehot(test_label)
-
   if model == 'dnn':
     data = (data[:, :, 0], data[:, :, 1])
     network = dnn_model(opt)
