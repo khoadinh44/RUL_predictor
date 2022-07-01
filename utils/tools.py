@@ -84,13 +84,11 @@ def all_matric(y_true_rul, y_pred_rul, y_true_con, y_pred_con):
     y_pred_rul = np.squeeze(y_pred_rul)
     y_true_con = np.squeeze(y_true_con)
     y_pred_con = np.squeeze(y_pred_con)
-    print(y_true_con.shape)
-    print(y_pred_con.shape)
     
     acc = accuracy_score(y_true_con, y_pred_con)
     r2 = r2_score(y_true_rul, y_pred_rul)
     mae_ = mae(y_true_rul, y_pred_rul)
-    rmse_ = mse(y_true_rul, y_pred_rul)
+    rmse_ = rmse(y_true_rul, y_pred_rul)
     return r2, mae_, rmse_, acc
     
 #----------------------save_data.py------------------------------------------------
