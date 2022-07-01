@@ -6,7 +6,7 @@ from model.MIX_1D_2D import mix_model
 from model.LSTM import lstm_extracted_model, lstm_model
 from model.MIX_1D_2D import mix_model
 from utils.load_predict_data import test_data_2D , test_data_1D , test_data_extract , test_data_c, test_label_1D
-from utils.tools import all_matric
+from utils.tools import all_matric, to_onehot
 from utils.save_data import start_save_data
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
@@ -68,7 +68,8 @@ def main():
     plt.title(f'{name}: combination prediction.')
     plt.savefig(f'{name}_all.png')
     plt.close()
-    r2, mae_, mse_, acc = all_matric(test_label_1D[name], RUL, test_data_c[name], Condition)
+    test_c = to_onehot(test_data_c[name])
+    r2, mae_, mse_, acc = all_matric(test_label_1D[name], RUL, test_c, Condition)
     acc = round(acc, 4)
     mae_ = round(mae_, 4)
     rmse_ = round(mse_, 4)
