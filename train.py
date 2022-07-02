@@ -79,7 +79,7 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
       print(f'\nLoad weight: {os.path.join(opt.save_dir, name)}\n')
       network.load_weights(os.path.join(opt.save_dir, f'model_{opt.condition}'))
       
-  network.compile(optimizer=tf.keras.optimizers.Adam(amsgrad=True),
+  network.compile(optimizer=tf.keras.optimizers.RMSprop(1e-4),
                   loss=['categorical_crossentropy', tf.keras.losses.MeanSquaredLogarithmicError()], 
                   metrics=['acc', 'mae', tfa.metrics.RSquare(), tf.keras.metrics.RootMeanSquaredError()], 
                   loss_weights=[0.5, 1],
