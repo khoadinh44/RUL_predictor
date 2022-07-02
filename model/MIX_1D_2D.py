@@ -41,8 +41,19 @@ def mix_model(opt, cnn_1d_model, resnet_50, lstm_extracted_model, input_1D, inpu
   
   merged_value_0 = TransformerLayer(hidden_out_1D, hidden_out_2D, hidden_out_extracted, 4, training)
   merged_value_1 = concatenate([hidden_out_2D, merged_value_0, hidden_out_1D], axis=-1, name='merged_value_1')
-  Condition = Dense(3, activation='softmax', name='Condition')(merged_value_1)
-  RUL = Dense(1, activation='sigmoid', name='RUL')(merged_value_1)
+    
+  Condition = Dense(3, 
+                    activation='softmax', 
+                    name='Condition', 
+                    kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                    bias_regularizer=regularizers.l2(1e-4),
+                    activity_regularizer=regularizers.l2(1e-5))(merged_value_1)
+  RUL = Dense(1, 
+              activation='sigmoid', 
+              name='RUL', 
+              kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
+              bias_regularizer=regularizers.l2(1e-4),
+              activity_regularizer=regularizers.l2(1e-5))(merged_value_1)
   return Condition, RUL
   
   
