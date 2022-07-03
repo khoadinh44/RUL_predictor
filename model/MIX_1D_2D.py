@@ -23,12 +23,12 @@ def TransformerLayer(q, k, v, num_heads=4, training=None):
     ma  = MultiHeadAttention(head_size=num_heads, num_heads=num_heads)([q, k, v]) + x
     ma = BatchNormalization()(ma, training=training)
     ma = Activation('relu')(ma)
-    ma = Dropout(0.1)(ma)
+    ma = Dropout(0.1)(ma, training=training)
     return ma
 
 def mix_model(opt, cnn_1d_model, resnet_50, lstm_extracted_model, input_1D, input_2D, input_extracted, training=False):
-  out_1D = Dropout(0.1)(cnn_1d_model(opt, training, input_1D))
-  out_2D = Dropout(0.1)(resnet_50(opt)(input_2D, training=training))
+  out_1D = Dropout(0.1)(cnn_1d_model(opt, training, input_1D), training=training)
+  out_2D = Dropout(0.1)(resnet_50(opt)(input_2D, training=training), training=training)
   out_extracted = lstm_extracted_model(opt, training, input_extracted)
   
   network_1D = Model(input_1D, out_1D, name='network_1D')
