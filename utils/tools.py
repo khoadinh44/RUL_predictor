@@ -55,7 +55,7 @@ def to_onehot(label):
 def back_onehot(label):
   a = []
   for i in label:
-    a.append(np.argmax(i))
+    a.append(np.argmax(i)+1)
   return np.array(a)
 
 def r2_keras(y_true, y_pred):
