@@ -18,7 +18,7 @@ callbacks = tf.keras.callbacks.EarlyStopping(monitor='val_loss', mode='min', ver
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
    
-    parser.add_argument('--input_shape', default=2559, type=int, help='1279 for using fft, 2559 for raw data')
+    parser.add_argument('--input_shape', default=2560, type=int, help='1279 for using fft, 2560 for raw data')
     parser.add_argument('--num_classes', default=1, type=str, help='class condition number: 3, class rul condition: 1')
     parser.add_argument('--model', default='cnn_2d', type=str, help='mix, lstm, dnn, cnn_1d, resnet_cnn_2d, cnn_2d, autoencoder')
     parser.add_argument('--save_dir', default=None, type=str)
