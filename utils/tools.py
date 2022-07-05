@@ -282,10 +282,10 @@ def percent_error(y_true, y_pred):
     return np.mean(score)
 
 # ----------------------Creating label----------------------
-def assign_files(extension, files, base_path=opt.main_dir_colab) :
+def assign_files(extension, num_files, base_path=opt.main_dir_colab) :
     rms_horizontal_local = []
-    p = ProgressBar(total=files)
-    for i in range(files):
+    p = ProgressBar(total=num_files)
+    for i in range(num_files):
         p.progress = i
         file = base_path + extension + f"/acc_{str(i+1).zfill(5)}.csv"
         if path.exists(file):
