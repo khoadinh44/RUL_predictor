@@ -47,7 +47,7 @@ def mix_model(opt, cnn_1d_model, resnet_50, lstm_extracted_model, input_1D, inpu
                     name='Condition', 
                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                     bias_regularizer=regularizers.l2(1e-4),
-                    activity_regularizer=regularizers.l2(1e-5))(merged_value_1)
+                    activity_regularizer=regularizers.l2(1e-5))(merged_value_0)
   RUL = Dense(1, 
               activation='sigmoid', 
               name='RUL', 
