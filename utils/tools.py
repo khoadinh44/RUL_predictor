@@ -280,3 +280,27 @@ def percent_error(y_true, y_pred):
     for i in range(1, 12):
         score.append(A[i])
     return np.mean(score)
+
+# ----------------------Creating label----------------------
+def assign_files(extension, files, base_path=opt.main_dir_colab) :
+    rms_horizontal_local = []
+    p = ProgressBar(total=files)
+    for i in range(files):
+        p.progress = i
+        file = base_path + extension + f"/acc_{str(i+1).zfill(5)}.csv"
+        if path.exists(file):
+            temp_df = pd.read_csv(file, header=None)
+            temp_rms = gen_rms(temp_df[4])
+            rms_horizontal_local.append(temp_rms)
+    return np.array(rms_horizontal_local)
+
+def fit_values(k, b, Y, M, B, rrms):  # fit_values(2.31e-5, 0.99, 1.10, 1.68e-93, 28.58, rrms_1)
+    y_array = []
+    x = []
+    for i in range(len(rrms)):
+        x.append(i)
+        y = Y + M*pow(i,B)
+        if(y < 1.1):
+            y = k*x[i] + b
+        y_array.append(y)
+    return y_array, x
