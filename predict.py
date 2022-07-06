@@ -44,7 +44,7 @@ def Predict(data, model):
     network = lstm_model(opt)
   if model == 'mix':
     input_extracted = Input((14, 2), name='Extracted_LSTM_input')
-    input_1D = Input((2559, 2), name='LSTM_CNN1D_input')
+    input_1D = Input((opt.input_shape, 2), name='LSTM_CNN1D_input')
     input_2D = Input((128, 128, 2), name='CNN_input')
     Condition, RUL = mix_model(opt, lstm_model, resnet_101, lstm_extracted_model, input_1D, input_2D, input_extracted, False)
     network = Model(inputs=[input_1D, input_2D, input_extracted], outputs=[Condition, RUL])
