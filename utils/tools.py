@@ -128,9 +128,9 @@ def save_df(df, out_file):
     pkl.dump(df, pfile)
     print('{0} saved'.format(out_file))
 
-def df_row_ind_to_data_range(ind):
-    DATA_POINTS_PER_FILE=2559
-    return (DATA_POINTS_PER_FILE*ind, DATA_POINTS_PER_FILE*(ind+1))
+# def df_row_ind_to_data_range(ind):
+#     DATA_POINTS_PER_FILE=2560
+#     return (DATA_POINTS_PER_FILE*ind, DATA_POINTS_PER_FILE*(ind+1))
 
 def scaler(signal, scale_method):
   scale = scale_method().fit(signal)
@@ -145,15 +145,18 @@ def scaler_transform(signals, scale_method):
     data.append(scale.fit_transform(signal))
   return np.array(data)
 
-def extract_feature_image(df, ind, opt, type_data, feature_name='horiz accel'):
-    DATA_POINTS_PER_FILE=2559
+def extract_feature_image(df, opt, type_data, feature_name='horiz accel'):
+    DATA_POINTS_PER_FILE=2560
     WIN_SIZE = 20
     WAVELET_TYPE = 'morl'
-    data_range = df_row_ind_to_data_range(ind)
-    data = df[feature_name].values[data_range[0]: data_range[1]]
+    if feature_name == 'horiz accel'
+        data = df[4]
+    else:
+        data = df[5]
+        
     if type_data == '2d':
         data = np.array([np.mean(data[i: i+WIN_SIZE]) for i in range(0, DATA_POINTS_PER_FILE, WIN_SIZE)])
-        coef, _ = pywt.cwt(data, np.linspace(1,128,128), WAVELET_TYPE)
+        coef, _ = pywt.cwt(data, np.linspace(1, 128, 128), WAVELET_TYPE)
         # transform to power and apply logarithm?!
         coef = np.log2(coef**2 + 0.001)
         coef = (coef - coef.min())/(coef.max() - coef.min())
@@ -173,27 +176,23 @@ def denoise(signals):
         # all_signal.append(nr.reduce_noise(y=x, sr=2559, hop_length=20, time_constant_s=0.1, prop_decrease=0.5, freq_mask_smooth_hz=25600))
     return np.expand_dims(all_signal, axis=-1)
 
-def convert_to_image(pkz_dir, opt, type_data):
-    df = load_df(pkz_dir+'.pkz')
-    no_of_rows = df.shape[0]
-    DATA_POINTS_PER_FILE=2559
-    no_of_files = int(no_of_rows / DATA_POINTS_PER_FILE)
-    print(f'pkz file length: {no_of_rows}, total subsequence data: {no_of_files}')
-    
+def convert_to_image(name_bearing, opt, type_data, num_files):
     data = {'x': [], 'y': []}
     if type_data == '2d':
       print('-'*10, f'Convert to 2D data', '-'*10, '\n')
     else:
       print('-'*10, f'Maintain 1D data', '-'*10, '\n')
 
-    for i in range(0, no_of_files):
-        coef_h = np.expand_dims(extract_feature_image(df, i, opt, type_data, feature_name='horiz accel'), axis=-1)
-        coef_v = np.expand_dims(extract_feature_image(df, i, opt, type_data, feature_name='vert accel'), axis=-1)
-        x_ = np.concatenate((coef_h, coef_v), axis=-1).tolist()
-        all_nums = (no_of_files-1)
-        y_ = float(all_nums-i)/float(all_nums)
-        data['x'].append(x_)
-        data['y'].append(y_)
+    for i in range(num_files):
+        file = os.path.join(opt.main_dir_colab, name_bearing, f"/acc_{str(i+1).zfill(5)}.csv")
+        if path.exists(file):
+            df = pd.read_csv(file, header=None)
+            coef_h = np.expand_dims(extract_feature_image(df, opt, type_data, feature_name='horiz accel'), axis=-1)
+            coef_v = np.expand_dims(extract_feature_image(df, opt, type_data, feature_name='vert accel'), axis=-1)
+            x_ = np.concatenate((coef_h, coef_v), axis=-1).tolist()
+            y_ = gen_rms(coef_h)
+            data['x'].append(x_)
+            data['y'].append(y_)
         
     if type_data=='extract':
       print('-'*10, 'Convert to Extracted data', '-'*10, '\n')
@@ -234,11 +233,11 @@ def convert_to_image(pkz_dir, opt, type_data):
       data['x'] = data_x
     else:
       print('-'*10, 'Raw data', '-'*10, '\n')
-      data['x']=np.array(data['x'])
+      data['x'] = np.array(data['x'])
     
-    data['y']=np.array(data['y'])
+    data['y'], _ = fit_values(2.31e-5, 0.99, 1.10, 1.68e-93, 28.58, np.array(data['y']))
+    data['y'] = convert_1_to_0(data['y'])
 
-    # assert data['x'].shape==(no_of_files, 128, 128, 2)
     x_shape = data['x'].shape
     y_shape = data['y'].shape
     print(f'Train data shape: {x_shape}   Train label shape: {y_shape}\n')
@@ -304,3 +303,10 @@ def fit_values(k, b, Y, M, B, rrms):  # fit_values(2.31e-5, 0.99, 1.10, 1.68e-93
             y = k*x[i] + b
         y_array.append(y)
     return y_array, x
+
+def gen_rms(col):
+    return np.squeeze(np.sqrt(np.mean(col**2)))
+
+def convert_1_to_0(data):
+    f_data = (data - np.min(data))/(np.max(data) - np.min(data))
+    return 1. - f_data
