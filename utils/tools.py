@@ -14,6 +14,8 @@ from sklearn.preprocessing import QuantileTransformer
 from sklearn.preprocessing import PowerTransformer
 from utils.extract_features import extracted_feature_of_signal
 from sklearn.metrics import r2_score, accuracy_score
+from os import path
+
 
 
 #----------------------#### General ####------------------------------------------------
@@ -180,9 +182,11 @@ def convert_to_image(name_bearing, opt, type_data, num_files):
       print('-'*10, f'Maintain 1D data', '-'*10, '\n')
 
     for i in range(num_files):
-        file = os.path.join(opt.main_dir_colab, name_bearing, f"/acc_{str(i+1).zfill(5)}.csv")
-        if path.exists(file):
-            df = pd.read_csv(file, header=None)
+        name = f"/acc_{str(i+1).zfill(5)}.csv"
+        file_ = os.path.join(opt.main_dir_colab, name_bearing)+name
+        # print(file_)
+        if path.exists(file_):
+            df = pd.read_csv(file_, header=None)
             coef_h = np.expand_dims(extract_feature_image(df, opt, type_data, feature_name='horiz accel'), axis=-1)
             coef_v = np.expand_dims(extract_feature_image(df, opt, type_data, feature_name='vert accel'), axis=-1)
             x_ = np.concatenate((coef_h, coef_v), axis=-1).tolist()
