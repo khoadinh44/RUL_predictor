@@ -235,7 +235,7 @@ def convert_to_image(name_bearing, opt, type_data, num_files):
       print('-'*10, 'Raw data', '-'*10, '\n')
       data['x'] = np.array(data['x'])
     
-    data['y'], _ = fit_values(2.31e-5, 0.99, 1.10, 1.68e-93, 28.58, np.array(data['y']))
+    # data['y'], _ = fit_values(2.31e-5, 0.99, 1.10, 1.68e-93, 28.58, np.array(data['y']))
     data['y'] = convert_1_to_0(data['y'])
 
     x_shape = data['x'].shape
