@@ -70,7 +70,7 @@ def main():
     plt.close()
     Condition = back_onehot(Condition)
     r2, mae_, mse_, acc = all_matric(test_label_1D[name], RUL, test_data_c[name], Condition)
-    acc = round(acc, 4)
+    acc = round(acc*100, 4)
     mae_ = round(mae_, 4)
     rmse_ = round(mse_, 4)
     r2 = round(r2, 4)
