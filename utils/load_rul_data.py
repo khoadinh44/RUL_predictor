@@ -85,17 +85,17 @@ if os.path.exists(test_data_path_2D) == False:
     Bearing2_7_path = test_main_dir + 'Bearing2_7'
     Bearing3_3_path = test_main_dir + 'Bearing3_3'
     print('\n Test rul data'+'-'*100)
-    Bearing1_3_data = convert_to_image(Bearing1_3_path, opt, type_data, 1802)
-    Bearing1_4_data = convert_to_image(Bearing1_4_path, opt, type_data, 1327)
-    Bearing1_5_data = convert_to_image(Bearing1_5_path, opt, type_data, 2685)
-    Bearing1_6_data = convert_to_image(Bearing1_6_path, opt, type_data, 2685)
-    Bearing1_7_data = convert_to_image(Bearing1_7_path, opt, type_data, 1752)
-    Bearing2_3_data = convert_to_image(Bearing2_3_path, opt, type_data, 1202)
-    Bearing2_4_data = convert_to_image(Bearing2_4_path, opt, type_data, 713)
-    Bearing2_5_data = convert_to_image(Bearing2_5_path, opt, type_data, 2337)
-    Bearing2_6_data = convert_to_image(Bearing2_6_path, opt, type_data, 572)
-    Bearing2_7_data = convert_to_image(Bearing2_7_path, opt, type_data, 200)
-    Bearing3_3_data = convert_to_image(Bearing3_3_path, opt, type_data, 410)
+    Bearing1_3_data = convert_to_image(Bearing1_3_path, opt, type_data, 1802, 573)
+    Bearing1_4_data = convert_to_image(Bearing1_4_path, opt, type_data, 1327, 34)
+    Bearing1_5_data = convert_to_image(Bearing1_5_path, opt, type_data, 2685, 161)
+    Bearing1_6_data = convert_to_image(Bearing1_6_path, opt, type_data, 2685, 146)
+    Bearing1_7_data = convert_to_image(Bearing1_7_path, opt, type_data, 1752, 757)
+    Bearing2_3_data = convert_to_image(Bearing2_3_path, opt, type_data, 1202, 753)
+    Bearing2_4_data = convert_to_image(Bearing2_4_path, opt, type_data, 713, 139)
+    Bearing2_5_data = convert_to_image(Bearing2_5_path, opt, type_data, 2337, 309)
+    Bearing2_6_data = convert_to_image(Bearing2_6_path, opt, type_data, 572, 129)
+    Bearing2_7_data = convert_to_image(Bearing2_7_path, opt, type_data, 200, 58)
+    Bearing3_3_data = convert_to_image(Bearing3_3_path, opt, type_data, 410, 82)
     
     if opt.condition in ['c_1', 'c_all']:
       test_data_rul = test_data_1 = np.concatenate((Bearing1_3_data['x'], Bearing1_4_data['x'], Bearing1_5_data['x'], Bearing1_6_data['x'], Bearing1_7_data['x']))
