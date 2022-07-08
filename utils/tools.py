@@ -16,6 +16,7 @@ from utils.extract_features import extracted_feature_of_signal
 from sklearn.metrics import r2_score, accuracy_score
 from os import path
 import scipy
+from sklearn.cluster import KMeans
 
 def hankel_svdvals(data, hankel_window_size, slice_window_size):
     """ Slices data in 'slice_window_size' and compute hankel matrix singular values with 'hankel_window_size' """
