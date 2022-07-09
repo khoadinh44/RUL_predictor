@@ -233,7 +233,7 @@ def convert_to_image(name_bearing, opt, type_data, num_files, time=None):
         data['y'] = np.ones_like(data['y'])
         data['y'][time: ] = np.linspace(1, 0, len(data['y'][time: ]))
     else:  # Create label for training set -----------------------------------------
-        window = 100
+        window = 200
         label_new = hankel_svdvals(data['y'], 9, window)
         label_new = correlation_coeffs(label_new, 0, [-1, 1], 3, 2)
         
@@ -242,7 +242,7 @@ def convert_to_image(name_bearing, opt, type_data, num_files, time=None):
         PSDclean = label_new * thres
         
         unique, counts = np.unique(PSDclean, return_counts=True)
-        normal_time = counts[0]*(window//2)
+        normal_time = counts[0]*window
         label_train = np.ones_like(data['y'])
         label_train[normal_time:] = np.linspace(1, 0, len(label_train[normal_time:]))
         data['y'] = label_train
@@ -288,7 +288,7 @@ def convert_to_image(name_bearing, opt, type_data, num_files, time=None):
       print('-'*10, 'Raw data', '-'*10, '\n')
       data['x'] = np.array(data['x'])
 #     data['y'], _ = fit_values(2.31e-5, 0.99, 1.10, 1.68e-93, 28.58, np.array(data['y']))
-#     data['y'] = convert_1_to_0(data['y'])
+    # data['y'] = convert_1_to_0(data['y'])
 
     x_shape = data['x'].shape
     y_shape = data['y'].shape
