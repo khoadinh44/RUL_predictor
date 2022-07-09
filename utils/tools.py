@@ -233,8 +233,8 @@ def convert_to_image(name_bearing, opt, type_data, num_files, time=None):
         data['y'] = np.ones_like(data['y'])
         data['y'][time: ] = np.linspace(1, 0, len(data['y'][time: ]))
     else:  # Create label for training set -----------------------------------------
-        window = 200
-        label_new = hankel_svdvals(data['y'], 9, window)
+        window = 50
+        label_new = hankel_svdvals(data['y'], 25, window)
         label_new = correlation_coeffs(label_new, 0, [-1, 1], 3, 2)
         
         kmeans = KMeans(n_clusters=2, random_state=0).fit(label_new.reshape(-1, 1))
