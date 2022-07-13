@@ -228,20 +228,21 @@ def convert_to_image(name_bearing, opt, type_data, num_files, time=None):
             y_ = gen_rms(coef_h)
             data['x'].append(x_)
             data['y'].append(y_)
-            
-    if time == None: # Create label for test set -----------------------------------------
-        h0 = convert_1_to_0(data['y'])
-        kmeans = KMeans(n_clusters=6, random_state=0).fit(h0.reshape(-1, 1))
-        thres = np.array(kmeans.labels_).astype(np.int32) > 0.5
-        h0_clean = h0 * thres
-        
-        unique, counts = np.unique(h0_clean, return_counts=True)
-        label_2 = np.ones_like(h0)
-        label_2[ :counts[0]] = 1
-        label_2[counts[0]: ] = np.linspace(1, 0, len(label_2[counts[0]: ]))
-        time = counts[0]
+
     data['y'] = np.ones_like(data['y'])
     data['y'][time: ] = np.linspace(1, 0, len(data['y'][time: ]))
+
+    if time == None: # Create label for test set -----------------------------------------
+        h0 = convert_1_to_0(data['y'])
+        # kmeans = KMeans(n_clusters=6, random_state=0).fit(h0.reshape(-1, 1))
+        # thres = np.array(kmeans.labels_).astype(np.int32) > 0.5
+        # h0_clean = h0 * thres
+        
+        # unique, counts = np.unique(h0_clean, return_counts=True)
+        # label_2 = np.ones_like(h0)
+        # label_2[ :counts[0]] = 1
+        # label_2[counts[0]: ] = np.linspace(1, 0, len(label_2[counts[0]: ]))
+        # time = counts[0]
         
     if type_data=='extract':
       print('-'*10, 'Convert to Extracted data', '-'*10, '\n')
