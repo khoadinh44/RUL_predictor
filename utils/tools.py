@@ -346,5 +346,8 @@ def gen_rms(col):
     return np.squeeze(np.sqrt(np.mean(col**2)))
 
 def convert_1_to_0(data):
-    f_data = (data - np.min(data))/(np.max(data) - np.min(data))
-    return 1. - f_data
+    if np.min(data) != np.max(data):
+      f_data = (data - np.min(data))/(np.max(data) - np.min(data))
+    else:
+      f_data = np.ones_like(data)
+    return 1-f_data
