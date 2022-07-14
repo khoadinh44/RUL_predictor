@@ -7,15 +7,6 @@ from matplotlib import pyplot as plt
 from train import parse_opt
 from utils.tools import load_df, save_df, extract_feature_image, convert_to_image
 
-DATA_POINTS_PER_FILE = 2560
-TIME_PER_REC = 0.1
-SAMPLING_FREQ = 25600 # 25.6 KHz
-SAMPLING_PERIOD = 1.0/SAMPLING_FREQ
-
-WIN_SIZE = 20
-WAVELET_TYPE = 'morl'
-VAL_SPLIT = 0.1
-
 opt = parse_opt()
 np.random.seed(1234)
 
