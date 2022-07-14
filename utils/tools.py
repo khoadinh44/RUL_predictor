@@ -228,21 +228,11 @@ def convert_to_image(name_bearing, opt, type_data, num_files, time=None):
             y_ = gen_rms(coef_h)
             data['x'].append(x_)
             data['y'].append(y_)
-
+    
+    if time == None:
+        time = predict_time(data['y'])
     data['y'] = np.ones_like(data['y'])
     data['y'][time: ] = np.linspace(1, 0, len(data['y'][time: ]))
-
-    if time == None: # Create label for test set -----------------------------------------
-        h0 = convert_1_to_0(data['y'])
-        # kmeans = KMeans(n_clusters=6, random_state=0).fit(h0.reshape(-1, 1))
-        # thres = np.array(kmeans.labels_).astype(np.int32) > 0.5
-        # h0_clean = h0 * thres
-        
-        # unique, counts = np.unique(h0_clean, return_counts=True)
-        # label_2 = np.ones_like(h0)
-        # label_2[ :counts[0]] = 1
-        # label_2[counts[0]: ] = np.linspace(1, 0, len(label_2[counts[0]: ]))
-        # time = counts[0]
         
     if type_data=='extract':
       print('-'*10, 'Convert to Extracted data', '-'*10, '\n')
@@ -351,3 +341,25 @@ def convert_1_to_0(data):
     else:
       f_data = np.ones_like(data)
     return 1-f_data
+
+def predict_time(h):
+  h0 = convert_1_to_0(h)
+  length_seg = 80
+  num_seg = len(h0)//length_seg
+  h_seg = []
+  for i in range(num_seg):
+    h_seg.append(h0[i: i+length_seg])
+  h_seg = np.array(h_seg)
+
+  # Apply clustering learning model ---------------------------------
+  kmeans_1 = SpectralClustering(3, n_init=100, assign_labels='discretize').fit(h_seg) # https://scikit-learn.org/stable/modules/clustering.html#affinity-propagation
+  time = 0
+  type_all = np.array(kmeans_1.labels_)
+  type_normal = type_all[0]
+  for idx, i in enumerate(type_all):
+    if i != type_normal:
+      break
+    time = idx
+
+  normal_time = (time+1)*length_seg
+  return normal_time
