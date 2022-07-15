@@ -231,8 +231,11 @@ def convert_to_image(name_bearing, opt, type_data, num_files, time=None):
     
     if time == None:
         time = predict_time(data['y'])
-    data['y'] = np.ones_like(data['y'])
-    data['y'][time: ] = np.linspace(1, 0, len(data['y'][time: ]))
+
+    t_label = np.linspace(1, 0, len(data['y'][time: ]))
+    data['y'] = t_label
+    t_data = data['x'][time: ]
+    data['x'] = t_data
         
     if type_data=='extract':
       print('-'*10, 'Convert to Extracted data', '-'*10, '\n')
