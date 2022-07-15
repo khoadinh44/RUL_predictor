@@ -16,6 +16,7 @@ from utils.extract_features import extracted_feature_of_signal
 from sklearn.metrics import r2_score, accuracy_score
 from os import path
 import scipy
+import statistics
 from sklearn.cluster import KMeans, SpectralClustering
 
 def hankel_svdvals(data, hankel_window_size, slice_window_size):
@@ -371,3 +372,17 @@ def predict_time(data):
 
   normal_time = (time+1)*length_seg
   return normal_time
+
+def percent_error(y_true, y_pred):
+    y_pred = y_pred.reshape(-1, )
+    E = 100.*(y_true - y_pred)/y_true
+    E = E.astype(np.float32)
+    SD = statistics.stdev(E.tolist())
+    A = []
+    for i in E:
+        i = i/100.
+        if i <= 0.:
+            A.append(np.exp(-np.log(0.5)*(i/5.)))
+        else:
+            A.append(np.exp(np.log(0.5)*(i/20.)))
+    return np.mean(A), SD
