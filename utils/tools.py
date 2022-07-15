@@ -229,13 +229,13 @@ def convert_to_image(name_bearing, opt, type_data, num_files, time=None):
             data['x'].append(x_)
             data['y'].append(y_)
     
-    if time == None:
-        time = predict_time(data['y'])
-
-    t_label = np.linspace(1, 0, len(data['y'][time: ]))
-    data['y'] = t_label
-    t_data = data['x'][time: ]
-    data['x'] = t_data
+    if time != None:
+      t_label = np.linspace(1, 0, len(data['y'][time: ]))
+      data['y'] = t_label
+      t_data = data['x'][time: ]
+      data['x'] = t_data
+    else:
+      data['y'] = np.linspace(1, 0, len(data['y']))
         
     if type_data=='extract':
       print('-'*10, 'Convert to Extracted data', '-'*10, '\n')
