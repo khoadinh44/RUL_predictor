@@ -23,17 +23,29 @@ main_dir_colab = opt.main_dir_colab
 train_main_dir = main_dir_colab + 'Learning_set/'
 test_main_dir = main_dir_colab + 'Test_set/'
 
-length = {'Bearing1_3': 1802,
-          'Bearing1_4': 1139,
-          'Bearing1_5': 2302,
-          'Bearing1_6': 2302,
-          'Bearing1_7': 1502,
-          'Bearing2_3': 1202,
-          'Bearing2_4': 612,
-          'Bearing2_5': 2002,
-          'Bearing2_6': 572,
-          'Bearing2_7': 172,
-          'Bearing3_3': 352}
+# length = {'Bearing1_3': 1802,
+#           'Bearing1_4': 1139,
+#           'Bearing1_5': 2302,
+#           'Bearing1_6': 2302,
+#           'Bearing1_7': 1502,
+#           'Bearing2_3': 1202,
+#           'Bearing2_4': 612,
+#           'Bearing2_5': 2002,
+#           'Bearing2_6': 572,
+#           'Bearing2_7': 172,
+#           'Bearing3_3': 352}
+
+length = {'Bearing1_3': 1229,
+          'Bearing1_4': 1105,
+          'Bearing1_5': 2141,
+          'Bearing1_6': 2156,
+          'Bearing1_7': 745,
+          'Bearing2_3': 449,
+          'Bearing2_4': 473,
+          'Bearing2_5': 1693,
+          'Bearing2_6': 443,
+          'Bearing2_7': 114,
+          'Bearing3_3': 270}
 
 test_data_2D   = seg_data(load_df(main_dir_colab + f'test_data_2D_{opt.condition}.pkz'), length)
 test_data_1D   = seg_data(load_df(main_dir_colab + f'test_data_1D_{opt.condition}.pkz'), length)
