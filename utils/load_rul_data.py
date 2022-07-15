@@ -5,7 +5,7 @@ import pandas as pd
 import pickle as pkl
 from matplotlib import pyplot as plt
 from train import parse_opt
-from utils.tools import load_df, save_df, extract_feature_image, convert_to_image
+from utils.tools import load_df, save_df, extract_feature_image, convert_to_image, predict_time, seg_data, gen_rms
 
 opt = parse_opt()
 np.random.seed(1234)
@@ -28,6 +28,30 @@ test_data_path_extract = main_dir_colab + f'test_data_extract_{opt.condition}.pk
 
 train_c_path = main_dir_colab + f'train_c_{opt.condition}.pkz'
 test_c_path = main_dir_colab + f'test_c_{opt.condition}.pkz'
+
+training_length = {'Bearing1_1': 2803,
+                  'Bearing1_2': 871,
+                  'Bearing2_1': 911,
+                  'Bearing2_2': 797,
+                  'Bearing3_1': 515,
+                  'Bearing3_2': 1637}
+
+fake_time  = {'Bearing1_1': None,
+              'Bearing1_2': None,
+              'Bearing2_1': None,
+              'Bearing2_2': None,
+              'Bearing3_1': None,
+              'Bearing3_2': None}
+
+if opt.predict_time:
+  full_data = main_dir_colab + 'old_data/' + f'train_data_1D_{opt.condition}.pkz'
+  data = load_df(full_data)
+  train_data = seg_data(data, training_length)
+  for i, name in enumerate(train_data):
+    time = predict_time(train_data[name])
+    fake_time[name] = time
+    print(f'Name: {name}  predict time: {time*10}')
+
  
 if os.path.exists(test_data_path_2D) == False:
   for type_data in opt.data_type:
@@ -39,12 +63,12 @@ if os.path.exists(test_data_path_2D) == False:
     Bearing3_1_path = train_main_dir + 'Bearing3_1'
     Bearing3_2_path = train_main_dir + 'Bearing3_2'
     print('\n Training rul data'+'-'*100)
-    Bearing3_2_data = convert_to_image(Bearing3_2_path, opt, type_data, 1637, None)
-    Bearing3_1_data = convert_to_image(Bearing3_1_path, opt, type_data, 604, None)
-    Bearing2_2_data = convert_to_image(Bearing2_2_path, opt, type_data, 797, None)
-    Bearing2_1_data = convert_to_image(Bearing2_1_path, opt, type_data, 1062, None)
-    Bearing1_2_data = convert_to_image(Bearing1_2_path, opt, type_data, 1015, None)
-    Bearing1_1_data = convert_to_image(Bearing1_1_path, opt, type_data, 3269, None)
+    Bearing3_2_data = convert_to_image(Bearing3_2_path, opt, type_data, 1637, fake_time['Bearing3_2'])
+    Bearing3_1_data = convert_to_image(Bearing3_1_path, opt, type_data, 604, fake_time['Bearing3_1'])
+    Bearing2_2_data = convert_to_image(Bearing2_2_path, opt, type_data, 797, fake_time['Bearing2_2'])
+    Bearing2_1_data = convert_to_image(Bearing2_1_path, opt, type_data, 1062, fake_time['Bearing2_1'])
+    Bearing1_2_data = convert_to_image(Bearing1_2_path, opt, type_data, 1015, fake_time['Bearing1_2'])
+    Bearing1_1_data = convert_to_image(Bearing1_1_path, opt, type_data, 3269, fake_time['Bearing1_1'])
     
     if opt.condition in ['c_1', 'c_all']:
       train_data_rul  = train_data_1 = np.concatenate((Bearing1_1_data['x'], Bearing1_2_data['x']))
