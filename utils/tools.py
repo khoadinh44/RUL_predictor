@@ -353,7 +353,7 @@ def predict_time(data):
     h.append(g)
     
   h0 = convert_1_to_0(h)
-  length_seg = 80
+  length_seg = 50
   num_seg = len(h0)//length_seg
   h_seg = []
   for i in range(num_seg):
