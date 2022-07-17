@@ -65,7 +65,7 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
     input_extracted = Input((14, 2), name='Extracted_LSTM_input')
     input_1D = Input((opt.input_shape, 2), name='LSTM_CNN1D_input')
     input_2D = Input((128, 128, 2), name='CNN_input')
-    Condition, RUL = mix_model(opt, lstm_model, resnet_101, lstm_extracted_model, input_1D, input_2D, input_extracted, True)
+    Condition, RUL = mix_model(opt, lstm_model, resnet_152, lstm_extracted_model, input_1D, input_2D, input_extracted, True)
     network = Model(inputs=[input_1D, input_2D, input_extracted], outputs=[Condition, RUL])
 
     # data-------------------------------
@@ -89,8 +89,7 @@ def main(opt, train_data_rul_1D, train_label_rul_1D, test_data_rul_1D, test_labe
   history = network.fit(train_data, train_label,
                         epochs     = opt.epochs,
                         batch_size = opt.batch_size,
-                        validation_data = (val_data, val_label),
-                      )
+                        validation_data = (val_data, val_label),)
   network.save(os.path.join(opt.save_dir, f'model_{opt.condition}'))
   _, _, _, Condition_acc, _, _, _, _, RUL_mae, RUL_r_square, RUL_mean_squared_error = network.evaluate(test_data, test_label, verbose=0)
   Condition_acc = round(Condition_acc, 4)
