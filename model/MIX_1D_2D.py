@@ -5,7 +5,7 @@ from tensorflow_addons.layers import MultiHeadAttention
 from keras import layers, regularizers
 import keras.backend as K
 
-def TransformerLayer(q, k, v, num_heads=4, training=None):
+def TransformerLayer(q, v, k, num_heads=4, training=None):
     q = tf.keras.layers.Dense(256,   kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                                      bias_regularizer=regularizers.l2(1e-4),
                                      activity_regularizer=regularizers.l2(1e-5))(q)
