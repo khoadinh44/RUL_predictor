@@ -63,12 +63,12 @@ if os.path.exists(test_data_path_2D) == False:
     Bearing3_1_path = train_main_dir + 'Bearing3_1'
     Bearing3_2_path = train_main_dir + 'Bearing3_2'
     print('\n Training rul data'+'-'*100)
-    Bearing3_2_data = convert_to_image(Bearing3_2_path, opt, type_data, 1637, fake_time['Bearing3_2'])
-    Bearing3_1_data = convert_to_image(Bearing3_1_path, opt, type_data, 604, fake_time['Bearing3_1'])
-    Bearing2_2_data = convert_to_image(Bearing2_2_path, opt, type_data, 797, fake_time['Bearing2_2'])
-    Bearing2_1_data = convert_to_image(Bearing2_1_path, opt, type_data, 1062, fake_time['Bearing2_1'])
-    Bearing1_2_data = convert_to_image(Bearing1_2_path, opt, type_data, 1015, fake_time['Bearing1_2'])
-    Bearing1_1_data = convert_to_image(Bearing1_1_path, opt, type_data, 3269, fake_time['Bearing1_1'])
+    Bearing3_2_data = convert_to_image(Bearing3_2_path, opt, type_data, 1637, 88)
+    Bearing3_1_data = convert_to_image(Bearing3_1_path, opt, type_data, 604, 20)
+    Bearing2_2_data = convert_to_image(Bearing2_2_path, opt, type_data, 797, 177)
+    Bearing2_1_data = convert_to_image(Bearing2_1_path, opt, type_data, 1062, 12)
+    Bearing1_2_data = convert_to_image(Bearing1_2_path, opt, type_data, 1015, 825)
+    Bearing1_1_data = convert_to_image(Bearing1_1_path, opt, type_data, 3269, 1400)
     
     if opt.condition in ['c_1', 'c_all']:
       train_data_rul  = train_data_1 = np.concatenate((Bearing1_1_data['x'], Bearing1_2_data['x']))
