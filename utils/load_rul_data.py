@@ -31,9 +31,9 @@ test_c_path = main_dir_colab + f'test_c_{opt.condition}.pkz'
 
 training_length = {'Bearing1_1': 2803,
                   'Bearing1_2': 871,
-                  'Bearing2_1': 911,
-                  'Bearing2_2': 797,
-                  'Bearing3_1': 515,
+                  'Bearing2_1': 912,
+                  'Bearing2_2': 798,
+                  'Bearing3_1': 516,
                   'Bearing3_2': 1637}
 
 fake_time  = {'Bearing1_1': None,
